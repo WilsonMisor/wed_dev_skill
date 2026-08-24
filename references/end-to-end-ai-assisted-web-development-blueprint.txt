@@ -1,0 +1,2020 @@
+END-TO-END PHASED WEB DEVELOPMENT BLUEPRINT
+Current version date: 2026-08-08
+Format: atomic task checklist plus flowchart/state-machine control model for project initiation, build, launch, operations, and maintenance
+
+========================================================================
+0. HOW TO USE THIS BLUEPRINT
+========================================================================
+
+Purpose
+- Use this as a master execution blueprint for any serious website or web application.
+- Adapt the tasks by website type: marketing site, WordPress/CMS site, ecommerce, SaaS app, portal, marketplace, media site, community site, or internal web app.
+- Treat legal, tax, privacy, accessibility, and industry compliance items as mandatory review points, not legal advice.
+- For WordPress/CMS delivery with AI, execute the blueprint as a flowchart/state machine with explicit sequence, decision gates, rework loops, action nodes, human approval nodes, stop/escalation nodes, and evidence before every state transition.
+
+Baseline sequencing rule
+- Normal WordPress website order is PRD baseline -> page briefs/sitemap -> Conversion/SEO/Security Applicability Matrix -> SEO architecture -> cybersecurity threat model/control matrix -> Design Artifact Strategy -> UX/UI Framework Compliance Matrix -> AI design-tool prompt package -> selected design artifact path such as Figma Make, Claude Design, JSON wireframes/specs, coded mockups, prototypes, screenshots, or hybrid -> owner review/rework/approval -> frozen design baseline -> SRD/SRS baseline -> AI task packets -> main WordPress/theme/template coding.
+- Early technical constraints and SRD notes may be captured before mockups, but do not baseline the SRD or start main UI/CMS build until the Design Artifact Strategy, UX/UI Framework Compliance Matrix, AI design-tool prompt package, and approved mockups/design baseline exist or an exception is recorded. Low-fidelity wireframes are optional when the strategy proves structure another way.
+
+Atomic task rule
+- A task is "smallest indivisible" when it has one owner, one action verb, one output, and a clear done condition.
+- If a task needs more than one owner to complete, split it.
+- If a task can be independently reviewed, tested, or approved, keep it separate.
+- If a task hides a decision, split the decision from the execution.
+
+Task fields used below
+- ID: unique task code.
+- Owner: person primarily accountable for completion.
+- Task: smallest action to perform.
+- Done when: objective completion signal.
+
+Role abbreviations
+- SP: Executive sponsor
+- WO: Website owner or client-side final approver
+- PDM: Product manager
+- PO: Product owner
+- PM: Project manager or delivery manager
+- PRG: Program manager, if multiple workstreams or vendors exist
+- SM: Scrum master or agile lead
+- BA: Business analyst
+- SA: Solution architect
+- IA: Information architect
+- UX-R: UX researcher
+- UX-D: UX/product designer
+- UI: Visual designer
+- DS: Design system owner
+- CS: Content strategist
+- CW: Copywriter/editor
+- SEO: SEO specialist
+- CRO: Conversion rate optimization specialist
+- PPC: Paid search/paid media specialist
+- EMAIL: Email marketing specialist
+- SOCIAL: Social media/community growth specialist
+- MKT: Marketing lead
+- BRAND: Brand lead
+- FE: Frontend engineer
+- BE: Backend engineer
+- FS: Full-stack engineer
+- CMS: CMS/WordPress engineer
+- DEVOPS: DevOps/cloud engineer
+- SRE: Site reliability engineer
+- DBA: Database engineer
+- QA: QA/test engineer
+- AUTO: Test automation engineer
+- SEC: Security engineer
+- COMP: Compliance officer
+- LEGAL: Legal counsel
+- DPO: Data protection officer, if required
+- PRIV: Privacy/legal counsel
+- ACC: Accessibility specialist
+- DATA: Data/analytics engineer
+- BI: Business intelligence analyst
+- CRM: CRM/marketing automation specialist
+- REVOPS: Revenue operations specialist
+- SALES: Sales/revenue lead
+- CX: Customer support/success lead
+- CSM: Customer success manager
+- TW: Technical writer/documentation specialist
+- OPS: Operations manager
+- FIN: Finance/procurement
+- HR: People/training lead
+- VENDOR: Vendor manager
+- LOC: Localization/internationalization lead
+- MOD: Community/moderation lead
+- AI: AI/automation lead, if AI features, AI-assisted delivery, or AI-assisted operations are used
+- ALL: every relevant team member
+
+Non-negotiable gates
+- Gate 1: A named sponsor, website owner/client approver, product manager, product owner, project manager, budget, scope boundary, and success metrics exist.
+- Gate 2: An approved product requirements document (PRD) exists; privacy, security, accessibility, SEO, analytics, conversion/trust, content, support, and operations requirements are defined before design/build, with compulsory/contextual items classified in the Conversion/SEO/Security Applicability Matrix.
+- Gate 3: Design Artifact Strategy, UX/UI Framework Compliance Matrix, AI design-tool prompt package, and owner-approved page mockup/design baseline package exist; individual launch-scope page/template mockups or equivalent artifacts are generated from the approved strategy and prompt, reviewed by the website owner, reworked until approved, and frozen before SRD final baseline and main WordPress/theme/template coding.
+- Gate 4: An approved software requirements document (SRD/SRS) exists; the SRD translates the approved PRD, AI design-tool prompt package, and approved page mockups into architecture, WordPress template/CPT/content model, reliability, monitoring, backup, rollback, scaling, and data protection requirements.
+- Gate 5: Every user-critical path has design, content, accessibility, analytics, security, QA, and support coverage.
+- SEO Crawl/Compliance Gate: Before launch, AI/SEO crawls the full applicable website, checks rendered output across major browser engines where available, remediates applicable issues, and records a 90%+ SEO audit score or approved exceptions.
+- Security-by-Design Gate: Before build and launch, threat model/control matrix, secure coding evidence, form/web/network/database protection, encryption/secrets handling, WordPress hardening, vulnerability scan results, and risk acceptance records exist.
+- Gate 6: Launch has a rollback plan, incident owner, communications plan, and hypercare schedule.
+- Gate 7: Ongoing operations have owners, cadences, dashboards, budgets, documentation, and escalation paths.
+- AI Gate: If AI-assisted delivery is used, human supervision, tool permissions, task packets, run logs, and stop/escalation rules exist before AI work starts.
+
+========================================================================
+0A. AI-ASSISTED DELIVERY OPERATING MODEL
+========================================================================
+
+Purpose
+- Use this section when AI agents perform project work under human supervision.
+- AI may draft, build, test, inspect, document, and propose decisions, but accountable human role owners remain responsible for approval, risk acceptance, launch, and operations.
+- AI-assisted delivery is an execution model, not a replacement for governance, PRD/SRD approval, legal review, security review, accessibility review, QA, or human product judgment.
+
+Operating principles
+- AI works from explicit task packets, not vague chat intent.
+- AI follows the WordPress AI delivery flowchart for sequence, branch decisions, loops, approvals, and evidence; the current flow state must be named before execution.
+- AI output is not accepted until it is reviewed against the same definition of ready, definition of done, and quality gates as human work.
+- AI may propose product, design, architecture, content, code, QA, and operational changes; the accountable human owner approves decisions that affect users, risk, cost, scope, policy, or production.
+- AI must record assumptions, sources, changed files, generated artifacts, commands run, tests run, unresolved risks, and requested approvals.
+- AI must preserve traceability from PRD/SRD requirement IDs to AI design prompts, design, content, page mockups, code, tests, evidence, release notes, and operations documentation.
+- AI must not start main WordPress/theme/template coding for user-facing pages until the Design Artifact Strategy, UX/UI Framework Compliance Matrix, AI design-tool prompt package, and owner-approved page mockup/design baseline gate are satisfied or a human approver records an explicit exception.
+
+AI work modes
+- Draft mode: AI creates research synthesis, PRD/SRD drafts, SEO architecture and compliance plans, cybersecurity threat models/control matrices, content drafts, page briefs, Design Artifact Strategies, UX/UI Framework Compliance Matrices, AI design-tool prompt packages for Figma Make, Claude Design, JSON low/high-fidelity specs, coded/static page mockups, prototypes, QA plans, runbooks, and documentation for human review.
+- Build mode: AI implements code, configuration, CMS structures, metadata/schema/canonical/robots/sitemap output, redirects, secure form/admin/REST/AJAX handlers, prepared database queries, encryption/secrets controls, migrations, scripts, tests, data transformations, and documentation from approved task packets and approved design/mockup/SEO baselines.
+- Verify mode: AI performs self-review, independent review, static checks, dependency scans, secret scans, SAST/DAST, targeted security tests, full-site SEO crawls, browser-rendered SEO checks, accessibility checks, security checks, performance checks, and evidence packaging.
+- Operate mode: AI summarizes monitoring, triages defects, proposes hotfixes, drafts support/content updates, and prepares maintenance plans for human approval.
+AI execution posture:
+- Plan with intention: define the site architecture, map pages and components, choose the stack and tools, and outline user flows before implementation begins.
+- Build with speed: generate page structure, draft reusable components, create boilerplate faster, and keep implementation aligned with approved PRD/SRD, mockups, SEO, security, and task-packet constraints.
+- Communicate with clarity: write clearer UI copy, explain error messages clearly, write better README files, and draft cleaner documentation that a future maintainer can use.
+- Refine with judgment: spot bugs and edge cases, refactor messy logic, improve readability and structure, and avoid clever code when a simpler maintainable structure works.
+- Verify before handoff: create testing checklists, run applicable checks, prepare deployment steps, package evidence, and ship with clarity through release notes, rollback notes, launch status, and operations handoff.
+Conversion, SEO, and security applicability rule:
+- AI must create a Conversion/SEO/Security Applicability Matrix before AI design prompts, SRD finalization, build tickets, and launch checks for WordPress/CMS projects.
+- Classify each item as compulsory default, contextual mandatory, not applicable, or approved exception. Contextual items become mandatory when triggered by page type, business model, data sensitivity, local intent, lead capture, ecommerce, portal/account behavior, API behavior, or approved PRD scope.
+- Required items include page/template/CPT mapping, PRD/SRD/control IDs, implementation evidence, QA evidence, owner, status, and exception approver/expiry where applicable.
+- AI must not fabricate reviews, ratings, local business data, case studies, team photos, credentials, maps, directions, or response-time promises.
+
+Required AI task packet fields
+- Task ID.
+- Current flowchart state, previous gate, next gate/branch, and active loop if any.
+- Accountable human owner.
+- Goal and non-goals.
+- Source artifacts and requirement IDs.
+- Allowed files, systems, tools, and environments.
+- Prohibited actions.
+- Data handling limits.
+- Expected output format.
+- Acceptance criteria.
+- Required checks and evidence.
+- Reviewer and approver.
+- Rollback, cleanup, or handoff notes.
+
+Human supervision rules
+- SP approves funding, business risk, major scope change, launch, rollback, and final go/no-go.
+- PDM and PO approve PRD, product scope, backlog priority, acceptance criteria, and user-facing product decisions.
+- SA approves SRD, architecture, system boundaries, major technical decisions, and technical risk acceptance.
+- UX-D, UI, DS, CS, CW, BRAND, SEO, and ACC approve relevant experience, design, content, brand, search, and accessibility work.
+- SEC, PRIV, DPO, LEGAL, and COMP approve relevant security, privacy, legal, compliance, data, and regulated-risk work.
+- QA and AUTO approve release evidence, test coverage, regression status, and defect severity decisions.
+- DEVOPS and SRE approve infrastructure, secrets, deployments, rollback, observability, production access, and incident actions.
+- AI cannot be the sole approver for legal/privacy/security/accessibility risk acceptance, production deployment, destructive data operation, payment/tax/compliance decision, vendor contract decision, real-user communication, or final launch.
+
+Mandatory AI stop/escalation triggers
+- Requirements conflict or source artifacts disagree.
+- Requested action exceeds approved task packet scope.
+- Sensitive personal, regulated, payment, credential, or secret data may be exposed.
+- Legal, tax, privacy, accessibility, security, or compliance interpretation is required.
+- A destructive filesystem, database, CMS, deployment, DNS, payment, email, or production operation is requested.
+- External spending, subscription changes, model/tool upgrades, or vendor changes are required.
+- User-facing content, policy, pricing, claims, or transactional messaging changes without approval.
+- Tests fail and the root cause is unclear.
+- Pre-launch SEO crawl/audit score remains below 90% without accepted exception.
+- AI detects hallucinated facts, missing evidence, or insufficient context.
+
+AI audit trail
+- Maintain an AI run log for every meaningful AI task.
+- Each run log entry records task packet, agent/model/tool versions where known, prompt/context used, files changed, commands/checks run, outputs, evidence links, cost/usage if available, reviewers, approvals, unresolved risks, and next actions.
+- Maintain a prompt/context library for repeatable project workflows.
+- Maintain a model/tool registry showing approved AI tools, intended use, data limits, permissions, owners, and review cadence.
+- Maintain a human supervision matrix showing which role must approve each class of AI-generated work.
+- Maintain an AI escalation log for stop events, rejected outputs, hallucinations, policy exceptions, and lessons learned.
+
+AI-assisted delivery gate checklist
+- AI-assisted delivery policy exists.
+- AI task packet template exists.
+- Human supervision matrix exists.
+- AI tool permission matrix exists.
+- Prompt/context library exists or has a defined starter structure.
+- AI run log exists and is linked from the documentation index.
+- SEO crawl/compliance reference and audit evidence template exist if the project has public web pages.
+- Stop/escalation rules are visible to everyone using AI.
+- Sensitive data rules are documented before project data is placed into any AI context.
+- Design Artifact Strategy, UX/UI Framework Compliance Matrix, and AI design-tool prompt package exist before AI-powered design artifact, JSON spec, coded mockup, prototyping, or mockup creation begins; low-fidelity wireframes are optional when the strategy proves structure another way; owner-approved page mockup/design baseline package exists before AI build-mode UI, WordPress theme, or WordPress template implementation tasks begin.
+- WordPress AI flow-state checkpoint and gate evidence register exist for projects using AI-assisted delivery.
+
+========================================================================
+0B. WORDPRESS AI DELIVERY FLOWCHART CONTROL MODEL
+========================================================================
+
+Purpose
+- Use this section when the website is a WordPress/CMS project and AI is doing substantial delivery work.
+- Treat the full task checklist as the work breakdown structure and this section as the execution-control model.
+- For installed Codex and Claude Code skills, load references/wordpress-ai-delivery-flowchart.md for the full Mermaid flowchart, state checklist, rework loops, and output format.
+
+Control rule
+- The AI must identify the current flow state before acting: F0 governance, F1 discovery, F2 PRD, F3 sitemap/page briefs/SEO/security architecture, F4 design artifact strategy, UX/UI framework compliance, prompt, and mockup loop, F5 SRD/SRS, F6 AI task packets, F7 WordPress/CPT build, F8 template/content/SEO implementation, F9 QA/SEO crawl, F10 UAT, F11 launch readiness, F12 deploy/stabilize, or F13 hypercare/operations.
+- Every state ends in a decision: proceed, rework loop, approved exception, escalate, or stop.
+- If a required earlier artifact is missing, stale, contradicted, or unapproved, return to the earliest affected state instead of continuing forward.
+- AI may execute action states from approved task packets; humans approve baseline documents, AI design prompt package completeness, owner mockups, risk exceptions, production deployment, rollback, and final launch.
+
+Normal WordPress AI execution path
+- F0 Intake/governance -> F1 Discovery -> F2 approved PRD -> F3 sitemap/page briefs/applicability matrix/SEO/security architecture -> F4 Design Artifact Strategy plus UX/UI Framework Compliance Matrix plus AI design prompt package plus owner-approved mockups/design baseline -> F5 approved SRD/SRS -> F6 AI task packets -> F7 WordPress/CPT build -> F8 templates/content/SEO implementation -> F9 QA and full-site SEO crawl -> F10 UAT -> F11 launch readiness -> F12 deploy/stabilize -> F13 hypercare/operations.
+
+Mandatory loops
+- PRD loop: Rework PRD until product/sponsor approval or approved exception.
+- Design artifact strategy and prompt loop: Rework the Design Artifact Strategy, UX/UI Framework Compliance Matrix, and AI design-tool prompt package until they fully map the PRD, sitemap/page briefs, SEO/cybersecurity plans, content, brand, WordPress/CPT/admin model, domain workflows, component inventory, actions, menus, widgets, states, responsive rules, accessibility, privacy, JSON/coded artifact rules, and tool constraints before selected artifact execution.
+- Mockup/design baseline loop: Rework AI-generated individual page/template mockups or equivalent JSON/coded/design artifacts, with UX/UI Framework Compliance Matrix evidence, until website-owner approval or approved page-level exception; main WordPress/theme/template coding remains blocked for unapproved pages/templates.
+- SRD loop: Rework SRD/SRS until it matches the approved PRD, AI design prompt package, mockups, SEO architecture, CPT model, and risk controls.
+- CPT loop: Rework any project CPT that opens the block builder by default or lacks required custom metadata/media fields.
+- SEO loop: Remediate crawl/audit findings and rerun checks until the SEO audit target is 90%+ or an accountable human approves an exception.
+- QA/UAT loop: Fix or route defects through change control, then rerun affected checks and acceptance scenarios.
+- Launch loop: If go/no-go is no-go, fix blockers and rerun launch readiness; if production verification fails, hotfix or rollback under human control.
+- Operations loop: Route recurring defects, SEO/indexing issues, support confusion, or improvement opportunities through change control and a new release cycle.
+
+Flow-state reporting requirement
+- Every AI plan, audit, rescue, handoff, or status report must state the current flow state, completed gates, blocked gates, active loop, required human decision, AI actions allowed now, evidence required before the next state, and next branch.
+
+========================================================================
+0C. CYBERSECURITY BY DESIGN CONTROL MODEL
+========================================================================
+
+Purpose
+- Use this section across the entire project lifecycle, especially during WordPress coding and configuration.
+- Treat cybersecurity as a build requirement and launch gate, not a final optional scan.
+- Use OWASP Top 10, OWASP ASVS, OWASP Web Security Testing Guide, OWASP Cheat Sheet Series, WordPress hardening guidance, and NIST CSF 2.0 as reference baselines, scaled to project risk.
+
+Lifecycle security rule
+- Discovery identifies assets, data, users, roles, entry points, trust boundaries, integrations, hosting/network exposure, and abuse cases.
+- PRD records user-facing and business-level security requirements.
+- AI design prompts, page briefs, sitemap, mockups, and SRD/SRS carry security implications for every form, account flow, admin action, CPT, upload, integration, and data store.
+- AI task packets include threat-model/control IDs, protected assets, sensitive data limits, required checks, and security evidence.
+- Coding tasks are not done until applicable security controls are implemented and tested.
+- QA and launch readiness include dependency scans, secret scans, static analysis, dynamic testing, targeted manual tests, WordPress hardening verification, database/backup checks, network/WAF checks, and risk acceptance.
+- Operations include vulnerability monitoring, patching, WAF/rate-limit review, log review, backup restore testing, incident response, and security debt management.
+
+Coding-phase security rule
+- Prevent SQL injection with prepared statements/parameterized queries, `$wpdb->prepare()` for WordPress custom queries, allowlists for dynamic identifiers, and least-privilege database users.
+- Validate all external input server-side and escape all output for the exact output context.
+- Protect state-changing browser actions with CSRF tokens or WordPress nonces and never mutate state through GET requests.
+- Enforce authentication, MFA for privileged users, secure session behavior, and server-side authorization/capability checks for every protected action.
+- Protect forms with spam/bot controls, rate limiting, safe errors, privacy/consent handling, duplicate/idempotency rules, and abuse monitoring.
+- Protect uploads with allowlisted types, size limits, safe names, storage rules, malware scanning where feasible, and no public execution of uploaded files.
+- Protect web/network surfaces with TLS, security headers, CSP where feasible, WAF/CDN/rate limits, admin restrictions, staging protection, and public debug disabled.
+- Protect databases and stored data with least privilege, safe migrations, backups, restore tests, retention/deletion rules, encrypted backups or accepted exceptions, and no database errors exposed to users.
+- Protect secrets and encryption keys by storing them outside code, rotating when needed, masking logs, and never exposing secrets to AI context, frontend bundles, browser sessions, or public artifacts.
+
+Security launch gate
+- Launch cannot proceed with unresolved critical/high security findings, known SQL injection paths, broken authorization, exposed secrets, missing required encryption, unsafe uploads, unprotected admin access, failed form-abuse controls, broken backup/restore, or unreviewed WAF/network exposure unless an accountable human records accepted risk, compensating controls, and expiry.
+
+========================================================================
+1. TEAM MODEL AND ROLE RESPONSIBILITIES
+========================================================================
+
+Core accountability model
+- SP owns business authorization, funding, risk tolerance, and final strategic decisions.
+- PDM owns product strategy, product outcomes, customer value, roadmap, market fit, prioritization rationale, product tradeoff decisions, and the PRD baseline.
+- PO owns backlog readiness, acceptance criteria, PRD-to-backlog alignment, day-to-day backlog order, sprint acceptance, and product decisions delegated by the Product Manager.
+- PM owns delivery coordination, schedule, dependencies, status, risks, stakeholder alignment, requirements governance cadence, and change-control enforcement.
+- PRG owns cross-project coordination, executive reporting, vendor sequencing, and dependency management when the initiative has multiple workstreams.
+- BA owns business process discovery, requirements clarity, PRD input quality, acceptance criteria, requirements traceability, and process mapping.
+- SA owns end-to-end solution design, SRD/SRS quality, system boundaries, non-functional requirements, integration fit, and architecture decision alignment.
+- IA owns content structure, navigation taxonomy, labeling systems, findability, and information relationships.
+- UX-R owns user research, interview plans, research synthesis, usability evidence, and behavioral insights.
+- UX-D owns information architecture, flows, AI design-tool prompt packages, wireframes, interaction patterns, and prototype validation.
+- UI owns visual direction, responsive layouts, brand expression, and visual QA.
+- DS owns reusable components, tokens, patterns, documentation, and design-engineering alignment.
+- CS owns content architecture, voice, messaging hierarchy, editorial standards, and content governance.
+- CW owns page copy, microcopy, legal-friendly plain language, email copy, and editorial revisions.
+- SEO owns crawlability, indexability, search intent, metadata, schema, redirects, and organic performance.
+- CRO owns conversion hypotheses, funnel analysis, experiment design, landing page optimization, and conversion learnings.
+- PPC owns paid search/social campaign setup, tracking requirements, ad-to-landing-page alignment, and paid acquisition performance.
+- EMAIL owns email campaign planning, lifecycle messaging, deliverability basics, segmentation, and email performance.
+- SOCIAL owns social launch coordination, community distribution, social listening, and social content performance.
+- MKT owns campaign readiness, launch communications, positioning, acquisition channels, and lead generation.
+- BRAND owns brand consistency, identity usage, tone, visuals, and asset approvals.
+- FE owns browser UI implementation, client-side performance, accessibility implementation, and UI states.
+- BE owns server-side logic, APIs, authentication, authorization, data handling, and business rules.
+- CMS owns content model implementation, CMS authoring workflows, templates, roles, and plugin/module health.
+- DEVOPS owns hosting, environments, CI/CD, infrastructure, secrets, domains, certificates, and deployment.
+- SRE owns uptime, observability, incident response, capacity, SLOs, backup testing, and recovery.
+- DBA owns data model, indexing, migrations, retention, backup validation, and query performance.
+- QA owns test strategy, manual verification, requirements-to-test traceability, defect quality, regression coverage, and release confidence.
+- AUTO owns automated test architecture, test fixtures, CI test execution, and flaky test control.
+- SEC owns threat modeling, secure SDLC, vulnerability management, penetration test coordination, and security acceptance.
+- COMP owns regulatory control mapping, evidence collection, audit readiness, policy adherence, and compliance reporting.
+- LEGAL owns contract review, legal claims review, terms, regulatory interpretation, and legal risk acceptance.
+- DPO owns data protection governance, data subject rights oversight, DPIA review, and supervisory authority coordination where required.
+- PRIV owns privacy review, terms, notices, cookies, consent, records of processing, and jurisdictional obligations.
+- ACC owns accessibility standards, audits, assistive technology testing, and remediation acceptance.
+- DATA owns analytics plan implementation, event taxonomy, tags, data pipelines, and measurement integrity.
+- BI owns dashboards, KPI interpretation, reporting cadence, and insight generation.
+- CRM owns lifecycle email, forms-to-CRM flow, segmentation, consent synchronization, and lead routing.
+- REVOPS owns lead lifecycle integrity, attribution handoff, pipeline reporting, CRM process governance, and revenue data quality.
+- SALES owns revenue workflows, lead qualification criteria, sales handoff, pricing pages, and sales enablement.
+- CX owns support workflows, knowledge base, feedback loops, SLAs, and customer communication playbooks.
+- CSM owns customer onboarding, adoption, retention feedback, account health signals, and expansion/churn insights for customer-facing products.
+- TW owns user documentation, admin guides, API docs, release notes, help content structure, and operational knowledge base quality.
+- OPS owns day-to-day operating processes, staffing, moderation, fulfillment, service quality, and process compliance.
+- FIN owns budget, vendor contracts, renewals, payment processor fees, cost tracking, and procurement approvals.
+- HR owns team onboarding, role training, access onboarding/offboarding, and policy acknowledgment.
+- VENDOR owns third-party relationships, SLAs, due diligence, contract status, and vendor escalation.
+- LOC owns translation process, locale requirements, cultural review, hreflang, and local content approvals.
+- MOD owns community rules, abuse triage, user-generated content review, and trust operations.
+- AI owns AI-assisted delivery operating model, AI agent/tool governance, prompt/context safety, AI run logs, automation governance, human review rules, AI feature risk reviews, and AI monitoring.
+
+Role coverage matrix
+- Product leadership roles: SP, PDM, PO, PM, PRG, BA.
+- User experience roles: UX-R, UX-D, IA, UI, DS, ACC.
+- Content and brand roles: CS, CW, TW, BRAND, LOC.
+- Growth and revenue roles: SEO, CRO, PPC, EMAIL, SOCIAL, MKT, CRM, REVOPS, SALES.
+- Engineering roles: SA, FE, BE, FS, CMS, DEVOPS, SRE, DBA.
+- Quality and risk roles: QA, AUTO, SEC, COMP, LEGAL, DPO, PRIV.
+- Operations roles: CX, CSM, OPS, FIN, HR, VENDOR, MOD, AI.
+- Staffing rule: one person may cover multiple roles on a small project, but every role category must still have an explicitly named accountable owner or be marked not applicable.
+
+Out-of-the-box responsibilities that prevent launch failure
+- Assign a "red team user" to try to break assumptions before build starts.
+- Assign a "content operations owner" before any CMS is configured.
+- Assign a "data deletion owner" before collecting personal data.
+- Assign a "rollback commander" before the first production deployment.
+- Assign a "staging hygiene owner" to ensure staging is not indexed and does not leak data.
+- Assign a "trust and abuse owner" for spam, fraud, scraping, account abuse, chargebacks, harassment, and bot traffic.
+- Assign a "cost owner" for hosting, API, email, observability, CDN, and AI spend.
+- Assign an "AI supervision owner" before AI agents perform delivery work.
+- Assign an "AI permission owner" before AI tools receive repository, CMS, browser, hosting, analytics, or other system access.
+- Assign a "decision log owner" so decisions do not disappear into chat history.
+- Assign a "requirements traceability owner" so PRD and SRD changes remain linked to backlog, design, architecture, tests, launch evidence, and release notes.
+
+========================================================================
+2. MASTER DELIVERABLE INDEX
+========================================================================
+
+Project governance deliverables
+- Project charter
+- Business case
+- Stakeholder map
+- RACI matrix
+- Communication plan
+- Decision log
+- Risk register
+- Assumption log
+- Dependency log
+- Budget tracker
+- Procurement tracker
+- Project roadmap
+- Sprint/release plan
+- Change-control process
+- AI-assisted delivery operating agreement, if AI delivery is used
+- Human supervision matrix for AI work, if AI delivery is used
+- AI tool permission matrix, if AI delivery is used
+- AI task packet template, if AI delivery is used
+- AI run log, if AI delivery is used
+- Prompt/context library, if AI delivery is used
+- Model/tool registry, if AI delivery is used
+- AI escalation log, if AI delivery is used
+
+Product and strategy deliverables
+- Problem statement
+- Target user segments
+- Personas or jobs-to-be-done
+- User journey maps
+- Value proposition
+- Product requirements document (PRD)
+- PRD approval record
+- Success metrics
+- KPI tree
+- MVP definition
+- Feature backlog
+- Prioritization model
+- Acceptance criteria
+- PRD-to-backlog traceability matrix
+- Product analytics plan
+- Revenue model, if applicable
+- Support model
+
+Experience and content deliverables
+- Research plan
+- Research notes
+- Research synthesis
+- Sitemap
+- Information architecture
+- User flows
+- AI design-tool prompt package for Figma Make, Claude Design, or equivalent
+- Wireframes
+- Prototype
+- Design system
+- Responsive design specs
+- Accessibility annotations
+- Content inventory
+- Content model
+- Page briefs
+- Copy deck
+- Editorial style guide
+- SEO keyword/search intent map
+- SEO compliance implementation plan
+- SEO crawl and remediation report
+- SEO score/browser evidence and exception log
+- Metadata map
+- Structured data map
+- Redirect map
+- Localization plan
+
+Technical deliverables
+- Software requirements document (SRD/SRS)
+- Functional requirements catalog
+- Non-functional requirements catalog
+- Requirements-to-test matrix
+- AI-generated work evidence log, if AI delivery is used
+- AI review report, if AI delivery is used
+- Architecture decision records
+- System context diagram
+- Infrastructure diagram
+- Data model
+- API contract
+- CMS content type schema
+- Integration map
+- Security threat model
+- Privacy data flow map
+- Environment strategy
+- CI/CD pipeline
+- Test strategy
+- Observability plan
+- Backup and restore plan
+- Disaster recovery plan
+- Runbooks
+- Release notes
+
+Compliance and operations deliverables
+- Privacy notice
+- Cookie/tracking inventory
+- Consent management rules
+- Terms of use
+- Accessibility statement
+- Records of processing, if applicable
+- Data retention schedule
+- Data subject request process, if applicable
+- Vendor due diligence records
+- Incident response plan
+- Business continuity plan
+- Moderation policy, if applicable
+- Support scripts
+- Knowledge base
+- SLA/SLO definitions
+- Maintenance calendar
+
+========================================================================
+3. PHASE 0 - PROJECT INITIATION AND MANDATE
+========================================================================
+
+Objective
+- Establish why the project exists, who can decide, what success means, and what boundaries cannot be crossed.
+
+Atomic tasks
+- P0.001 | SP | Name the executive sponsor | Done when one sponsor is documented.
+- P0.002 | SP | Name the product manager | Done when one accountable PDM is documented.
+- P0.002A | SP | Name the product owner | Done when one accountable PO is documented.
+- P0.003 | SP | Name the project manager | Done when one delivery owner is documented.
+- P0.004 | SP | State the business problem in one paragraph | Done when sponsor approves the wording.
+- P0.005 | PO | State the primary user problem in one paragraph | Done when target user pain is explicit.
+- P0.006 | PO | List primary user groups | Done when each group has a short description.
+- P0.007 | SP | Define the business outcome | Done when outcome is measurable.
+- P0.008 | PO | Define the user outcome | Done when outcome is measurable.
+- P0.009 | PM | Create the project folder structure | Done when folders for governance, requirements, research, design, content, technical, QA, launch, and ops exist.
+- P0.010 | PM | Create the project charter draft | Done when sections for scope, budget, timeline, risks, roles, and success metrics exist.
+- P0.011 | SP | Approve the project charter | Done when approval is recorded.
+- P0.012 | FIN | Define the budget ceiling | Done when total approved spend is documented.
+- P0.013 | FIN | Define budget categories | Done when categories include people, hosting, tools, vendors, content, QA, security, marketing, maintenance, and contingency.
+- P0.014 | PM | Create a stakeholder register | Done when name, role, influence, approval rights, and contact method are listed.
+- P0.015 | PM | Create the RACI matrix | Done when every major deliverable has responsible, accountable, consulted, and informed roles.
+- P0.016 | PM | Create the communication plan | Done when meeting cadence, reporting format, and escalation route are documented.
+- P0.017 | PM | Create the decision log | Done when the first decision entry can be recorded.
+- P0.018 | PM | Create the risk register | Done when risk, impact, likelihood, owner, mitigation, and status fields exist.
+- P0.019 | PM | Create the assumption log | Done when assumptions can be recorded and reviewed.
+- P0.020 | PM | Create the dependency log | Done when external dependencies have owners and dates.
+- P0.021 | PM | Create the issue log | Done when blockers can be tracked separately from risks.
+- P0.022 | PM | Define change-control rules | Done when scope and requirements changes require impact, cost, timeline, quality, and approval notes.
+- P0.022A | PM | Define PRD/SRD governance process | Done when drafting, review, approval, versioning, storage, traceability, and amendment rules are documented.
+- P0.022B | SP | Name PRD and SRD approvers | Done when product, business, architecture, QA, security, privacy, accessibility, and operations approvers are listed as applicable.
+- P0.022C | AI | Define AI-assisted delivery policy | Done when allowed AI work, human-only decisions, stop rules, audit log rules, tool permissions, data limits, and review rules are documented.
+- P0.022D | AI | Create AI task packet template | Done when the template includes goal, owner, source artifacts, constraints, allowed tools, prohibited actions, acceptance criteria, checks, evidence, reviewer, and approver.
+- P0.022E | PM | Define AI supervision cadence | Done when AI work reviews, escalation reviews, approval meetings, and evidence checks have owners and schedule.
+- P0.022F | SEC | Define AI tool permission boundaries | Done when repository, browser, CMS, hosting, analytics, secrets, payment, email, and production access rules are documented.
+- P0.023 | HR | Confirm team availability | Done when each role has allocated capacity.
+- P0.024 | FIN | List likely vendors | Done when vendors for hosting, domains, analytics, email, payments, CMS, security, and design tools are listed.
+- P0.025 | PRIV | Define required legal jurisdictions | Done when user/customer regions and business locations are documented.
+- P0.026 | SEC | Define preliminary security risk level | Done when site is classified as low, medium, high, or regulated.
+- P0.026A | SEC | Select security control baseline | Done when OWASP Top 10, OWASP ASVS level, OWASP WSTG scope, WordPress hardening guidance, NIST CSF functions, PCI/payment scope if relevant, and project-specific controls are selected.
+- P0.026B | SEC/PRIV | Define data classification model | Done when public, internal, personal, sensitive, payment, credential, and business-confidential data categories are defined.
+- P0.026C | SEC/DEVOPS | Define initial web/network protection approach | Done when WAF/CDN/firewall, TLS, admin access restrictions, staging protection, and monitoring expectations are documented.
+- P0.027 | ACC | Define target accessibility standard | Done when WCAG target level is documented.
+- P0.028 | OPS | Define operating owner after launch | Done when the team or person responsible for daily operation is named.
+- P0.029 | CX | Define support ownership after launch | Done when support queue owner and escalation path are named.
+- P0.030 | PM | Schedule kickoff meeting | Done when meeting invite includes agenda and attendees.
+- P0.031 | PM | Run kickoff meeting | Done when goals, roles, timeline, risks, and next actions are confirmed.
+- P0.032 | PM | Publish kickoff notes | Done when notes are accessible to all stakeholders.
+- P0.033 | ALL | Confirm working agreements | Done when response times, meeting etiquette, documentation location, and decision rules are agreed.
+- P0.034 | PM | Create project status template | Done when template includes progress, blockers, risks, decisions, budget, and next steps.
+- P0.035 | SP | Approve initiation gate | Done when sponsor confirms project can enter discovery.
+
+Gate 0 acceptance checklist
+- Project has sponsor, PO, PM, budget, scope boundary, and success metrics.
+- Project has documented risks, assumptions, dependencies, stakeholders, and decision process.
+- PRD/SRD owners, approvers, storage location, and change-control rules are defined.
+- AI-assisted delivery owners, supervision rules, permission rules, task packet template, and run log exist if AI will perform project work.
+- Operations and support ownership are considered from day one.
+
+========================================================================
+4. PHASE 1 - DISCOVERY, RESEARCH, AND CURRENT-STATE AUDIT
+========================================================================
+
+Objective
+- Understand users, business goals, market context, operational constraints, current assets, technical reality, risks, and hidden work.
+
+Atomic tasks
+- P1.001 | BA | List business processes affected by the website | Done when each process has an owner.
+- P1.002 | BA | Interview executive sponsor | Done when goals, constraints, risks, and definition of success are captured.
+- P1.003 | BA | Interview sales lead | Done when lead, conversion, objection, and handoff requirements are captured.
+- P1.004 | BA | Interview marketing lead | Done when campaign, channel, attribution, and messaging requirements are captured.
+- P1.005 | BA | Interview support lead | Done when support pain points and common questions are captured.
+- P1.006 | BA | Interview operations lead | Done when fulfillment, moderation, staffing, and service constraints are captured.
+- P1.007 | BA | Interview finance/procurement | Done when budget, vendor, payment, tax, and renewal constraints are captured.
+- P1.008 | PRIV | Interview legal/privacy stakeholders | Done when required notices, policies, consents, and data restrictions are captured.
+- P1.009 | SEC | Interview security stakeholders | Done when authentication, authorization, logging, and compliance expectations are captured.
+- P1.009B | SEC/BA | Inventory attack surfaces | Done when public forms, login/reset, account flows, admin screens, CPT save handlers, REST/AJAX endpoints, uploads, webhooks, integrations, cron jobs, search/filter URLs, and database access paths are listed.
+- P1.009C | SEC/DBA/PRIV | Inventory sensitive data and encryption needs | Done when stored/transmitted data, secrets, backups, exports, logs, and retention/deletion rules are mapped to protection requirements.
+- P1.009D | SEC/DEVOPS | Audit current web/network protections | Done when TLS, DNS, CDN/WAF, firewall, admin exposure, staging exposure, security headers, monitoring, and backup posture are reviewed.
+- P1.009A | BA | Consolidate stakeholder requirements | Done when business, user, operational, content, legal, privacy, security, data, integration, and support needs are captured as candidate requirements.
+- P1.010 | UX-R | Define research questions | Done when questions map to product decisions.
+- P1.011 | UX-R | Define research participant criteria | Done when target segments and sample sizes are documented.
+- P1.012 | UX-R | Recruit research participants | Done when sessions are booked.
+- P1.013 | UX-R | Prepare interview script | Done when script avoids leading questions and covers key journeys.
+- P1.014 | UX-R | Conduct user interviews | Done when notes are captured for each session.
+- P1.015 | UX-R | Conduct stakeholder observation or shadowing | Done when operational reality is documented.
+- P1.016 | UX-R | Conduct usability test of current site, if any | Done when task completion, friction, and quotes are recorded.
+- P1.017 | DATA | Export current analytics baseline | Done when sessions, conversions, sources, devices, top pages, bounce/engagement, and events are saved.
+- P1.018 | SEO | Export current search performance | Done when queries, pages, clicks, impressions, rankings, and issues are saved.
+- P1.019 | SEO | Crawl current website | Done when status codes, titles, descriptions, headings, canonicals, indexability, and internal links are exported.
+- P1.020 | CS | Inventory current content | Done when every page, asset, owner, freshness, quality, and action is listed.
+- P1.021 | CS | Identify content ROT | Done when redundant, outdated, and trivial content is marked.
+- P1.022 | ACC | Run current accessibility scan | Done when automated issues are logged.
+- P1.023 | ACC | Run manual keyboard check on core pages | Done when keyboard traps and focus issues are recorded.
+- P1.024 | SEC | Run current security surface review | Done when public admin paths, exposed headers, forms, dependencies, and known risks are listed.
+- P1.025 | DEVOPS | Audit current hosting and DNS | Done when registrar, DNS provider, CDN, host, SSL, and access owners are documented.
+- P1.026 | DEVOPS | Audit current environments | Done when production, staging, development, and backup locations are documented.
+- P1.027 | DBA | Audit current databases | Done when database type, size, tables, owners, backups, and sensitive data fields are documented.
+- P1.028 | CRM | Audit current forms and lead routes | Done when every form destination and notification path is documented.
+- P1.029 | DATA | Audit current tags and pixels | Done when each tag has owner, purpose, data collected, and consent requirement.
+- P1.030 | PRIV | Audit personal data collection points | Done when each data field has purpose, legal basis/justification, retention, and owner.
+- P1.031 | VENDOR | Audit third-party tools | Done when tool, purpose, contract, renewal, data access, SLA, and owner are documented.
+- P1.031A | AI | Audit AI context and data eligibility | Done when artifacts that may be used with AI, artifacts that require redaction, and artifacts prohibited from AI context are listed.
+- P1.032 | FIN | Audit current costs | Done when monthly and annual costs are listed.
+- P1.033 | MKT | Audit brand and messaging assets | Done when logos, colors, type, tone, claims, and approvals are listed.
+- P1.034 | LOC | Audit language and locale needs | Done when target locales, currencies, time zones, address formats, and cultural requirements are listed.
+- P1.035 | MOD | Audit user-generated content risk, if any | Done when spam, abuse, moderation, and escalation risks are documented.
+- P1.036 | CX | Audit support requests | Done when top contact reasons and self-service gaps are listed.
+- P1.037 | SALES | Audit sales funnel | Done when lead stages, qualification criteria, and conversion blockers are documented.
+- P1.038 | UX-R | Synthesize research findings | Done when themes, evidence, opportunities, and risks are documented.
+- P1.039 | BA | Map current-state journey | Done when user steps, systems, owners, pain points, and metrics are shown.
+- P1.040 | BA | Map future-state opportunities | Done when opportunities are tied to business and user outcomes.
+- P1.040A | BA | Create discovery requirements inventory | Done when findings are converted into candidate product, functional, non-functional, data, content, and operational requirements with source evidence.
+- P1.040B | SA | Identify early software requirement constraints | Done when technical constraints that may shape the SRD are logged with risk and owner.
+- P1.040C | AI | Create AI-safe discovery context pack | Done when relevant findings, constraints, source links, redactions, and open questions are packaged for AI-assisted drafting and review.
+- P1.041 | PM | Update risk register from discovery | Done when new risks have owners and mitigations.
+- P1.042 | PM | Update dependency log from discovery | Done when vendor, legal, data, content, and technical dependencies are captured.
+- P1.043 | PO | Approve discovery findings | Done when findings are accepted or disputed items are logged.
+- P1.044 | SP | Approve discovery gate | Done when project can move to strategy and requirements.
+
+Gate 1 acceptance checklist
+- Current state is documented.
+- User evidence exists.
+- Business constraints are explicit.
+- Discovery requirements inventory exists with source evidence and unresolved questions.
+- AI-safe context boundaries are documented if AI-assisted delivery will be used.
+- Content, data, privacy, SEO, security, accessibility, operations, and vendor risks are visible.
+
+========================================================================
+5. PHASE 2 - STRATEGY, SCOPE, AND PRODUCT DEFINITION
+========================================================================
+
+Objective
+- Convert discovery into a realistic product strategy, MVP, roadmap, measurable outcomes, disciplined scope, and approved PRD baseline.
+
+Atomic tasks
+- P2.001 | PDM | Define product vision | Done when vision is one short, testable statement.
+- P2.002 | PDM | Define target audience priority order | Done when primary, secondary, and excluded audiences are listed.
+- P2.003 | PDM | Define value proposition | Done when value is specific to target audience.
+- P2.004 | PDM | Define top user jobs | Done when each job starts with a user intent.
+- P2.005 | BA | Convert jobs into user stories | Done when each story has actor, need, and benefit.
+- P2.006 | BA | Add acceptance criteria to each story | Done when criteria are testable.
+- P2.006A | BA | Assign product requirement IDs | Done when each candidate PRD requirement has a unique ID, source, owner, priority, status, and acceptance reference.
+- P2.006B | PDM | Draft the product requirements document | Done when problem, users, outcomes, scope, user journeys, business rules, content, SEO, analytics, support, assumptions, dependencies, exclusions, and acceptance model are consolidated.
+- P2.006C | PO | Map user stories to PRD requirements | Done when every MVP story links to one or more PRD requirement IDs or has an approved exclusion.
+- P2.007 | PDM | Define business KPIs | Done when each KPI has owner, baseline, target, and timeframe.
+- P2.008 | DATA | Define measurement method for each KPI | Done when each KPI maps to events or data source.
+- P2.009 | BI | Create KPI tree | Done when leading and lagging indicators are mapped.
+- P2.010 | PDM | Define MVP feature list | Done when every MVP feature supports a top user job or business KPI.
+- P2.011 | PDM | Define non-MVP feature list | Done when deferred features are documented.
+- P2.012 | PDM | Define explicit out-of-scope list | Done when stakeholders can see what is not included.
+- P2.013 | PDM | Prioritize product backlog by outcome | Done when method such as value/risk/effort or MoSCoW is documented.
+- P2.013A | PO | Sequence sprint-ready backlog | Done when near-term work is ordered, testable, and ready for delivery planning.
+- P2.014 | PM | Estimate release timeline | Done when phases, dependencies, and decision gates are visible.
+- P2.015 | PM | Build milestone plan | Done when milestones include discovery, AI design-tool prompt package creation/review, page mockup creation, owner mockup review/rework/approval, design baseline freeze, build, QA, UAT, launch, and hypercare.
+- P2.016 | FIN | Update budget estimate | Done when budget includes contingency and post-launch maintenance.
+- P2.017 | SP | Approve budget range | Done when funding is confirmed.
+- P2.018 | OPS | Define operational model | Done when content, support, moderation, fulfillment, incident, and maintenance owners are named.
+- P2.019 | CX | Define support channels | Done when channels, hours, SLA, routing, and escalation are documented.
+- P2.020 | SALES | Define lead/revenue workflow | Done when lead source, routing, qualification, and CRM status changes are mapped.
+- P2.021 | MKT | Define launch marketing objective | Done when audience, message, channels, and timing are documented.
+- P2.022 | CS | Define content strategy | Done when audience, goals, voice, content types, and governance are documented.
+- P2.023 | SEO | Define organic search strategy | Done when priority topics, pages, and technical requirements are documented.
+- P2.024 | BRAND | Define brand direction | Done when tone, visual direction, and brand constraints are documented.
+- P2.025 | PRIV | Define privacy strategy | Done when data minimization, consent, retention, and user rights approach is documented.
+- P2.026 | SEC | Define security strategy | Done when risk level, control objectives, and testing approach are documented.
+- P2.026A | SEC/SA | Define cybersecurity threat model scope | Done when assets, actors, entry points, trust boundaries, abuse cases, form abuse, upload abuse, auth abuse, SQL injection, XSS, CSRF, SSRF, secrets, and data-protection threats are in scope.
+- P2.026B | SEC/BE/CMS | Define secure coding standard | Done when SQL injection prevention, server-side validation, output escaping, CSRF/nonces, authorization, authentication/session, uploads, logging, and safe error handling rules are documented.
+- P2.026C | SEC/DEVOPS/DBA | Define infrastructure/database protection strategy | Done when TLS, WAF/CDN, firewall, admin restrictions, secrets, encryption, database least privilege, backups, restores, and monitoring controls are documented.
+- P2.026D | SEC/CX/CRM | Define form and abuse-protection strategy | Done when spam/bot controls, rate limits, consent handling, duplicate prevention, email/CRM abuse controls, and escalation paths are documented.
+- P2.026E | PM/SEO/SEC/CX | Create Conversion/SEO/Security Applicability Matrix | Done when custom forms, CTAs, internal links, thank-you pages, breadcrumbs, case studies, FAQs, response-time promises, sticky mobile CTAs, robots.txt, unique titles, meta descriptions, social images, maps/directions, reviews, alt text, local schema, privacy page, analytics, and security controls are classified as compulsory default, contextual mandatory, not applicable, or approved exception.
+- P2.027 | ACC | Define accessibility strategy | Done when target level, testing method, and remediation process are documented.
+- P2.028 | DEVOPS | Define reliability target | Done when availability target, backup target, and recovery target are documented.
+- P2.029 | SRE | Define SLO draft | Done when uptime, latency, error rate, and incident response targets are listed.
+- P2.030 | DATA | Define analytics strategy | Done when event taxonomy, consent mode, dashboards, and ownership are defined.
+- P2.030A | BA | Create PRD traceability matrix | Done when requirements map to evidence, stories, acceptance criteria, source stakeholders, risks, and planned verification.
+- P2.031 | AI | Define AI-assisted delivery boundaries | Done when allowed AI tasks, prohibited AI tasks, human-only decisions, review rules, data restrictions, cost limits, and escalation triggers are documented.
+- P2.031A | PM | Create AI task packet backlog | Done when PRD, SRD, AI design-tool prompt package, page mockup, design, content, build, QA, launch, and operations tasks that AI may execute have task packets or are marked human-only.
+- P2.031B | AI | Create prompt/context library starter | Done when repeatable prompts and context packs exist for discovery synthesis, PRD, SRD, AI design-tool prompt package generation, design review, implementation, QA, launch, and handoff.
+- P2.032 | PM | Run scope alignment workshop | Done when disagreements are logged and decisions are made.
+- P2.032A | ALL | Review PRD draft | Done when product, design, content, engineering, QA, security, privacy, accessibility, analytics, support, operations, and sponsor comments are resolved or logged.
+- P2.033 | PDM | Freeze MVP scope baseline | Done when MVP scope is approved.
+- P2.033A | PDM | Baseline approved PRD | Done when version, date, approvers, requirement IDs, scope decisions, assumptions, dependencies, and change-control status are recorded.
+- P2.033B | PM | Publish PRD baseline | Done when PRD and traceability matrix are linked from the documentation index and delivery board.
+- P2.033C | PM | Apply PRD change control | Done when new, changed, or removed product requirements require impact assessment and approval after baseline.
+- P2.034 | SP | Approve strategy and PRD gate | Done when strategy, PRD, scope, budget, and operating model are approved.
+
+Gate 2 acceptance checklist
+- MVP is tied to user and business outcomes.
+- Approved PRD exists with requirement IDs, owners, priorities, assumptions, dependencies, exclusions, and acceptance criteria.
+- Every MVP story and acceptance criterion traces to a PRD requirement or approved exclusion.
+- Non-MVP and out-of-scope work are explicit.
+- Operations, support, privacy, security, accessibility, SEO, analytics, and content are part of the strategy.
+- AI-assisted delivery boundaries, task packet backlog, supervision matrix, and prompt/context library starter exist if AI will perform work.
+
+========================================================================
+6. PHASE 3 - GOVERNANCE, RISK, COMPLIANCE, AND POLICY DESIGN
+========================================================================
+
+Objective
+- Design the rules that keep the website lawful, secure, accessible, ethical, maintainable, and operational after launch.
+
+Atomic tasks
+- P3.001 | PRIV | Identify applicable privacy laws | Done when jurisdictions and likely obligations are listed.
+- P3.002 | PRIV | Identify applicable accessibility laws/contracts | Done when required standard and enforcement risk are documented.
+- P3.003 | PRIV | Identify payment compliance needs | Done when PCI/payment processor obligations are documented, if payments exist.
+- P3.004 | PRIV | Identify consumer protection requirements | Done when pricing, claims, refunds, subscriptions, disclosures, and contact obligations are listed.
+- P3.005 | PRIV | Identify industry-specific obligations | Done when healthcare, finance, education, children, government, or regulated data requirements are listed.
+- P3.006 | PRIV | Create data inventory | Done when each data element has source, purpose, owner, location, retention, and sharing.
+- P3.007 | PRIV | Create data flow map | Done when personal data movement through forms, APIs, CMS, CRM, analytics, email, payments, support, and vendors is shown.
+- P3.008 | PRIV | Classify data sensitivity | Done when fields are marked public, internal, confidential, personal, sensitive, regulated, or payment-related.
+- P3.009 | PRIV | Define lawful basis or business justification | Done when each personal data use has a documented reason.
+- P3.010 | PRIV | Define data minimization changes | Done when unnecessary fields are removed or justified.
+- P3.011 | PRIV | Define retention schedule | Done when retention period and deletion method exist for each data category.
+- P3.012 | PRIV | Define user rights process | Done when access, deletion, correction, opt-out, consent withdrawal, and complaint workflows are mapped where applicable.
+- P3.013 | PRIV | Draft privacy notice | Done when collection, use, sharing, rights, retention, contact, and update rules are covered.
+- P3.014 | PRIV | Draft cookie/tracking notice | Done when tracking categories, purposes, vendors, and consent choices are documented.
+- P3.015 | DATA | Create tag governance list | Done when each analytics/marketing tag has owner, purpose, trigger, consent category, and data sent.
+- P3.016 | CRM | Define consent synchronization rules | Done when website, CRM, email, ad platforms, and support tools honor the same user choices.
+- P3.017 | PRIV | Draft terms of use | Done when use rules, prohibited behavior, IP, liability, disputes, and contact are covered.
+- P3.018 | PRIV | Draft ecommerce terms, if relevant | Done when checkout, payment, taxes, shipping, returns, refunds, cancellation, and subscriptions are covered.
+- P3.019 | PRIV | Draft accessibility statement | Done when standard, known limitations, contact route, and remediation commitment are documented.
+- P3.020 | SEC | Create security policy baseline | Done when access, MFA, passwords, secrets, patching, logging, vulnerability handling, and incident reporting are covered.
+- P3.021 | SEC | Create secure coding checklist | Done when validation, output encoding, auth, authorization, CSRF, XSS, injection, file uploads, secrets, dependencies, and logging are included.
+- P3.022 | SEC | Create threat model template | Done when assets, actors, entry points, trust boundaries, abuse cases, controls, and residual risk fields exist.
+- P3.023 | SEC | Create vulnerability disclosure process | Done when reporting email/form, triage owner, SLA, and safe harbor stance are decided.
+- P3.024 | SRE | Create incident response process | Done when severity levels, roles, escalation, communication, evidence, and postmortem rules are defined.
+- P3.025 | SRE | Create backup policy | Done when backup frequency, retention, encryption, access, test schedule, and restore owner are defined.
+- P3.026 | SRE | Create disaster recovery policy | Done when RTO, RPO, scenarios, contacts, and recovery order are defined.
+- P3.027 | OPS | Create content governance policy | Done when content owners, review cadence, publishing permissions, archive rules, and approval rules are documented.
+- P3.028 | MOD | Create moderation policy, if relevant | Done when allowed content, prohibited content, enforcement actions, appeals, and escalation are documented.
+- P3.029 | AI | Create AI usage and delivery policy | Done when AI-generated content labeling, human review, data input restrictions, prompt logging, tool permission, model risk, and AI-assisted delivery rules are documented.
+- P3.029A | SEC | Approve AI tool security controls | Done when AI access boundaries, secrets restrictions, repository permissions, browser permissions, logging, retention, and incident handling are accepted.
+- P3.029B | PRIV | Approve AI data handling controls | Done when personal, sensitive, regulated, customer, employee, payment, confidential, and vendor data rules for AI context are accepted.
+- P3.030 | HR | Create onboarding/offboarding checklist | Done when access, training, policy acknowledgment, and removal steps are documented.
+- P3.031 | VENDOR | Create vendor due diligence checklist | Done when data access, security controls, sub-processors, breach notice, SLA, costs, and exit plan are included.
+- P3.032 | FIN | Review vendor contracts | Done when renewal dates, cancellation terms, SLAs, and cost exposure are documented.
+- P3.033 | PM | Add compliance tasks to backlog | Done when compliance work is visible, estimated, owned, and linked to PRD/SRD requirements or amendment needs.
+- P3.034 | SP | Approve governance gate | Done when policies and risk processes are accepted.
+
+Gate 3 acceptance checklist
+- Data collection has purpose, consent/notice, retention, and deletion logic.
+- Security, incident response, backup, accessibility, content, vendor, AI-assisted delivery, and support policies exist.
+- Regulated or high-risk obligations are reviewed by qualified counsel or specialists.
+- Compliance, security, privacy, accessibility, and policy requirements are linked to the PRD/SRD or logged as amendment candidates.
+
+========================================================================
+7. PHASE 4 - INFORMATION ARCHITECTURE, CONTENT, SEO, AND BRAND SYSTEM
+========================================================================
+
+Objective
+- Define what the site says, how it is organized, how users find it, how search engines understand it, and how content will be managed.
+
+Atomic tasks
+- P4.001 | CS | Define messaging hierarchy | Done when primary, secondary, proof, and action messages are documented.
+- P4.002 | BRAND | Confirm brand voice | Done when tone attributes and examples are approved.
+- P4.003 | CS | Create editorial style guide | Done when spelling, capitalization, punctuation, reading level, terminology, inclusive language, and citation rules are documented.
+- P4.004 | CS | Define content types | Done when pages, posts, products, case studies, resources, events, FAQs, legal pages, support articles, and landing pages are listed.
+- P4.004A | CMS | Define WordPress CPT admin model | Done when each project CPT lists custom metadata fields, metabox groups, required/optional field validation, taxonomy links, photo/media upload fields, preview behavior, permissions, and block editor status.
+- P4.004B | CMS | Mark WordPress CPT block editor policy | Done when each project CPT is marked block editor disabled, block editor allowed by exception, or not applicable, with approver and reason.
+- P4.005 | CS | Define content lifecycle | Done when draft, review, approved, published, updated, archived, and retired states are documented.
+- P4.006 | CS | Assign content owners | Done when every content type has a business owner.
+- P4.007 | CS | Create content inventory action plan | Done when each existing item is marked keep, revise, merge, redirect, archive, or delete.
+- P4.008 | CS | Create page brief template | Done when audience, intent, PRD requirement IDs, message, sections, CTA, SEO target, proof, owner, and review date are included.
+- P4.009 | SEO | Research search intent | Done when priority topics are grouped by user intent.
+- P4.010 | SEO | Create keyword/topic map | Done when each target page maps to one primary intent and supporting intents.
+- P4.011 | SEO | Define URL taxonomy | Done when URL structure is short, descriptive, durable, and avoids needless parameters.
+- P4.012 | SEO | Define canonical rules | Done when duplicate and filtered pages have canonical guidance.
+- P4.013 | SEO | Define indexation rules | Done when pages are marked index, noindex, disallow, canonicalize, or consolidate.
+- P4.014 | SEO | Define sitemap requirements | Done when XML sitemap scope and update method are specified.
+- P4.015 | SEO | Define robots.txt requirements | Done when crawler access and sitemap reference are specified.
+- P4.016 | SEO | Define structured data requirements | Done when schema types and page mappings are documented.
+- P4.017 | SEO | Define redirect strategy | Done when current URLs map to new URLs or intentional 410/404 outcomes.
+- P4.018 | SEO | Define metadata rules | Done when title, description, open graph, social image, and canonical rules are documented.
+- P4.018A | SEO/AI | Create SEO compliance implementation plan | Done when the website architecture, sitemap, page list, CPTs, templates, taxonomies, features, business goals, target audience, geography, languages, and constraints are mapped to practical SEO requirements using the SEO crawl/compliance reference.
+- P4.018B | SEO/CMS | Define WordPress SEO output responsibilities | Done when theme, plugin, custom code, editor fields, fallback logic, and locked critical settings are assigned for metadata, schema, canonicals, robots, sitemap, redirects, social previews, and image SEO.
+- P4.018C | SEO/QA | Define SEO score and crawl acceptance criteria | Done when target audit tools, 90%+ score target, browser/rendering coverage, critical blockers, approved exception path, and evidence requirements are documented.
+- P4.018C1 | SEO/CS/CX | Map conversion and SEO page requirements | Done when each page/template has applicable CTA, internal-link, thank-you/success, breadcrumb, FAQ, case-study, review, local, title, description, social image, alt text, robots, schema, privacy, analytics, and exception requirements.
+- P4.018D | SEC/CS/UX-D | Map page and form abuse cases | Done when each page, form, search/filter flow, download, login/account flow, and admin/editor workflow has security/privacy abuse cases, safe-error guidance, consent needs, and protection requirements.
+- P4.018E | SEC/CMS | Define WordPress security content/admin implications | Done when CPTs, admin screens, form builders, media fields, REST/AJAX routes, editor roles, and plugin choices have security controls and review ownership.
+- P4.019 | CS | Draft sitemap | Done when all planned pages are grouped by section.
+- P4.020 | UX-D | Validate sitemap against user journeys | Done when users can complete top tasks without unnecessary depth.
+- P4.021 | PO | Approve sitemap | Done when scope matches approved PRD, MVP, and user goals.
+- P4.022 | UX-D | Define navigation model | Done when primary, secondary, footer, utility, search, breadcrumb, and mobile navigation are specified.
+- P4.023 | ACC | Review navigation accessibility | Done when keyboard, focus, labels, skip links, and landmarks are specified.
+- P4.024 | LOC | Define localization strategy | Done when languages, locales, translation workflow, hreflang, currencies, units, legal variations, and fallback language are documented.
+- P4.025 | CS | Write page briefs | Done when every MVP page has a brief linked to relevant PRD requirement IDs.
+- P4.026 | CW | Draft homepage copy | Done when copy follows approved brief and voice.
+- P4.027 | CW | Draft core service/product page copy | Done when each page has clear user benefit, proof, CTA, and objections addressed.
+- P4.028 | CW | Draft about/trust page copy | Done when credibility, team, history, values, and proof are covered.
+- P4.029 | CW | Draft contact/help copy | Done when users know how and when to reach the organization.
+- P4.030 | CW | Draft form microcopy | Done when field labels, hints, errors, consent text, and success messages exist.
+- P4.031 | CW | Draft transactional email copy | Done when confirmation, password reset, receipt, notification, and failure emails exist if needed.
+- P4.032 | CW | Draft empty states | Done when empty, loading, error, permission, and first-use states have helpful copy.
+- P4.033 | PRIV | Review regulated claims | Done when health, financial, legal, performance, pricing, guarantee, and testimonial claims are approved or revised.
+- P4.034 | ACC | Review plain-language quality | Done when critical instructions are understandable.
+- P4.035 | BRAND | Review brand consistency | Done when copy and assets match approved positioning.
+- P4.036 | CS | Create content production tracker | Done when every content item has owner, status, due date, reviewer, and publish state.
+- P4.037 | UI | Create asset requirements list | Done when images, icons, videos, illustrations, logos, PDFs, and downloads are listed.
+- P4.038 | BRAND | Verify asset rights | Done when licensing, attribution, model releases, and usage rights are documented.
+- P4.039 | ACC | Define alt text requirements | Done when informative, decorative, complex, and functional image rules are documented.
+- P4.040 | CS | Approve content/SEO gate | Done when IA, page briefs, SEO rules, and content workflow are ready for design/build.
+
+Gate 4 acceptance checklist
+- Sitemap, navigation, page briefs, URL strategy, SEO rules, metadata rules, redirect strategy, and content governance exist.
+- Legal, accessibility, brand, and SEO reviews are built into content production.
+- Content and IA artifacts trace to approved PRD scope and requirement IDs.
+
+========================================================================
+8. PHASE 5 - UX, UI, DESIGN SYSTEM, AND PROTOTYPE VALIDATION
+========================================================================
+
+Objective
+- Turn strategy and content into usable, accessible, responsive, testable interfaces.
+
+Atomic tasks
+- P5.001 | UX-D | Define critical user flows | Done when every top task has a flow diagram.
+- P5.002 | UX-D | Define edge-case flows | Done when errors, empty states, denied access, expired sessions, payment failures, and no-results states are mapped.
+- P5.003 | UX-D | Define first-time user flow | Done when onboarding or orientation steps are mapped, if applicable.
+- P5.004 | UX-D | Define returning user flow | Done when saved state, login, account, or repeat visit behavior is mapped, if applicable.
+- P5.005 | UX-D | Define admin/editor flow | Done when content management tasks are mapped.
+- P5.005A | UX-D/AI/PO | Define Design Artifact Strategy | Done when every page/template group has a selected artifact path: Figma Make, Claude Design, JSON low-fidelity specification, JSON high-fidelity specification, coded HTML/CSS mockup, clickable prototype, static screenshot set, or hybrid; low-fidelity wireframing is required, optional, skipped, deferred, or not applicable with rationale and approval.
+- P5.005B | UX-D/AI/PO | Create UX/UI Framework Compliance Matrix | Done when every major gate, part, checklist, quality-bar category, anti-pattern group, advanced best-practice area from the workplace UX/UI framework, relevant Human Design Governance guardrail/principle/warning, relevant UX law, and relevant UX/UI dos/don'ts rule is classified as applied now, applied later, contextual mandatory, not applicable, approved exception, or blocked, with evidence, owner, reviewer, approver, and risk/expiry where applicable.
+- P5.005C | UX-D/UI/BRAND/AI | Create Human Design Governance record and design intent | Done when project-specific design intent, major visual decision rationale, brand specificity goals, content-driven composition logic, systematic consistency rules, responsive recomposition expectations, accessibility-as-design notes, and project-specific AI visual cliches to avoid are documented and approved.
+- P5.006 | AI/UX-D | Generate AI design-tool prompt package | Done when the AI has studied the approved PRD, sitemap/page briefs, applicability matrix, SEO architecture, cybersecurity control matrix, content model, brand assets, WordPress CPT/admin model, forms, integrations, domain workflows, target users, competitor/inspiration references if available, accessibility/privacy requirements, device/browser targets, technical constraints, workplace UX/UI framework sections, Human Design Governance record, anti-AI visual audit source, content resilience/WordPress visual QA source, Human Design Scorecard, UX laws/UI dos-don'ts source, UX/UI Framework Compliance Matrix, and Design Artifact Strategy, then produced a minute-detailed prompt package for Figma Make, Claude Design, JSON specs, coded mockups, prototypes, or an equivalent AI-assisted design execution path.
+- P5.006A | UX-D/AI | Define prompt workflow and deliverables | Done when the prompt tells the selected tool or coding agent how to design/prove every page/template, workflow, action, behavior, state, widget, menu, icon, button, custom/page-specific form, above-the-fold CTA, thank-you/success state, breadcrumb, FAQ, case study, real-review section, map/directions block, sticky mobile CTA when applicable, content block, domain-specific feature, responsive breakpoint, accessibility behavior, SEO need, security/privacy interaction, and selected artifact output.
+- P5.006B | UX-D/PO | Review AI design-tool prompt package | Done when the prompt is approved for design-tool execution, references the UX/UI Framework Compliance Matrix, Human Design Governance record, anti-AI pattern audit expectations, content resilience/WordPress visual QA expectations, and scorecard expectations, or gaps/assumptions are logged with an approved exception.
+- P5.006C | AI/UX-D | Execute selected design artifact path for structure proof | Done when Figma Make, Claude Design, JSON low/high-fidelity specs, coded HTML/CSS mockups, prototypes, screenshots, or a hybrid produce reviewable artifacts from the approved strategy/prompt, and structure, layout, hierarchy, flows, states, and responsive behavior are clear. Separate low-fidelity wireframes are required only when the strategy says they are required.
+- P5.007 | CS | Review design artifacts for content fit | Done when content length, hierarchy, CTAs, realistic copy, empty states, and error/success messages fit the selected artifact path.
+- P5.008 | SEO | Review design artifacts for search needs | Done when headings, internal links, crawlable content, page purpose, metadata opportunities, schema opportunities, and indexability implications are clear.
+- P5.009 | ACC | Review design artifacts for accessibility risks | Done when focus order, labels, landmarks, reading order, contrast risk, touch targets, keyboard behavior, motion risk, and assistive technology assumptions are annotated.
+- P5.010 | PO/WO | Approve structure proof artifacts | Done when wireframes or equivalent JSON/coded/design artifacts satisfy user stories, approved PRD requirements, responsive needs, UX/UI Framework Compliance Matrix rows, Human Design Governance rows, relevant UX laws/UI dos-don'ts rows, and review readiness; skipped low-fidelity wireframes have an approved rationale.
+- P5.010A | UX-D/UI/AI | Run anti-AI visual audit | Done when pattern convergence, pattern budget, brand specificity, swap-the-logo, restraint, component justification, and project-specific anti-pattern risks are checked for every major page/template and unjustified patterns are revised or exception-approved.
+- P5.010B | UX-D/UI/ACC/FE | Run content resilience and WordPress visual completeness review | Done when realistic content variation, secondary templates, WordPress states, component differentiation, and responsive recomposition are reviewed with evidence or approved exceptions.
+- P5.010C | UX-D/UI/PO | Score design baseline with Human Design Scorecard | Done when major pages/templates have no hard failures and score 90+ or weak areas are revised before final acceptance; scores below 90 require documented remediation or accountable exception.
+- P5.011 | UI | Define visual design direction | Done when moodboard or style tile is approved.
+- P5.012 | UI | Define color palette | Done when semantic usage and contrast targets are documented.
+- P5.013 | UI | Define typography system | Done when font choices, scale, line height, fallback, and licensing are documented.
+- P5.014 | UI | Define spacing system | Done when spacing scale and layout grid are documented.
+- P5.015 | DS | Define design tokens | Done when colors, typography, spacing, radius, elevation, motion, and breakpoints are named.
+- P5.016 | DS | Define component inventory | Done when buttons, links, inputs, cards, nav, modals, tables, alerts, accordions, tabs, toasts, banners, and media components are listed.
+- P5.017 | ACC | Define accessibility annotations | Done when components include labels, roles, keyboard behavior, error handling, and focus requirements.
+- P5.018 | UI | Design homepage desktop | Done when approved content and components are applied.
+- P5.019 | UI | Design homepage mobile | Done when mobile hierarchy and interactions are complete.
+- P5.020 | UI | Design listing/index page | Done when filters, sorting, pagination, loading, empty, and error states exist if relevant.
+- P5.021 | UI | Design detail page | Done when content, media, CTA, related links, and trust elements exist.
+- P5.022 | UI | Design form page | Done when fields, validation, consent, error, success, and abandonment states exist.
+- P5.023 | UI | Design account/auth screens | Done when login, registration, password reset, MFA, session timeout, and account settings exist if relevant.
+- P5.024 | UI | Design checkout/payment flow | Done when cart, payment, confirmation, failure, refund/cancel, and receipt states exist if relevant.
+- P5.025 | UI | Design admin/editor interface | Done when content authors can complete key tasks if custom admin is needed.
+- P5.026 | UI | Design legal/support pages | Done when long-form readability and navigation are considered.
+- P5.027 | UI | Design error pages | Done when 404, 403, 500, maintenance, and offline states are useful.
+- P5.028 | UI | Design notification system | Done when email, in-app, toast, alert, and SMS messages are consistent if relevant.
+- P5.028I | SEO | Review page mockups for SEO structure | Done when approved mockups preserve crawlable content, heading hierarchy, internal links, content depth, image opportunities, mobile rendering, and search-intent alignment.
+- P5.029 | DS | Document component usage | Done when variants, states, do/don't examples, and accessibility rules are documented.
+- P5.030 | UX-D/AI | Build AI-generated clickable prototype where needed | Done when top or risky user flows can be tested end to end from the approved Design Artifact Strategy, AI design-tool prompt package, and mockup/design baseline, or when the strategy records why a clickable prototype is not required.
+- P5.031 | UX-R | Create usability test plan | Done when tasks, participants, success criteria, and note-taking plan are ready.
+- P5.032 | UX-R | Run usability tests | Done when participants attempt top tasks.
+- P5.033 | UX-R | Synthesize usability findings | Done when issues are ranked by severity and evidence.
+- P5.034 | UX-D | Revise prototype from findings | Done when high-severity issues are fixed or consciously accepted.
+- P5.035 | ACC | Perform design accessibility review | Done when contrast, focus, keyboard, target size, motion, language, errors, and readability are accepted.
+- P5.036 | FE | Review design feasibility | Done when engineering risks and alternatives are documented.
+- P5.037 | DEVOPS | Review performance implications | Done when heavy fonts, video, animation, third-party scripts, and image strategy are assessed.
+- P5.038 | PO | Approve final design | Done when MVP designs are accepted for build, UX/UI Framework Compliance Matrix blockers, Human Design Governance blockers, anti-AI visual audit findings, Human Design Scorecard findings, content resilience/WordPress visual completeness blockers, and relevant UX laws/UI dos/don'ts blockers are resolved or exception-approved, and unresolved PRD impacts are logged.
+- P5.039 | PM | Freeze design baseline | Done when change-control applies to design changes and the UX/UI Framework Compliance Matrix status is frozen for the approved baseline.
+- P5.040 | DS | Prepare design handoff | Done when specs, tokens, assets, interactions, PRD links, UX/UI Framework Compliance Matrix evidence, and acceptance notes are available.
+
+Gate 5 acceptance checklist
+- Design Artifact Strategy, Human Design Governance record, UX/UI Framework Compliance Matrix, UX laws/UI dos-don'ts coverage, anti-AI visual audit, Human Design Scorecard, content resilience/WordPress visual completeness review, and AI design-tool prompt package are approved and map every page/template, workflow, action, behavior, state, widget, menu, domain-specific feature, component, responsive breakpoint, SEO/security/accessibility/privacy requirement, WordPress/CPT/admin need, selected artifact path, and low-fidelity wireframe decision to generated design outputs.
+- Critical flows have responsive designs, content, states, accessibility requirements, and engineering feasibility review.
+- Design system is documented enough to prevent inconsistent implementation.
+- Approved designs trace to PRD requirements and identify any product requirement gaps before SRD finalization.
+
+========================================================================
+9. PHASE 6 - TECHNICAL ARCHITECTURE, PLATFORM, AND ENVIRONMENT DESIGN
+========================================================================
+
+Objective
+- Choose and design the technical foundation and SRD so the site can be built, secured, tested, deployed, observed, backed up, and operated.
+
+Atomic tasks
+- P6.001 | DEVOPS | List technical constraints | Done when budget, skills, hosting, compliance, traffic, timeline, and vendor constraints are documented.
+- P6.001A | SA | Review PRD baseline for technical implications | Done when product requirements that affect architecture, data, integrations, security, privacy, accessibility, performance, reliability, and operations are identified.
+- P6.001B | SA | Draft the software requirements document | Done when approved PRD requirements, Design Artifact Strategy implications, UX/UI Framework Compliance Matrix implications, AI design-tool prompt package implications, and owner-approved page mockup/template implications are translated into functional requirements, non-functional requirements, system boundaries, WordPress template/CPT/content-model requirements, roles/permissions, data rules, API/integration behavior, states, errors, logging, and operational requirements.
+- P6.001D | SEO/SA | Add SEO requirements to SRD/SRS | Done when crawlability, indexability, metadata, schema, sitemap, robots, canonicals, redirects, internal links, image SEO, Core Web Vitals, browser-rendered output, and monitoring requirements have verification methods.
+- P6.001E | SEC/SA | Add cybersecurity requirements to SRD/SRS | Done when SQL injection prevention, input validation, output escaping, CSRF/nonces, authentication, authorization, sessions, uploads, encryption, secrets, forms, web/network protection, database protection, logging, monitoring, backup/restore, and vulnerability testing requirements have verification methods.
+- P6.001C | BA | Resolve requirement ambiguity before architecture decisions | Done when unclear PRD items have owner decisions, assumptions, or accepted risks before they drive technical design.
+- P6.002 | FE | Propose frontend architecture | Done when rendering model, framework, routing, state, forms, assets, and accessibility approach are documented.
+- P6.003 | BE | Propose backend architecture | Done when language, framework, APIs, auth, jobs, integrations, and business logic approach are documented.
+- P6.004 | CMS | Propose CMS architecture | Done when content types, editor roles, workflows, plugins/modules, preview, deployment, and for WordPress project CPTs, custom metabox/admin-field UI and block-editor-disable strategy are documented.
+- P6.005 | DEVOPS | Propose hosting architecture | Done when cloud/host, regions, CDN, storage, compute, network, and backups are documented.
+- P6.006 | DBA | Propose database architecture | Done when database engine, schema strategy, migrations, indexing, backups, and retention are documented.
+- P6.007 | DATA | Propose analytics architecture | Done when client/server events, tag manager, consent, warehouse, dashboards, and data quality are documented.
+- P6.008 | SEC | Propose security architecture | Done when trust boundaries, controls, auth, access, secrets, logging, encryption, and testing are documented.
+- P6.008A | SEC/SA | Create cybersecurity threat model and control matrix | Done when assets, actors, entry points, trust boundaries, abuse cases, controls, owners, verification methods, and residual risks are documented.
+- P6.008A1 | SEC/SA/BE | Map security applicability controls | Done when API keys, Git secrets, row-level security/equivalent row ownership, sensitive-data encryption, server-side auth, record-access logging, field-tampering protection, secure session cookies, password hashing, login rate limits, bot protection, parameterized queries, input validation, output escaping, upload restrictions, trimmed API responses, security headers, HTTPS, and dependency scanning are mapped to implementation and verification methods.
+- P6.008B | SEC/BE/CMS | Define coding-phase security gates | Done when no backend, CMS, CPT, REST/AJAX, form, upload, or integration ticket can close without applicable validation, escaping, nonce/CSRF, authorization, prepared query, secret, logging, and test evidence.
+- P6.008C | SEC/DEVOPS/DBA | Define web, network, database, and encryption architecture | Done when TLS, security headers, WAF/CDN/firewall, admin restrictions, database least privilege, backup encryption, restore tests, key/secret storage, and monitoring are specified.
+- P6.009 | PRIV | Review privacy impact of architecture | Done when data minimization and cross-border/vendor concerns are captured.
+- P6.010 | ACC | Review accessibility implementation approach | Done when semantic HTML, component behavior, testing tools, and manual testing are planned.
+- P6.011 | SRE | Define observability architecture | Done when metrics, logs, traces, synthetics, uptime checks, alerts, and dashboards are documented.
+- P6.012 | SRE | Define backup architecture | Done when backups include database, media, CMS config, secrets references, and infrastructure config.
+- P6.013 | SRE | Define rollback architecture | Done when code, database, content, DNS, CDN, and feature flag rollback options are documented.
+- P6.014 | DEVOPS | Define environment strategy | Done when local, development, test, staging, UAT, production, and sandbox rules are documented.
+- P6.015 | DEVOPS | Define domain strategy | Done when apex, www, subdomains, staging domains, redirects, and ownership are documented.
+- P6.016 | DEVOPS | Define SSL/TLS certificate strategy | Done when certificate provider, renewal, and monitoring are documented.
+- P6.017 | SEC | Define authentication model | Done when login methods, MFA, session rules, password policy, SSO, and recovery are documented.
+- P6.018 | SEC | Define authorization model | Done when roles, permissions, default deny rules, and admin access are documented.
+- P6.019 | BE | Define API style | Done when REST, GraphQL, RPC, webhooks, versioning, pagination, error format, and rate limits are documented.
+- P6.020 | BE | Define integration strategy | Done when CRM, email, payment, search, maps, shipping, tax, ERP, support, and marketing integrations are documented.
+- P6.021 | BE | Define file upload strategy | Done when allowed types, size limits, scanning, storage, naming, CDN, and access rules are documented.
+- P6.022 | FE | Define asset optimization strategy | Done when images, video, fonts, icons, CSS, JS, lazy loading, and caching are documented.
+- P6.023 | FE | Define performance budget | Done when LCP, INP, CLS, page weight, script budget, image budget, and third-party budget are documented.
+- P6.024 | SEO | Define technical SEO architecture | Done when SSR/prerendering, metadata, schema, sitemap, robots, canonicals, redirects, and pagination rules are documented.
+- P6.025 | DATA | Define event taxonomy | Done when event names, properties, triggers, destinations, consent category, and owner are documented.
+- P6.026 | QA | Define test architecture | Done when unit, integration, end-to-end, visual, accessibility, performance, security, and UAT coverage are planned against SRD requirements.
+- P6.026A | QA | Define SRD verification method | Done when each SRD requirement has verification by review, test, demo, analysis, monitoring, or risk acceptance.
+- P6.027 | AUTO | Define test data strategy | Done when seed data, anonymized data, factories, reset rules, and PII restrictions are documented.
+- P6.028 | DEVOPS | Define CI/CD architecture | Done when build, lint, test, scan, deploy, rollback, approvals, and environment promotion are documented.
+- P6.029 | SEC | Define secret management approach | Done when secrets storage, rotation, access, audit, and environment separation are documented.
+- P6.029A | SEC/DBA/PRIV | Define encryption and sensitive-data storage approach | Done when TLS, at-rest encryption needs, backup encryption, password hashing, API token storage, key rotation, log masking, and accepted exceptions are documented.
+- P6.030 | SEC | Define dependency management approach | Done when dependency scanning, updates, lockfiles, approvals, and emergency patching are documented.
+- P6.031 | SRE | Define rate limiting and abuse controls | Done when bot, spam, scraping, login abuse, form abuse, and API abuse controls are documented.
+- P6.032 | AI | Define AI architecture controls, if relevant | Done when model provider, data sent, prompts, logs, fallback, monitoring, and human review are documented.
+- P6.032A | SA | Create PRD-to-SRD traceability matrix | Done when every approved PRD requirement maps to SRD requirements, the AI design-tool prompt package, approved page mockups, ADRs, design/content artifacts, backlog items, or accepted exclusions.
+- P6.032B | AI | Define AI-assisted engineering controls | Done when code generation, code review, dependency use, test generation, documentation generation, browser automation, and evidence packaging rules are documented.
+- P6.032C | SEC | Define AI-generated code security review rules | Done when AI-authored code requires secret scanning, dependency scanning, static analysis, permission review, and human security review for sensitive areas.
+- P6.033 | PM | Create architecture decision records | Done when major platform decisions include context, decision, alternatives, and consequences.
+- P6.033A | ALL | Review SRD draft | Done when frontend, backend, CMS, DevOps, SRE, DBA, QA, security, privacy, accessibility, data, product, and operations comments are resolved or logged.
+- P6.033B | SA | Baseline approved SRD | Done when version, date, approvers, requirement IDs, verification method, assumptions, and change-control status are recorded.
+- P6.033C | PM | Apply SRD change control | Done when changes after baseline require impact assessment across architecture, design, backlog, tests, budget, timeline, and launch risk.
+- P6.034 | SP | Approve technical architecture and SRD gate | Done when architecture, SRD, budget, risk, and operations implications are accepted.
+
+Gate 6 acceptance checklist
+- Approved SRD exists with functional requirements, non-functional requirements, verification methods, owners, assumptions, exclusions, and references to the AI design-tool prompt package and approved page mockup/design baseline.
+- PRD-to-SRD traceability is complete or exceptions are formally approved.
+- Architecture covers performance, SEO, security, privacy, accessibility, deployment, backup, rollback, monitoring, and operations.
+- Major technology decisions have documented tradeoffs.
+- AI-assisted engineering controls and security review rules are approved if AI will produce code, configuration, tests, or deployment artifacts.
+
+========================================================================
+10. PHASE 7 - DELIVERY SETUP, TOOLING, REPOSITORIES, AND ACCESS
+========================================================================
+
+Objective
+- Prepare the working system where the team can safely design, build, test, deploy, and document.
+
+Atomic tasks
+- P7.001 | PM | Create delivery board | Done when backlog columns and workflow rules exist.
+- P7.002 | PM | Create sprint/release cadence | Done when planning, review, retrospective, and release dates are scheduled.
+- P7.003 | PM | Create definition of ready | Done when a ticket must have owner, context, PRD/SRD requirement IDs, acceptance criteria, design/content links, dependencies, and test notes before build.
+- P7.004 | PM | Create definition of done | Done when code, review, tests, accessibility, documentation, QA, requirements traceability, AI execution posture checks, and acceptance rules are defined.
+- P7.005 | DEVOPS | Create source code repository | Done when repository exists with correct access.
+- P7.006 | DEVOPS | Define branch strategy | Done when main, develop/release, feature, hotfix, and protection rules are documented.
+- P7.007 | DEVOPS | Enable branch protections | Done when direct production branch pushes are restricted.
+- P7.008 | DEVOPS | Create README | Done when project purpose, setup, commands, environments, and links are documented.
+- P7.009 | DEVOPS | Create local development setup | Done when a new engineer can run the project from documentation.
+- P7.010 | DEVOPS | Create environment variable template | Done when required variables are listed without real secrets.
+- P7.011 | SEC | Configure secret storage | Done when secrets are stored outside code and access is restricted.
+- P7.012 | DEVOPS | Create development environment | Done when developers can deploy/test non-production code.
+- P7.013 | DEVOPS | Create staging environment | Done when staging mirrors production enough for release validation.
+- P7.014 | DEVOPS | Block staging from indexing | Done when staging uses authentication and/or noindex/disallow safeguards.
+- P7.015 | DEVOPS | Create production environment shell | Done when production infrastructure is provisioned but not live.
+- P7.016 | DEVOPS | Configure CI pipeline | Done when lint, tests, build, and scans run automatically.
+- P7.017 | QA | Configure test management workspace | Done when test cases and defects can be tracked.
+- P7.018 | AUTO | Configure automated test framework | Done when a sample test runs in CI.
+- P7.019 | FE | Configure linting and formatting | Done when style checks run consistently.
+- P7.020 | BE | Configure backend linting/static checks | Done when code quality checks run consistently.
+- P7.021 | SEC | Configure dependency scanning | Done when vulnerable dependencies are flagged.
+- P7.022 | SEC | Configure secret scanning | Done when accidental secret commits are flagged.
+- P7.022A | SEC | Configure static application security testing | Done when code patterns for injection, XSS, authz, insecure crypto, unsafe deserialization, file upload, and secrets misuse are flagged where tooling supports it.
+- P7.022B | SEC/QA | Configure dynamic security testing | Done when staging can be tested for OWASP-class web vulnerabilities without harming production or real users.
+- P7.022C | SEC/DEVOPS | Configure security header and TLS checks | Done when CI, staging, or launch checks verify headers, certificates, HSTS policy where appropriate, and public debug exposure.
+- P7.022D | SEC/DBA/SRE | Configure backup and database security checks | Done when backup encryption/retention, restore test cadence, database least privilege, and migration rollback checks are documented.
+- P7.023 | DEVOPS | Configure artifact storage | Done when builds can be stored and traced.
+- P7.024 | SRE | Configure log collection | Done when app and infrastructure logs reach a central location.
+- P7.025 | SRE | Configure uptime monitoring | Done when synthetic checks can detect outage.
+- P7.026 | DATA | Configure analytics development property | Done when test analytics do not pollute production data.
+- P7.027 | CRM | Configure CRM sandbox | Done when test leads do not pollute production CRM.
+- P7.028 | FIN | Configure payment sandbox | Done when test payments use sandbox credentials.
+- P7.029 | CMS | Configure CMS roles | Done when author, editor, admin, developer, and viewer roles are separated.
+- P7.030 | HR | Create access request process | Done when new access requires owner approval.
+- P7.031 | HR | Create access removal process | Done when offboarding removes repository, CMS, hosting, analytics, CRM, email, and vendor access.
+- P7.032 | PM | Create documentation index | Done when links to all project artifacts, including PRD, SRD, traceability matrices, and approvals, are in one place.
+- P7.032A | AI | Create AI run log | Done when AI task execution, prompts/context, model/tool versions where known, files changed, checks run, evidence, reviewers, approvals, costs, and open risks can be recorded.
+- P7.032B | AI | Publish AI task packet library | Done when reusable task packet templates exist for PRD, SRD, design, frontend, backend, CMS, QA, launch, hypercare, and operations work.
+- P7.032C | AI | Publish model/tool registry | Done when approved AI tools, intended use, data limits, permissions, owners, review cadence, and fallback tools are documented.
+- P7.032D | SEC | Configure AI access controls | Done when AI tooling cannot access secrets, production, payments, customer data, email sends, DNS, or destructive operations without approved human action.
+- P7.032E | PM | Link AI task packets to delivery board | Done when AI-executable tickets reference task packet, accountable human owner, reviewer, approver, and required evidence.
+- P7.032F | QA | Define AI-generated work review workflow | Done when AI output requires self-review, independent review, automated checks, human acceptance, and defect tracking.
+- P7.033 | ALL | Verify tool access | Done when every active team member confirms required access.
+- P7.034 | PM | Approve delivery setup gate | Done when build work can start without access/tooling blockers.
+
+Gate 7 acceptance checklist
+- Team can work in a controlled environment.
+- Access, CI/CD, secrets, staging, QA, analytics, and documentation are ready.
+- PRD/SRD baselines and traceability links are visible from the delivery board and documentation index.
+- AI run log, task packet library, model/tool registry, permission matrix, and review workflow are ready if AI will perform project work.
+
+========================================================================
+11. PHASE 8 - IMPLEMENTATION: FRONTEND
+========================================================================
+
+Objective
+- Build the user-facing interface with accessibility, responsiveness, performance, SEO, analytics, and maintainability built in.
+
+Atomic tasks
+- P8F.001 | FE | Create frontend project structure | Done when folders for components, pages/routes, styles, utilities, tests, and assets exist.
+- P8F.002 | FE | Implement design tokens | Done when colors, typography, spacing, breakpoints, and motion tokens are usable in code.
+- P8F.003 | FE | Implement global layout shell | Done when header, main, footer, skip link, landmarks, and responsive container exist.
+- P8F.004 | FE | Implement typography styles | Done when headings, body, lists, quotes, captions, and links match design and accessibility rules.
+- P8F.005 | FE | Implement button component | Done when variants, states, disabled behavior, loading behavior, and keyboard behavior work.
+- P8F.006 | FE | Implement link component | Done when internal, external, download, and new-window behaviors are clear.
+- P8F.007 | FE | Implement form input component | Done when label, hint, error, required, disabled, and autocomplete support exist.
+- P8F.008 | FE | Implement select/radio/checkbox components | Done when grouped labels, errors, keyboard, and focus states work.
+- P8F.009 | FE | Implement textarea component | Done when label, hint, limit, error, and resize behavior work.
+- P8F.010 | FE | Implement validation message pattern | Done when errors are associated with fields and announced to assistive tech.
+- P8F.010A | FE/SEC | Implement safe frontend form behavior | Done when client validation improves UX without replacing server validation, errors do not leak sensitive details, autocomplete is appropriate, consent states are explicit, and spam/rate-limit UX is supported.
+- P8F.010B | FE/SEC | Keep frontend CSP-compatible | Done when scripts, styles, images, frames, and third-party embeds can work under the approved Content Security Policy or approved exceptions are documented.
+- P8F.011 | FE | Implement navigation component | Done when desktop and mobile navigation work by keyboard and screen reader.
+- P8F.012 | FE | Implement breadcrumb component | Done when hierarchy and structured markup are correct.
+- P8F.013 | FE | Implement card component | Done when clickable regions, headings, images, and descriptions are accessible.
+- P8F.014 | FE | Implement accordion component | Done when expand/collapse state and keyboard behavior work.
+- P8F.015 | FE | Implement modal/dialog component | Done when focus trap, escape, labels, and return focus work.
+- P8F.016 | FE | Implement tabs component | Done when keyboard behavior follows expected pattern.
+- P8F.017 | FE | Implement table component | Done when captions, headers, sorting, responsive behavior, and empty state work.
+- P8F.018 | FE | Implement alert/toast component | Done when severity, announcement, close behavior, and persistence rules work.
+- P8F.019 | FE | Implement image component | Done when responsive sizes, lazy loading, width/height, alt text, and fallbacks work.
+- P8F.020 | FE | Implement video/embed component | Done when captions, transcripts, privacy mode, loading, and consent rules are supported.
+- P8F.021 | FE | Implement homepage | Done when content, design, SEO metadata, analytics, responsiveness, and accessibility pass review.
+- P8F.021A | FE/SEO | Implement rendered SEO output in frontend templates | Done when every user-facing template emits crawlable headings/content, title/meta/canonical/robots hooks, breadcrumbs/internal links, social metadata hooks, image attributes, and schema hooks as specified.
+- P8F.022 | FE | Implement listing/index page | Done when pagination/filter/search/sort states work if required.
+- P8F.023 | FE | Implement detail page template | Done when dynamic content, related items, metadata, and schema hooks work.
+- P8F.024 | FE | Implement contact/form page | Done when validation, submission, error, success, consent, and spam handling work.
+- P8F.025 | FE | Implement legal page template | Done when long-form content is readable and anchor navigation works.
+- P8F.026 | FE | Implement error pages | Done when 404, 403, 500, offline, and maintenance pages are helpful and branded.
+- P8F.027 | FE | Implement auth pages | Done when login, register, reset, MFA, and session states work if required.
+- P8F.028 | FE | Implement account pages | Done when profile, preferences, security, privacy, and deletion/export options work if required.
+- P8F.029 | FE | Implement checkout UI | Done when cart, address, payment, review, confirmation, and failure states work if required.
+- P8F.030 | FE | Implement search UI | Done when query, filters, no results, suggestions, pagination, and loading states work if required.
+- P8F.031 | FE | Implement cookie/consent UI | Done when categories, accept, reject, customize, save, and revisit flows work.
+- P8F.032 | FE | Implement analytics hooks | Done when approved events fire only under correct consent rules.
+- P8F.033 | FE | Implement SEO metadata generation | Done when title, description, canonical, robots, open graph, and structured data hooks exist.
+- P8F.034 | FE | Implement internationalization hooks | Done when locale strings, direction, dates, numbers, currencies, and language attributes work if required.
+- P8F.035 | FE | Optimize fonts | Done when fonts are licensed, subset, preloaded only when needed, and have acceptable fallback.
+- P8F.036 | FE | Optimize images | Done when images use modern formats, correct dimensions, compression, and responsive loading.
+- P8F.037 | FE | Minimize client JavaScript | Done when non-critical code is split or deferred.
+- P8F.038 | FE | Add loading states | Done when slow network states are usable.
+- P8F.039 | FE | Add offline/degraded states | Done when required flows fail gracefully.
+- P8F.040 | FE | Add frontend unit tests | Done when key components have behavior tests.
+- P8F.041 | FE | Add frontend accessibility tests | Done when automated checks run for key pages/components.
+- P8F.042 | FE | Add visual regression tests | Done when key screens can detect unexpected UI changes, if tool is used.
+- P8F.042A | FE/UX-D/UI | Run rendered visual QA against Human Design Governance | Done when rendered desktop/tablet/mobile/high-zoom output where feasible is compared against approved design intent, design system, anti-AI visual audit, Human Design Scorecard, content resilience cases, WordPress visual completeness scope, and approved mockups; defects are fixed or exception-approved.
+- P8F.043 | FE | Document frontend patterns | Done when future developers know component usage rules.
+- P8F.043A | AI | Record AI frontend work evidence | Done when AI-assisted frontend changes link to task packet, requirement IDs, changed files, screenshots where useful, checks run, review notes, and approval.
+
+Frontend acceptance checklist
+- UI is responsive, accessible, performant, measurable, and aligned with approved design/content.
+- Rendered UI preserves Human Design Governance intent, avoids unjustified AI pattern convergence, passes content resilience and WordPress visual completeness checks, and has visual QA evidence where tools are available.
+- Implemented UI maps to approved PRD/SRD requirements or documented exclusions.
+- AI-generated frontend work has run-log evidence and human approval if AI delivery was used.
+- Critical UI states are implemented: loading, empty, error, success, disabled, permission denied, expired, offline.
+
+========================================================================
+12. PHASE 9 - IMPLEMENTATION: BACKEND, CMS, DATA, AND INTEGRATIONS
+========================================================================
+
+Objective
+- Build durable server-side functionality, content management, data storage, business logic, APIs, integrations, and operational controls.
+
+Backend atomic tasks
+- P8B.001 | BE | Create backend project structure | Done when modules for routes/controllers, services, models, jobs, config, tests, and integrations exist.
+- P8B.002 | BE | Implement configuration loader | Done when environment-specific config is validated at startup.
+- P8B.003 | BE | Implement health check endpoint | Done when uptime monitor can verify service health.
+- P8B.004 | BE | Implement readiness endpoint | Done when deploy system can verify dependencies before traffic.
+- P8B.005 | BE | Implement error handling | Done when user-safe errors and internal logs are separated.
+- P8B.006 | BE | Implement request logging | Done when method, route, status, latency, request ID, and user/session context are logged safely.
+- P8B.007 | SEC | Implement security headers | Done when headers meet approved policy and do not break required flows.
+- P8B.008 | SEC | Implement input validation | Done when every external input is validated at server boundary.
+- P8B.008A | BE/SEC/DBA | Implement SQL injection prevention | Done when all database access uses prepared statements/parameterized queries, `$wpdb->prepare()` for WordPress custom SQL, allowlisted dynamic identifiers, and no untrusted SQL concatenation.
+- P8B.008B | BE/SEC | Implement request size and parser limits | Done when forms, JSON, files, imports, query strings, and API payloads cannot exhaust resources or bypass validation.
+- P8B.008C | BE/CMS/SEC | Implement WordPress sanitization and escaping rules | Done when `sanitize_*`, `wp_kses*`, `esc_html`, `esc_attr`, `esc_url`, `esc_js`, and context-appropriate escaping are used where applicable.
+- P8B.009 | SEC | Implement output encoding/sanitization | Done when stored or reflected content cannot create script injection.
+- P8B.010 | SEC | Implement CSRF protection | Done when state-changing browser requests are protected where applicable.
+- P8B.010A | BE/CMS/SEC | Implement WordPress nonce verification | Done when admin forms, CPT saves, AJAX actions, REST actions where appropriate, settings changes, imports, exports, and destructive actions verify nonces and request method.
+- P8B.011 | SEC | Implement rate limiting | Done when login, forms, APIs, and expensive endpoints have limits.
+- P8B.012 | SEC | Implement bot/spam controls | Done when forms and abuse-prone endpoints have layered protection.
+- P8B.013 | BE | Implement authentication | Done when login/session/token flow works according to spec.
+- P8B.014 | SEC | Implement MFA | Done when required users can enroll, verify, recover, and disable MFA under approved rules.
+- P8B.015 | BE | Implement password reset | Done when reset links are time-limited, single-use, and audited.
+- P8B.016 | BE | Implement session management | Done when expiration, rotation, logout, and invalidation work.
+- P8B.017 | SEC | Implement authorization checks | Done when every protected action checks permission server-side.
+- P8B.017A | BE/CMS/SEC | Implement WordPress capability checks | Done when every admin screen, CPT save, media action, REST/AJAX endpoint, export/delete action, and settings change checks `current_user_can()` or equivalent capability rules.
+- P8B.018 | BE | Implement user profile model | Done when required user attributes are stored with minimization.
+- P8B.019 | PRIV | Implement privacy preference storage | Done when consent and communication choices are stored and auditable.
+- P8B.020 | BE | Implement data export endpoint/process | Done when applicable users can request or receive their data.
+- P8B.021 | BE | Implement data deletion/anonymization process | Done when applicable user data can be deleted or anonymized safely.
+- P8B.022 | DBA | Create database schema | Done when tables/collections, keys, constraints, indexes, and migrations are defined.
+- P8B.022A | DBA/SEC | Implement database least privilege | Done when application credentials can perform only required operations and administrative credentials are excluded from application runtime.
+- P8B.022B | DBA/SEC/PRIV | Implement sensitive data protection | Done when sensitive fields, credentials, tokens, backups, exports, logs, and retention/deletion rules follow encryption, hashing, masking, or approved exception decisions.
+- P8B.023 | DBA | Create migration process | Done when schema changes can be applied and rolled back safely where possible.
+- P8B.024 | DBA | Implement database indexes | Done when query plans meet performance needs.
+- P8B.025 | BE | Implement API endpoints | Done when endpoints satisfy approved contracts.
+- P8B.026 | BE | Implement API versioning | Done when breaking changes have a path.
+- P8B.027 | BE | Implement API pagination | Done when large lists cannot overload server or client.
+- P8B.028 | BE | Implement API error format | Done when errors are consistent and actionable.
+- P8B.029 | BE | Implement webhook receiver | Done when signatures, retries, idempotency, and logs work if webhooks are used.
+- P8B.030 | BE | Implement background job queue | Done when slow tasks run outside request cycle if needed.
+- P8B.031 | BE | Implement email sending | Done when templates, retries, unsubscribe/consent, and failure logs work.
+- P8B.032 | BE | Implement file upload processing | Done when type checks, size limits, malware scanning, storage, and access controls work.
+- P8B.032A | BE/CMS/SEC | Harden file upload execution risk | Done when upload directories cannot execute scripts, filenames are normalized or randomized where appropriate, private files are access-controlled, and media URLs do not expose sensitive files.
+- P8B.033 | BE | Implement search indexing | Done when content changes update search index if search is used.
+- P8B.034 | BE | Implement cache strategy | Done when cache keys, invalidation, TTLs, and bypass rules are documented and working.
+- P8B.035 | SEC | Implement audit logging | Done when admin, auth, permission, data export, deletion, payment, and critical settings events are logged.
+- P8B.036 | BE | Implement admin tools | Done when authorized staff can manage required content/users/orders/settings without developer intervention.
+- P8B.037 | BE | Implement feature flags | Done when features can be enabled, disabled, and targeted without redeploying if needed.
+- P8B.038 | BE | Implement kill switches | Done when risky integrations/features can be disabled quickly.
+- P8B.039 | BE | Add backend unit tests | Done when core services and business rules are covered.
+- P8B.040 | BE | Add API integration tests | Done when API contracts are tested.
+- P8B.041 | SEC | Add security regression tests | Done when auth, authorization, validation, and abuse controls have tests.
+- P8B.041B | SEC/AI | Complete coding-phase security checklist | Done when SQL injection, XSS, CSRF, authz, secrets, encryption, uploads, forms, database, logging, and dependency checks are attached to the task packet before code review.
+- P8B.041A | AI | Record AI backend work evidence | Done when AI-assisted backend, database, API, security, or integration changes link to task packet, requirement IDs, changed files, checks run, review notes, and approval.
+
+CMS atomic tasks
+- P8C.001 | CMS | Configure CMS core | Done when CMS runs in development and staging.
+- P8C.002 | CMS | Configure CMS roles | Done when least-privilege roles exist.
+- P8C.003 | CMS | Configure content types | Done when all approved content models exist and WordPress project CPT registrations prevent the block editor unless an approved exception exists.
+- P8C.004 | CMS | Configure fields | Done when field labels, help text, validation, required flags, defaults, and custom metadata storage rules exist.
+- P8C.004A | CMS | Disable WordPress block editor for project CPTs | Done when each new project CPT opens custom admin metadata fields/metaboxes instead of Gutenberg/block builder, with `show_in_rest`, `supports`, and `use_block_editor_for_post_type` behavior verified as needed.
+- P8C.004B | CMS | Implement WordPress CPT metabox UI | Done when custom metaboxes for all required CPT fields save, validate, sanitize, escape, display errors, and respect permissions/nonces.
+- P8C.004C | CMS | Implement WordPress CPT photo upload fields | Done when CPTs that need images use WordPress media uploader fields with preview, replace/remove controls, attachment IDs, alt text/caption guidance, validation, and fallback behavior.
+- P8C.004G | CMS/SEC | Secure WordPress CPT save handlers | Done when CPT saves check nonce, capability, autosave/revision state, allowed uploads, sanitization, escaping, prepared queries where custom SQL exists, and audit logging for sensitive changes.
+- P8C.004D | QA | Verify WordPress CPT editor route | Done when opening add/edit screens for each project CPT never shows the block builder unless an approved exception is recorded.
+- P8C.004E | CMS/SEO | Implement WordPress SEO field and fallback model | Done when pages, posts, CPTs, archives, and taxonomies have approved editable/fallback metadata, social image, schema, canonical, robots, and breadcrumb behavior.
+- P8C.004F | CMS/SEO | Implement WordPress sitemap, robots, canonical, and redirect controls | Done when XML sitemap inclusion, noindex rules, canonical rules, robots.txt, redirect mappings, search/filter URL rules, and low-value archive handling match the SEO architecture plan.
+- P8C.005 | CMS | Configure reusable blocks/components | Done when editors can assemble approved page sections where the block editor is intentionally approved for pages or non-CPT content.
+- P8C.006 | CMS | Configure media library | Done when images, documents, alt text, captions, metadata, and folders/taxonomy work.
+- P8C.007 | CMS | Configure editorial workflow | Done when draft, review, approve, publish, schedule, and archive states work.
+- P8C.008 | CMS | Configure revision history | Done when content changes can be audited and reverted.
+- P8C.009 | CMS | Configure preview | Done when editors can preview unpublished content accurately.
+- P8C.010 | CMS | Configure redirects | Done when editors/admins can manage redirects with approval rules.
+- P8C.011 | CMS | Configure SEO fields | Done when title, description, canonical, open graph, and schema fields exist where needed.
+- P8C.012 | CMS | Configure accessibility guardrails | Done when missing alt text, poor heading order, or invalid blocks are flagged if tooling allows.
+- P8C.013 | CMS | Configure form builder, if used | Done when fields, notifications, storage, spam controls, and privacy rules are enforced.
+- P8C.013A | CMS/SEC/CRM | Secure WordPress forms | Done when form nonces/CSRF, server validation, spam/bot controls, rate limits, safe notifications, CRM/webhook secrets, consent, duplicate handling, and log masking work.
+- P8C.014 | CMS | Configure backups | Done when database, uploads, configuration, and theme/plugin state are backed up.
+- P8C.015 | CMS | Configure plugin/module policy | Done when approved plugins/modules, update rules, and ownership are documented.
+- P8C.016 | CMS | Remove unused plugins/modules/themes | Done when attack surface is reduced.
+- P8C.017 | CMS | Configure CMS hardening | Done when admin paths, MFA, permissions, file editing, XML-RPC/API, headers, and updates follow security policy.
+- P8C.017A | CMS/SEC | Harden WordPress configuration | Done when debug output is disabled in public environments, file editing is disabled where appropriate, salts are managed, plugin/theme updates are controlled, unused components are removed, admin accounts are least privilege, and staging is protected.
+- P8C.017B | CMS/SEC/DEVOPS | Configure WordPress web protection | Done when WAF/security plugin/CDN rules, login throttling, XML-RPC/REST exposure, security headers, and admin access restrictions are tested against legitimate flows.
+- P8C.018 | CMS | Write editor guide | Done when editors can create, edit, publish, schedule, and archive content.
+- P8C.019 | CMS | Train editors | Done when editors can complete top tasks in staging.
+
+Integration atomic tasks
+- P8I.001 | CRM | Implement CRM lead capture | Done when forms create correct CRM records.
+- P8I.002 | CRM | Implement lead routing | Done when leads route by agreed rules.
+- P8I.003 | CRM | Implement CRM consent fields | Done when consent and communication preferences sync.
+- P8I.004 | CRM | Test CRM failure handling | Done when failed submissions are retried or stored safely.
+- P8I.005 | FIN | Implement payment provider | Done when sandbox payments, refunds, cancellations, and receipts work if relevant.
+- P8I.006 | SEC | Validate payment scope | Done when card data handling avoids unnecessary PCI scope where possible.
+- P8I.007 | BE | Implement email provider integration | Done when transactional messages send and failures are logged.
+- P8I.008 | MKT | Implement marketing automation integration | Done when segments, tags, journeys, and consent rules work.
+- P8I.009 | CX | Implement support tool integration | Done when contact forms/tickets route to support with context.
+- P8I.010 | DATA | Implement analytics tags/events | Done when approved events reach analytics destinations under correct consent.
+- P8I.011 | DATA | Implement server-side tracking if approved | Done when privacy, consent, and data minimization rules are enforced.
+- P8I.012 | BE | Implement search provider integration | Done when indexing, querying, access control, and no-results handling work if relevant.
+- P8I.013 | BE | Implement shipping/tax integration | Done when rates, addresses, taxes, and failures work if ecommerce requires them.
+- P8I.014 | BE | Implement map/location integration | Done when API keys, quotas, privacy, and fallback states are handled if used.
+- P8I.015 | AI | Implement AI provider integration, if relevant | Done when prompts, data controls, safety filters, fallback, and audit logs work.
+- P8I.016 | VENDOR | Document integration owners | Done when every integration has business owner, technical owner, support contact, contract, and renewal date.
+- P8I.016A | AI | Record AI CMS and integration work evidence | Done when AI-assisted CMS, content model, migration, or integration changes link to task packet, requirement IDs, changed artifacts, checks run, review notes, and approval.
+
+Backend/CMS/integration acceptance checklist
+- Server-side controls enforce security and privacy, not only frontend behavior.
+- Backend, CMS, data, and integration behavior maps to approved SRD requirements, API contracts, data rules, and documented exclusions.
+- AI-generated backend, CMS, data, and integration work has run-log evidence and human approval if AI delivery was used.
+- CMS empowers operations without giving unnecessary permissions.
+- Integrations have failure handling, logging, ownership, and consent/data controls.
+
+========================================================================
+13. PHASE 10 - DATA MIGRATION, CONTENT LOADING, AND REDIRECTS
+========================================================================
+
+Objective
+- Move, clean, validate, and publish data/content without losing trust, SEO equity, legal records, or operational continuity.
+
+Atomic tasks
+- P10.001 | CS | Freeze migration source list | Done when all source pages, posts, products, files, users, orders, and records are listed.
+- P10.002 | DBA | Freeze data source list | Done when databases, spreadsheets, CRMs, CMS exports, and third-party sources are listed.
+- P10.003 | PRIV | Classify migration data | Done when personal/sensitive/regulatory fields are identified.
+- P10.004 | PRIV | Approve migration data handling | Done when export, transfer, storage, access, and deletion rules are documented.
+- P10.005 | DBA | Create migration mapping | Done when each source field maps to destination field or discard reason.
+- P10.006 | CS | Create content mapping | Done when each old content item maps to new content, redirect, archive, or deletion.
+- P10.007 | SEO | Create redirect map | Done when each important old URL has a new URL or intentional removal status.
+- P10.008 | SEO | Prioritize high-value URLs | Done when top organic, backlink, revenue, and traffic URLs are marked critical.
+- P10.009 | DBA | Create migration script or procedure | Done when migration is repeatable.
+- P10.010 | DBA | Run migration dry run | Done when test migration completes in non-production.
+- P10.011 | QA | Validate migrated record counts | Done when source and destination counts match expected results.
+- P10.012 | QA | Validate migrated field accuracy | Done when sample records match mapping rules.
+- P10.013 | CS | Validate migrated content formatting | Done when headings, links, media, embeds, tables, and downloads render correctly.
+- P10.014 | ACC | Validate migrated alt text | Done when informative images have useful alt text and decorative images are handled.
+- P10.015 | SEO | Validate migrated metadata | Done when titles, descriptions, canonicals, robots, and schema match rules.
+- P10.016 | QA | Validate migrated media | Done when images, documents, captions, dimensions, and links work.
+- P10.017 | SEC | Validate access-controlled content | Done when private content is not public after migration.
+- P10.017A | SEC/DBA/PRIV | Validate migration security | Done when migration scripts avoid SQL injection, use least-privilege credentials, protect exported files, mask sensitive logs, and delete temporary files after approved retention.
+- P10.018 | PRIV | Validate excluded/deleted data | Done when data marked discard is not migrated.
+- P10.019 | DBA | Document migration rollback | Done when restore point and rollback steps are known.
+- P10.020 | CS | Load final approved content | Done when all MVP content is in staging.
+- P10.021 | CW | Proofread final content | Done when spelling, grammar, links, dates, names, and CTAs are checked.
+- P10.022 | BRAND | Approve final assets | Done when logos, images, icons, videos, and downloads meet brand rules.
+- P10.023 | SEO | Implement redirects in staging | Done when redirect map is configured.
+- P10.024 | SEO | Test redirects in staging | Done when critical redirects return correct status and destination.
+- P10.025 | QA | Test broken links | Done when internal links, downloads, anchors, and external links are checked.
+- P10.026 | PM | Schedule final migration window | Done when freeze time, owner, rollback, and communication are documented.
+- P10.027 | DBA | Run final migration | Done when production/staging final data is moved according to launch plan.
+- P10.028 | QA | Validate final migration | Done when post-migration checks pass.
+- P10.029 | PO | Approve migration/content gate | Done when content and data are ready for full QA/UAT.
+
+Gate 10 acceptance checklist
+- Data is migrated with privacy controls, validation, rollback, and auditability.
+- SEO redirects and content quality are verified before launch.
+
+========================================================================
+14. PHASE 11 - QUALITY ASSURANCE, ACCESSIBILITY, SECURITY, PERFORMANCE, AND UAT
+========================================================================
+
+Objective
+- Prove that the website works, fails safely, is usable, is accessible, is secure enough for its risk level, and satisfies business acceptance criteria.
+
+QA planning tasks
+- P11.001 | QA | Create test strategy | Done when PRD/SRD coverage, scope, test types, environments, data, devices, browsers, risks, and exit criteria are documented.
+- P11.002 | QA | Create test case matrix | Done when PRD/SRD requirements and user stories map to test cases.
+- P11.002A | QA | Create requirements-to-test matrix | Done when every launch-scope PRD/SRD requirement has test, review, demo, monitoring, or accepted-risk evidence.
+- P11.002B | QA | Create AI-generated work review matrix | Done when every AI-assisted launch-scope change maps to task packet, reviewer, required checks, evidence, and approval status.
+- P11.003 | QA | Create browser/device matrix | Done when supported browsers, devices, screen sizes, and assistive tech are listed.
+- P11.004 | QA | Create defect severity definitions | Done when severity levels and release-blocking rules are documented.
+- P11.005 | QA | Create regression suite | Done when critical paths are listed for repeated checks.
+- P11.006 | AUTO | Create automated smoke tests | Done when deployment can verify core pages and flows.
+- P11.007 | AUTO | Create end-to-end tests | Done when critical user journeys are automated where feasible.
+- P11.008 | AUTO | Configure flaky test tracking | Done when unstable tests are identified and fixed or quarantined.
+- P11.008A | AI | Run AI self-review on AI-generated work | Done when AI identifies likely defects, edge cases, messy logic, readability/structure issues, missing tests, requirement gaps, security risks, accessibility risks, unclear UI copy/error messages, README/documentation gaps, and deployment-step gaps before human review.
+- P11.008B | QA | Run independent review of AI-generated work | Done when a reviewer other than the producing AI reviews the diff, evidence, and tests.
+- P11.008C | QA | Triage AI-generated work defects | Done when defects are categorized as implementation, prompt/task packet, context, tool, review, or supervision failures.
+- P11.008D | QA/UX-D/UI | Run Human Design Governance QA | Done when launch-scope pages/templates are checked for design intent alignment, anti-AI pattern convergence, Human Design Scorecard status, content resilience, WordPress visual completeness, rendered visual defects, and approved exceptions.
+
+Functional QA tasks
+- P11.009 | QA | Test homepage | Done when content, links, CTAs, responsive behavior, analytics, and errors pass.
+- P11.010 | QA | Test navigation | Done when desktop, mobile, footer, breadcrumbs, search, and skip links work.
+- P11.011 | QA | Test forms | Done when required fields, validation, spam controls, submission, notifications, storage, CRM, and success/failure states work.
+- P11.012 | QA | Test auth | Done when login, logout, reset, MFA, session expiry, lockout, and recovery work if relevant.
+- P11.013 | QA | Test account management | Done when profile, password, preferences, privacy, and deletion/export work if relevant.
+- P11.014 | QA | Test search | Done when queries, filters, no results, suggestions, pagination, and relevance basics work if relevant.
+- P11.015 | QA | Test ecommerce | Done when cart, checkout, payment, tax, shipping, confirmation, receipt, refund/cancel, inventory, and failure states work if relevant.
+- P11.016 | QA | Test CMS authoring | Done when authors can create, edit, preview, publish, schedule, rollback, and archive content.
+- P11.016A | QA | Test WordPress CPT custom authoring UI | Done when each project CPT opens custom metadata fields/metaboxes, required fields validate, photo/media uploads work where required, saved metadata renders correctly, and the block builder is not available unless an approved exception exists.
+- P11.017 | QA | Test admin permissions | Done when users can only access allowed admin functions.
+- P11.018 | QA | Test email notifications | Done when triggers, content, links, unsubscribe/consent, deliverability basics, and failure logging work.
+- P11.019 | QA | Test integrations | Done when CRM, payment, email, analytics, support, search, maps, shipping, tax, and AI integrations pass applicable cases.
+- P11.020 | QA | Test error handling | Done when user-safe messages and internal logs work for failures.
+- P11.021 | QA | Test localization | Done when language, direction, date, number, currency, translation, hreflang, and fallback behavior work if relevant.
+
+Accessibility QA tasks
+- P11.022 | ACC | Run automated accessibility scan | Done when issues are logged and triaged.
+- P11.023 | ACC | Test keyboard navigation | Done when all critical flows work without a mouse.
+- P11.024 | ACC | Test visible focus | Done when focus is always visible and not obscured.
+- P11.025 | ACC | Test screen reader basics | Done when landmarks, headings, labels, errors, dynamic updates, and dialogs are understandable.
+- P11.026 | ACC | Test color contrast | Done when text and meaningful UI contrast meet target standard.
+- P11.027 | ACC | Test zoom/reflow | Done when content works at target zoom and small viewport without loss.
+- P11.028 | ACC | Test motion preferences | Done when reduced motion settings are respected.
+- P11.029 | ACC | Test touch targets | Done when touch controls meet target size and spacing.
+- P11.030 | ACC | Test form errors | Done when errors are clear, programmatically associated, and recoverable.
+- P11.031 | ACC | Create accessibility issue list | Done when issues have severity, owner, and remediation status.
+- P11.032 | ACC | Approve accessibility release status | Done when blockers are fixed or risk acceptance is signed.
+
+Security QA tasks
+- P11.033 | SEC | Run dependency vulnerability scan | Done when critical/high issues are fixed or formally accepted.
+- P11.033A | SEC/CMS | Run WordPress core/plugin/theme vulnerability review | Done when WordPress version, plugins, themes, abandoned components, known CVEs, licenses, and update paths are reviewed.
+- P11.034 | SEC | Run static analysis | Done when critical findings are triaged.
+- P11.034A | SEC | Run secret scan | Done when repositories, environment templates, logs, frontend bundles, build artifacts, and documentation contain no live secrets.
+- P11.035 | SEC | Run dynamic security test | Done when common web vulnerabilities are checked.
+- P11.035A | SEC/QA | Test SQL injection prevention | Done when forms, search, filters, URL params, REST/AJAX endpoints, admin actions, imports, and custom queries reject injection payloads and code review confirms prepared queries.
+- P11.035B | SEC/QA | Test CSRF and form abuse protections | Done when state-changing actions require valid nonces/tokens, GET requests do not mutate state, spam/rate limits work, and duplicate submissions are controlled.
+- P11.036 | SEC | Test authentication security | Done when brute force, lockout, reset, session, MFA, and logout behavior are acceptable.
+- P11.037 | SEC | Test authorization security | Done when direct object access and privilege escalation are tested.
+- P11.038 | SEC | Test input validation | Done when injection, XSS, file upload, and malformed input paths are tested.
+- P11.038A | SEC/QA | Test file upload security | Done when invalid types, oversized files, double extensions, script uploads, private file access, media metadata, and malware-scan handling are verified where applicable.
+- P11.039 | SEC | Test security headers and TLS | Done when headers and certificates meet policy.
+- P11.039A | SEC/DEVOPS | Test web and network protection | Done when WAF/CDN/firewall rules, admin restrictions, staging protection, XML-RPC/REST exposure rules, public debug settings, and rate limits are verified.
+- P11.040 | SEC | Test secrets exposure | Done when public code, logs, frontend bundles, and error pages do not expose secrets.
+- P11.041 | SEC | Test audit logging | Done when critical events produce useful logs without sensitive leakage.
+- P11.042 | SEC | Test privacy controls | Done when consent, tag blocking, data export, deletion, and retention controls work where applicable.
+- P11.043 | SEC | Coordinate penetration test, if required | Done when independent testing report is received and triaged.
+- P11.044 | SEC | Approve security release status | Done when blockers are fixed or risk acceptance is signed.
+- P11.044A | SEC/PM | Attach cybersecurity evidence package | Done when threat model/control matrix, scan outputs, targeted manual tests, remediation log, open risks, accepted exceptions, and security release decision are linked from launch evidence.
+
+Performance and reliability QA tasks
+- P11.045 | FE | Run lab performance test | Done when key templates meet performance budget in test conditions.
+- P11.046 | DATA | Validate Core Web Vitals monitoring | Done when field or synthetic tracking exists for LCP, INP, and CLS.
+- P11.047 | SRE | Run load test, if needed | Done when expected traffic and launch spike assumptions are tested.
+- P11.048 | SRE | Run resilience test | Done when app behavior under dependency failure is understood.
+- P11.049 | SRE | Test cache behavior | Done when CDN/app cache serves fresh and stale content according to plan.
+- P11.050 | SRE | Test backup restore | Done when restore is proven in non-production.
+- P11.051 | SRE | Test rollback | Done when previous version can be restored according to runbook.
+- P11.052 | SRE | Test alert routing | Done when alerts reach responsible humans.
+- P11.053 | SRE | Approve reliability release status | Done when monitoring, backup, rollback, and incident readiness pass.
+
+SEO and analytics QA tasks
+- P11.054 | SEO/AI | Crawl entire staging site | Done when sitemap URLs, homepage-discovered links, pages, posts, CPT singles/archives, taxonomies, pagination, important URL patterns, and legacy redirect URLs are crawled for status codes, titles, descriptions, canonicals, robots, sitemap inclusion, structured data, links, redirects, image SEO, and indexability.
+- P11.054A | SEO/AI/FE/CMS | Remediate SEO crawl findings | Done when applicable crawl issues are fixed in templates, CMS settings, metadata, schema, redirects, content, images, internal links, robots, sitemap, or performance configuration and the crawl is rerun.
+- P11.054B | QA/SEO | Verify browser-rendered SEO output | Done when representative pages/templates are checked in Chromium/Chrome/Edge and, where tools allow, Firefox and WebKit/Safari; unavailable browser engines are documented.
+- P11.054B1 | QA/SEO/SEC/CX | Verify applicability matrix coverage | Done when compulsory defaults and triggered contextual items have crawl, screenshot, code, configuration, analytics, security scan, or manual-test evidence, and exceptions have accountable approval.
+- P11.054C | SEO/AI | Record SEO score evidence | Done when Lighthouse/PageSpeed or equivalent SEO audit scores are 90%+ for representative launch-scope templates, or exceptions are approved with risk and owner.
+- P11.054D | PM | Attach SEO crawl and compliance package | Done when URL inventory, score evidence, browser coverage, remediation log, remaining exceptions, and final SEO compliant build specification are linked from launch evidence.
+- P11.055 | SEO | Verify noindex/staging controls | Done when staging cannot be indexed.
+- P11.056 | SEO | Verify production index rules pre-launch | Done when launch plan will remove accidental noindex/disallow from production.
+- P11.057 | SEO | Test structured data | Done when structured data is valid for selected pages.
+- P11.058 | SEO | Test redirects | Done when critical old URLs redirect correctly.
+- P11.059 | DATA | Validate analytics events | Done when events fire once, with correct properties, destinations, and consent.
+- P11.060 | DATA | Validate conversion tracking | Done when forms, purchases, signups, downloads, calls, and key actions are measured.
+- P11.061 | BI | Validate dashboards | Done when stakeholders can see launch KPIs and data definitions.
+
+UAT tasks
+- P11.062 | PM | Create UAT plan | Done when testers, scenarios, dates, entry criteria, and exit criteria are documented.
+- P11.063 | PO | Select UAT testers | Done when business, support, marketing, content, sales, and operations users are included.
+- P11.064 | QA | Prepare UAT test data | Done when realistic non-sensitive data is available.
+- P11.065 | PM | Run UAT kickoff | Done when testers know scope, process, and defect reporting rules.
+- P11.066 | PO | Execute product UAT | Done when PO completes acceptance scenarios mapped to approved PRD requirements.
+- P11.067 | CS | Execute content UAT | Done when content owners approve pages and CMS workflow.
+- P11.068 | CX | Execute support UAT | Done when support can handle contact, ticket, and knowledge base flows.
+- P11.069 | SALES | Execute sales UAT | Done when lead capture, routing, and follow-up work.
+- P11.070 | OPS | Execute operations UAT | Done when day-to-day operational processes work.
+- P11.071 | PRIV | Execute legal/privacy UAT | Done when notices, consent, rights flows, and legal links are approved.
+- P11.072 | PM | Triage UAT defects | Done when defects are prioritized, assigned, fixed, deferred, or accepted.
+- P11.073 | PO | Approve UAT exit | Done when release-blocking defects are closed and requirements exceptions are formally accepted.
+
+Gate 11 acceptance checklist
+- Functional, accessibility, security, performance, SEO, analytics, Human Design Governance QA, visual QA, and UAT checks are complete.
+- Requirements-to-test matrix proves launch-scope PRD/SRD coverage or records approved exceptions.
+- AI-generated work review matrix proves task packet coverage, independent review, required checks, and human approval for AI-assisted launch-scope changes.
+- Release blockers are fixed or formally accepted by accountable owners.
+
+========================================================================
+15. PHASE 12 - LAUNCH READINESS AND GO/NO-GO
+========================================================================
+
+Objective
+- Prepare the people, systems, communications, rollback path, and evidence needed to launch safely.
+
+Atomic tasks
+- P12.001 | PM | Create launch plan | Done when date, time, owner, sequence, deployment steps, communication, validation, rollback, release notes, handoff status, and hypercare are documented.
+- P12.002 | PM | Create launch checklist | Done when every launch task has owner, status, and deadline.
+- P12.003 | PM | Schedule go/no-go meeting | Done when required decision makers are invited.
+- P12.004 | PO | Confirm MVP scope completion | Done when all required stories and launch-scope PRD/SRD requirements are accepted or formally deferred.
+- P12.004A | PM | Confirm requirements baseline status | Done when PRD/SRD versions, amendments, exclusions, deferred requirements, and approval evidence are current.
+- P12.004B | AI | Confirm AI delivery evidence package | Done when AI task packets, run logs, changed artifacts, reviews, approvals, tests, and known limitations are complete for launch-scope AI-assisted work.
+- P12.005 | QA | Confirm QA exit | Done when release criteria pass.
+- P12.006 | ACC | Confirm accessibility release status | Done when blockers are closed or risk accepted.
+- P12.007 | SEC | Confirm security release status | Done when blockers are closed or risk accepted.
+- P12.007A | SEC/PM | Confirm cybersecurity launch gate | Done when no unresolved critical/high findings, SQL injection paths, authz failures, exposed secrets, missing required encryption, unsafe uploads, unprotected admin/forms, failed WAF/network checks, or broken backup/restore remain without accepted risk, mitigation, and expiry.
+- P12.008 | PRIV | Confirm legal/privacy release status | Done when required notices and consent flows are approved.
+- P12.009 | SEO | Confirm SEO release status | Done when full-site crawl/remediation evidence exists, 90%+ SEO audit target is met or exceptions are approved, and indexation, redirects, metadata, sitemap, structured data, browser-rendered output, and robots rules are ready.
+- P12.009A | PM/SEO/SEC/CX | Confirm Conversion/SEO/Security Applicability Matrix release status | Done when all mandatory/default triggered items are implemented and verified or have approved exceptions with mitigation and expiry.
+- P12.010 | DATA | Confirm analytics release status | Done when tracking and dashboards are ready.
+- P12.011 | CX | Confirm support readiness | Done when support scripts, knowledge base, ticket routing, and escalation are ready.
+- P12.012 | OPS | Confirm operations readiness | Done when content publishing, moderation, fulfillment, and incident roles are ready.
+- P12.013 | MKT | Confirm launch communications | Done when email, social, PR, ads, landing pages, and internal announcements are ready.
+- P12.014 | SALES | Confirm sales readiness | Done when sales team has scripts, FAQs, routing, and collateral.
+- P12.015 | DEVOPS | Confirm production infrastructure | Done when production environment, scaling, CDN, storage, database, and jobs are ready.
+- P12.016 | DEVOPS | Confirm DNS plan | Done when records, TTL, provider access, and rollback records are documented.
+- P12.017 | DEVOPS | Confirm SSL/TLS | Done when certificates are valid and renewal monitoring exists.
+- P12.018 | DEVOPS | Confirm environment variables | Done when production values exist and secrets are correct.
+- P12.019 | SRE | Confirm monitoring | Done when uptime, error, latency, logs, dashboards, and alerts are live.
+- P12.020 | SRE | Confirm backup status | Done when fresh backup exists and restore test is documented.
+- P12.021 | SRE | Confirm rollback plan | Done when code, DB, content, DNS, CDN, and feature flag rollback steps are written.
+- P12.022 | SRE | Confirm incident channel | Done when launch incident room and escalation contacts are ready.
+- P12.023 | CMS | Freeze content changes | Done when content edits are restricted or coordinated.
+- P12.024 | DBA | Freeze data changes if needed | Done when final migration window is protected.
+- P12.025 | SEO | Export pre-launch SEO baseline | Done when ranking, crawl, indexed pages, and traffic baseline are saved.
+- P12.026 | DATA | Export pre-launch analytics baseline | Done when conversion and traffic baseline is saved.
+- P12.027 | DEVOPS | Tag release candidate | Done when exact build can be identified.
+- P12.028 | QA | Run final smoke test in staging | Done when critical paths pass.
+- P12.028A | SEC | Confirm AI tools have no unauthorized production access | Done when AI tool sessions, tokens, browser profiles, and integrations cannot mutate production outside approved human-controlled steps.
+- P12.029 | PM | Run go/no-go meeting | Done when each accountable owner states go, no-go, or conditional go.
+- P12.030 | SP | Approve launch | Done when decision is recorded with time and conditions.
+
+Gate 12 acceptance checklist
+- Launch has accountable owners, rollback, monitoring, support, communications, and formal approval.
+- PRD/SRD baseline completion and approved requirements exceptions are recorded.
+- AI delivery evidence, reviews, approvals, and production-access restrictions are confirmed if AI-assisted work was used.
+- Production readiness is proven, not assumed.
+
+========================================================================
+16. PHASE 13 - LAUNCH EXECUTION
+========================================================================
+
+Objective
+- Deploy, switch traffic, verify, communicate, monitor, and stabilize the website.
+
+Atomic tasks
+- P13.001 | PM | Open launch bridge/channel | Done when required launch participants are present.
+- P13.002 | DEVOPS | Confirm deployment freeze | Done when unrelated changes are paused.
+- P13.003 | SRE | Capture final pre-launch backup | Done when backup ID and timestamp are recorded.
+- P13.004 | DEVOPS | Deploy production build | Done when release candidate is deployed.
+- P13.005 | DBA | Run production migrations | Done when migrations complete or rollback is triggered.
+- P13.006 | CMS | Publish final content | Done when required pages/content are live.
+- P13.007 | DEVOPS | Configure production environment variables | Done when production services connect correctly.
+- P13.008 | DEVOPS | Configure CDN/cache | Done when caching rules are active.
+- P13.009 | DEVOPS | Configure DNS switch | Done when live domain points to production.
+- P13.010 | DEVOPS | Verify SSL/TLS on live domain | Done when browser and monitoring confirm valid certificate.
+- P13.011 | QA | Run production smoke test | Done when homepage, navigation, forms, auth, checkout, search, CMS, and critical flows pass as applicable.
+- P13.012 | SEO | Verify robots/index rules | Done when production is indexable where intended and blocked where intended.
+- P13.013 | SEO | Submit or verify sitemap | Done when sitemap is reachable and submitted where relevant.
+- P13.014 | SEO | Verify redirects | Done when critical legacy URLs redirect correctly.
+- P13.015 | DATA | Verify analytics live data | Done when real-time events and conversions are visible under consent rules.
+- P13.016 | CRM | Verify lead routing | Done when test lead reaches correct queue with source data.
+- P13.017 | FIN | Verify payment live mode | Done when real low-risk transaction or processor verification passes if relevant.
+- P13.018 | CX | Verify support channels | Done when contact forms, chat, email, phone, and ticket routing work.
+- P13.019 | SRE | Monitor errors | Done when error rate is within launch threshold.
+- P13.020 | SRE | Monitor latency | Done when response times are within threshold.
+- P13.021 | SRE | Monitor uptime | Done when synthetic checks are passing.
+- P13.022 | SRE | Monitor infrastructure capacity | Done when CPU, memory, database, queues, storage, and CDN are within threshold.
+- P13.023 | SEC | Monitor security alerts | Done when WAF, auth, rate limit, and suspicious activity alerts are checked.
+- P13.024 | PM | Record launch timeline | Done when actions, timestamps, owners, and issues are documented.
+- P13.025 | MKT | Send launch announcement | Done when external communications are released after technical go.
+- P13.026 | SALES | Notify sales team | Done when sales receives live URL, pitch notes, and issue reporting process.
+- P13.027 | CX | Notify support team | Done when support receives known issues, scripts, and escalation route.
+- P13.028 | PM | Decide stabilization status | Done when launch is marked stable, degraded, or rollback.
+- P13.029 | SRE | Execute rollback if required | Done when rollback criteria are met and rollback runbook is completed.
+- P13.030 | PM | Close launch bridge | Done when stabilization owner accepts handoff to hypercare.
+
+Launch acceptance checklist
+- Production works for critical users.
+- Monitoring shows acceptable health.
+- Support, sales, marketing, and operations know the site is live.
+
+========================================================================
+17. PHASE 14 - HYPERCARE AND POST-LAUNCH STABILIZATION
+========================================================================
+
+Objective
+- Watch the live product closely, fix launch defects quickly, protect users, and convert launch learning into operational rhythm.
+
+Atomic tasks
+- P14.001 | PM | Start hypercare period | Done when duration, daily check-ins, and owners are active.
+- P14.002 | SRE | Review uptime daily | Done when uptime is checked and issues logged.
+- P14.003 | SRE | Review error logs daily | Done when new errors are triaged.
+- P14.004 | SRE | Review performance daily | Done when latency, Core Web Vitals, and infrastructure capacity are checked.
+- P14.005 | SEC | Review security alerts daily | Done when suspicious traffic, failed logins, blocked requests, and vulnerabilities are checked.
+- P14.006 | CX | Review support tickets daily | Done when themes and urgent issues are escalated.
+- P14.007 | DATA | Review analytics daily | Done when traffic, conversions, event health, and anomalies are checked.
+- P14.008 | SEO | Review crawl/indexing daily during first week | Done when indexation, sitemap, robots, redirects, and search console issues are checked.
+- P14.009 | CRM | Review lead routing daily | Done when lead delivery and duplicates are checked.
+- P14.010 | FIN | Review payment/order issues daily | Done when failed payments, refunds, chargebacks, and reconciliation issues are checked if relevant.
+- P14.011 | OPS | Review operational tasks daily | Done when content, fulfillment, moderation, and admin tasks work.
+- P14.012 | QA | Triage post-launch defects | Done when defects have severity, owner, and target release.
+- P14.013 | PO | Prioritize hotfixes | Done when user-impacting defects are ranked.
+- P14.014 | DEVOPS | Deploy hotfixes | Done when fixes follow emergency release process.
+- P14.015 | QA | Verify hotfixes | Done when fixed defects pass production-safe validation.
+- P14.016 | PM | Publish daily hypercare report | Done when stakeholders receive status, issues, fixes, risks, and next steps.
+- P14.017 | CX | Update support scripts | Done when new questions or known issues are added.
+- P14.018 | CS | Update content for confusion points | Done when user confusion from tickets/analytics is addressed.
+- P14.019 | DATA | Validate KPI dashboard after real traffic | Done when dashboard data is accurate enough for decisions.
+- P14.020 | PM | Hold launch retrospective | Done when what went well, what failed, and actions are documented.
+- P14.021 | SRE | Hold incident postmortem if needed | Done when incidents have root cause, impact, timeline, and prevention actions.
+- P14.022 | PO | Convert findings into backlog | Done when improvements, defects, tech debt, and requirement amendments are prioritized.
+- P14.022A | PDM | Update requirements change log | Done when post-launch findings that affect PRD/SRD baselines are accepted, rejected, deferred, or routed through change control.
+- P14.022B | AI | Review AI delivery defects | Done when AI-related issues are traced to task packet, context, prompt, tool, review, supervision, or implementation cause.
+- P14.022C | AI | Update AI delivery playbooks from hypercare | Done when task packets, prompts, context packs, stop rules, and review checklists reflect launch learnings.
+- P14.023 | SP | Approve end of hypercare | Done when operational owner accepts steady-state handoff.
+
+Hypercare acceptance checklist
+- Launch issues are triaged and controlled.
+- Operational teams have evidence, scripts, dashboards, and backlog for ongoing improvement.
+
+========================================================================
+18. PHASE 15 - STEADY-STATE WEBSITE OPERATIONS
+========================================================================
+
+Objective
+- Run the website as a living product with clear routines for content, reliability, security, privacy, support, growth, and cost control.
+
+Daily operations
+- O15.001 | SRE | Check uptime dashboard | Done when outages or anomalies are acknowledged.
+- O15.002 | SRE | Check error dashboard | Done when new high-impact errors are triaged.
+- O15.003 | SRE | Check alert queue | Done when unresolved alerts have owners.
+- O15.004 | CX | Check support queue | Done when website-related tickets are assigned.
+- O15.005 | OPS | Check operational queue | Done when fulfillment, moderation, admin, and content tasks are on track.
+- O15.006 | SEC | Check critical security alerts | Done when suspicious activity is triaged.
+- O15.006A | SEC/SRE | Review WAF, rate-limit, auth, and form-abuse logs | Done when blocked traffic, failed logins, suspicious uploads, spam bursts, and false positives are triaged.
+- O15.007 | DATA | Check analytics health | Done when data collection failures are detected.
+- O15.008 | FIN | Check payment/order exceptions | Done when failed payments, refunds, disputes, and reconciliation issues are assigned if relevant.
+- O15.009 | MOD | Check moderation queue | Done when harmful or policy-violating content is reviewed if relevant.
+
+Weekly operations
+- O15.010 | PO | Review product KPI dashboard | Done when trends, anomalies, and decisions are documented.
+- O15.011 | BI | Send performance report | Done when stakeholders receive traffic, conversion, revenue, support, SEO, and reliability metrics.
+- O15.012 | CS | Review content production board | Done when upcoming drafts, reviews, approvals, and archives are on schedule.
+- O15.013 | SEO | Review search console issues | Done when crawl, index, schema, rankings, and query changes are triaged.
+- O15.014 | FE | Review Core Web Vitals | Done when LCP, INP, CLS regressions have owners.
+- O15.015 | SEC | Review vulnerability scan results | Done when high/critical findings are assigned.
+- O15.016 | DEVOPS | Review dependency updates | Done when security and compatibility updates are planned.
+- O15.016A | SEC/CMS/DEVOPS | Apply urgent security patches | Done when critical WordPress core, plugin, theme, library, server, or dependency fixes are tested and released under change control.
+- O15.017 | CMS | Review CMS plugin/module updates | Done when updates are tested and scheduled.
+- O15.018 | SRE | Review backups | Done when backup jobs are successful.
+- O15.019 | CX | Review top support themes | Done when product/content fixes are proposed.
+- O15.020 | MKT | Review campaign landing page performance | Done when experiments or fixes are proposed.
+- O15.021 | SALES | Review lead quality | Done when routing, qualification, and form friction issues are identified.
+- O15.022 | OPS | Review moderation/abuse trends | Done when abuse controls need changes if relevant.
+
+Monthly operations
+- O15.023 | PM | Run operational review meeting | Done when reliability, security, privacy, content, SEO, analytics, support, cost, backlog, and requirements amendments are reviewed.
+- O15.023A | PDM | Review requirement amendment log | Done when requested product/software requirement changes are accepted, rejected, deferred, or routed through change control.
+- O15.023B | AI | Review AI delivery operations | Done when AI run logs, task packets, prompt/context library, model/tool registry, escalations, defects, costs, and permission boundaries are reviewed.
+- O15.024 | SRE | Test backup restore sample | Done when restore evidence is recorded.
+- O15.025 | SEC | Review access permissions | Done when unnecessary accounts are removed.
+- O15.026 | HR | Run access offboarding check | Done when departed staff/vendor access is removed.
+- O15.027 | PRIV | Review data retention jobs | Done when deletion/anonymization runs are verified.
+- O15.028 | DATA | Audit tracking tags | Done when unauthorized or broken tags are removed.
+- O15.029 | SEO/AI | Run full site crawl | Done when technical SEO issues are crawled, triaged, remediated where applicable, and tracked against the 90%+ SEO audit target or approved exceptions.
+- O15.030 | ACC | Review accessibility issue backlog | Done when new and unresolved issues are prioritized.
+- O15.031 | CS | Review outdated content | Done when pages due for review are updated or archived.
+- O15.032 | FIN | Review tool and hosting costs | Done when budget variances and unused tools are addressed.
+- O15.033 | VENDOR | Review vendor SLAs | Done when incidents, response times, renewals, and risks are tracked.
+- O15.034 | SRE | Review capacity plan | Done when traffic, storage, database, email, and API quotas are forecast.
+- O15.035 | MKT | Review acquisition channels | Done when campaign spend and conversion quality are assessed.
+- O15.036 | PO | Review backlog health | Done when defects, tech debt, experiments, and features are prioritized.
+
+Quarterly operations
+- O15.037 | SP | Review strategic outcomes | Done when website contribution to business goals is assessed.
+- O15.038 | PO | Revisit roadmap | Done when roadmap reflects data, market changes, and user feedback.
+- O15.039 | UX-R | Run user research touchpoint | Done when fresh user evidence is captured.
+- O15.040 | ACC | Run manual accessibility audit sample | Done when assistive tech and keyboard checks are repeated.
+- O15.041 | SEC | Run threat model review | Done when new features, vendors, and attacks are considered.
+- O15.042 | SEC | Run incident response tabletop | Done when team practices a realistic incident.
+- O15.043 | SRE | Run disaster recovery exercise | Done when recovery time and gaps are measured.
+- O15.044 | PRIV | Review privacy notice and consent flows | Done when changes in data use, vendors, or law are reflected.
+- O15.045 | VENDOR | Review vendor risk | Done when security, privacy, financial, and operational risks are updated.
+- O15.046 | FIN | Review renewal calendar | Done when renewals, cancellations, and negotiations are planned.
+- O15.047 | DATA | Review event taxonomy | Done when stale, duplicate, or missing events are fixed.
+- O15.048 | SEO | Review content decay | Done when pages losing traffic are refreshed, merged, or redirected.
+- O15.049 | CS | Run content governance audit | Done when ownership, freshness, accuracy, and compliance are checked.
+- O15.050 | OPS | Review standard operating procedures | Done when runbooks reflect actual operations.
+
+Annual operations
+- O15.051 | SP | Review website business case | Done when continue, expand, replatform, reduce, or sunset decision is made.
+- O15.052 | FIN | Build annual website budget | Done when people, tools, hosting, vendors, maintenance, security, content, and experiments are budgeted.
+- O15.053 | SEC | Run independent security assessment if risk requires | Done when findings are triaged and remediated.
+- O15.053A | SEC | Run recurring vulnerability and configuration review | Done when dependency/plugin/theme scans, header/TLS checks, WAF/rate-limit rules, admin permissions, backups, and exposed endpoints are reviewed on the approved cadence.
+- O15.054 | ACC | Run full accessibility audit | Done when issues, statement updates, and remediation plan are documented.
+- O15.055 | PRIV | Run privacy impact reassessment | Done when data processing remains justified and documented.
+- O15.056 | SRE | Review SLOs and incident history | Done when reliability targets are updated.
+- O15.057 | DEVOPS | Review architecture lifecycle | Done when deprecated frameworks, runtimes, plugins, APIs, and services have upgrade plans.
+- O15.058 | CS | Review entire content inventory | Done when keep, update, merge, archive, and delete decisions are made.
+- O15.059 | SEO | Review organic strategy | Done when topic coverage, technical health, and search behavior changes are assessed.
+- O15.060 | HR | Refresh team training | Done when editors/admins/developers complete required training.
+
+Incident operations
+- O15.061 | SRE | Detect incident | Done when alert, report, or anomaly is confirmed.
+- O15.062 | SRE | Classify severity | Done when impact, urgency, and affected users are known.
+- O15.063 | PM | Open incident channel | Done when responders and stakeholders are in one place.
+- O15.064 | SRE | Assign incident commander | Done when one person controls coordination.
+- O15.065 | SRE | Assign technical lead | Done when one person leads diagnosis/remediation.
+- O15.066 | CX | Assign communications lead | Done when user/stakeholder updates have one owner.
+- O15.067 | SEC | Preserve evidence if security-related | Done when logs and artifacts are retained.
+- O15.068 | SRE | Mitigate immediate impact | Done when service is restored, degraded safely, or feature disabled.
+- O15.069 | PM | Send internal update | Done when stakeholders know impact and next update time.
+- O15.070 | CX | Send external update if needed | Done when affected users receive clear, approved communication.
+- O15.071 | SRE | Resolve incident | Done when service is stable and monitoring confirms recovery.
+- O15.072 | SRE | Document incident timeline | Done when detection, decisions, actions, and recovery are recorded.
+- O15.073 | SRE | Run postmortem | Done when root cause, contributing factors, impact, and actions are documented.
+- O15.074 | PO | Prioritize prevention actions | Done when follow-up work is added to backlog.
+
+Release operations
+- O15.075 | PM | Maintain release calendar | Done when upcoming releases and freezes are visible.
+- O15.076 | PO | Approve release scope | Done when included changes are accepted.
+- O15.077 | QA | Run regression suite | Done when release-blocking regressions are closed.
+- O15.078 | SEC | Review security-sensitive changes | Done when auth, data, payment, admin, and integration changes are approved.
+- O15.079 | DATA | Review tracking changes | Done when analytics impact is documented.
+- O15.080 | SEO | Review SEO-sensitive changes | Done when URL, metadata, robots, schema, content, and redirect changes are approved.
+- O15.081 | ACC | Review accessibility-sensitive changes | Done when interactive UI changes pass checks.
+- O15.082 | DEVOPS | Deploy release | Done when deployment follows standard runbook.
+- O15.083 | QA | Run production smoke test | Done when critical paths pass.
+- O15.084 | PM | Publish release notes | Done when stakeholders know what changed.
+
+Content operations
+- O15.085 | CS | Receive content request | Done when requester, goal, audience, due date, and owner are recorded.
+- O15.086 | CS | Validate content need | Done when request maps to user or business value.
+- O15.087 | SEO | Validate search opportunity | Done when relevant search intent is documented.
+- O15.088 | CW | Draft content | Done when draft meets page brief.
+- O15.089 | BRAND | Review content for brand | Done when tone and visual consistency pass.
+- O15.090 | PRIV | Review legal/privacy-sensitive content | Done when claims and disclosures are approved.
+- O15.091 | ACC | Review content accessibility | Done when headings, links, alt text, tables, captions, and plain language pass.
+- O15.092 | SEO | Review content SEO | Done when metadata, internal links, schema, and query intent are addressed.
+- O15.093 | CS | Publish content | Done when approved content is live.
+- O15.094 | DATA | Annotate analytics | Done when major content changes are noted.
+- O15.095 | CS | Schedule content review date | Done when owner and review date are set.
+- O15.096 | CS | Archive stale content | Done when redirect, noindex, archive, or delete decision is implemented.
+
+Security operations
+- O15.097 | SEC | Monitor vulnerability feeds | Done when relevant platform/plugin/library issues are identified.
+- O15.098 | DEVOPS | Patch dependencies | Done when updates pass tests and deploy.
+- O15.099 | CMS | Patch CMS core/plugins/themes | Done when staging tests and production updates are complete.
+- O15.100 | SEC | Rotate secrets | Done when scheduled or incident-driven rotations are complete.
+- O15.101 | SEC | Review privileged accounts | Done when unnecessary privileges are removed.
+- O15.102 | SEC | Review audit logs | Done when suspicious admin/auth/data activity is investigated.
+- O15.103 | SEC | Test WAF/rate limit rules | Done when rules block abuse without excessive false positives.
+- O15.104 | SEC | Update threat model | Done when new features or incidents change risk.
+
+Privacy operations
+- O15.105 | PRIV | Process data request | Done when request is verified, fulfilled, denied, or escalated within required timeline.
+- O15.106 | PRIV | Update vendor processing list | Done when new or removed vendors are reflected.
+- O15.107 | PRIV | Review consent records | Done when consent evidence is retrievable.
+- O15.108 | PRIV | Review cookie/tracking changes | Done when new tags are categorized before deployment.
+- O15.109 | PRIV | Execute retention deletion | Done when expired records are deleted or anonymized.
+- O15.110 | PRIV | Document privacy incident | Done when suspected personal data issue is triaged and escalated.
+
+Cost operations
+- O15.111 | FIN | Monitor hosting spend | Done when spikes have explanation.
+- O15.112 | FIN | Monitor third-party API spend | Done when usage and budget thresholds are tracked.
+- O15.113 | FIN | Monitor email/SMS spend | Done when campaign or transactional costs are tracked.
+- O15.114 | FIN | Monitor AI spend if used | Done when model usage and cost per workflow are tracked.
+- O15.114A | AI | Monitor AI delivery quality | Done when AI acceptance rate, rework rate, defect rate, escalation rate, test pass rate, and human review findings are tracked.
+- O15.114B | SEC | Review AI tool permissions | Done when AI access to repositories, browsers, CMS, hosting, analytics, logs, and external services remains least privilege.
+- O15.115 | FIN | Cancel unused tools | Done when unused subscriptions are removed.
+- O15.116 | FIN | Negotiate renewals | Done when renewal cost and SLA are reviewed before auto-renewal.
+
+Growth and experimentation operations
+- O15.117 | PO | Define experiment hypothesis | Done when target metric, audience, change, and expected outcome are written.
+- O15.118 | DATA | Define experiment measurement | Done when sample, events, guardrails, and decision threshold are set.
+- O15.119 | UX-D | Design experiment variant | Done when variant is accessible and brand-aligned.
+- O15.120 | FE | Implement experiment | Done when variant can be enabled and disabled safely.
+- O15.121 | QA | Test experiment | Done when tracking, UI, accessibility, and fallback pass.
+- O15.122 | DATA | Analyze experiment | Done when result, confidence, caveats, and recommendation are documented.
+- O15.123 | PO | Decide experiment outcome | Done when ship, iterate, stop, or retest decision is recorded.
+
+========================================================================
+19. PHASE 16 - CONTINUOUS IMPROVEMENT, SCALE, AND PRODUCT EVOLUTION
+========================================================================
+
+Objective
+- Keep improving value, usability, reliability, and economics as the website grows.
+
+Atomic tasks
+- P16.001 | PDM | Review feedback backlog | Done when support, analytics, sales, user research, and stakeholder feedback are consolidated.
+- P16.002 | UX-R | Run task success study | Done when real users attempt critical tasks and results are measured.
+- P16.003 | DATA | Identify funnel drop-offs | Done when high-loss steps are quantified.
+- P16.004 | CS | Identify content gaps | Done when user questions without good answers are listed.
+- P16.005 | SEO | Identify organic growth opportunities | Done when topics, technical fixes, content refreshes, and link opportunities are prioritized.
+- P16.006 | FE | Identify performance debt | Done when scripts, images, fonts, rendering, and bundle issues are listed.
+- P16.007 | BE | Identify backend performance debt | Done when slow queries, API latency, queues, and cache gaps are listed.
+- P16.008 | SEC | Identify security debt | Done when weak controls, outdated dependencies, missing logs, and hardening gaps are listed.
+- P16.009 | ACC | Identify accessibility debt | Done when unresolved patterns and training gaps are listed.
+- P16.010 | OPS | Identify operations friction | Done when manual work, repeated incidents, and unclear ownership are listed.
+- P16.011 | FIN | Identify cost optimization opportunities | Done when savings are estimated and risk assessed.
+- P16.012 | PDM | Prioritize improvement roadmap | Done when value, risk, effort, and dependencies are considered.
+- P16.013 | PM | Plan improvement release | Done when work is sequenced with owners, acceptance criteria, and PRD/SRD impact notes.
+- P16.013A | PDM | Amend PRD/SRD for improvement release | Done when changed product and software requirements are versioned, approved, and linked to backlog and tests.
+- P16.013B | AI | Improve AI delivery system | Done when recurring AI defects, slow reviews, prompt failures, context gaps, and tool limitations produce updated task packets, prompts, checks, or permission rules.
+- P16.014 | ALL | Execute improvement cycle | Done when changes pass normal release gates.
+- P16.015 | DATA | Measure improvement impact | Done when before/after metrics are documented.
+
+Scale readiness tasks
+- P16.016 | SRE | Reassess capacity limits | Done when next traffic threshold and bottlenecks are known.
+- P16.017 | DEVOPS | Add autoscaling or capacity plan | Done when scaling behavior is tested.
+- P16.018 | DBA | Reassess database scaling | Done when indexes, replicas, partitioning, caching, or archival needs are known.
+- P16.019 | SRE | Reassess CDN strategy | Done when cache hit ratio and edge performance are optimized.
+- P16.020 | SEC | Reassess abuse controls | Done when bot, scraping, spam, fraud, and account abuse risks are updated.
+- P16.021 | CX | Reassess support staffing | Done when support volume and response time are within target.
+- P16.022 | OPS | Reassess content workflow staffing | Done when publishing velocity and quality are sustainable.
+
+========================================================================
+20. PHASE 17 - REPLATFORMING, RETIREMENT, OR SUNSET
+========================================================================
+
+Objective
+- End, replace, or significantly rebuild the website without losing users, data, SEO equity, compliance evidence, or operational continuity.
+
+Atomic tasks
+- P17.001 | SP | Decide sunset/replatform trigger | Done when business reason is documented.
+- P17.002 | PO | Define user impact | Done when affected users, journeys, and alternatives are listed.
+- P17.002A | PDM | Define replacement PRD impact if replatforming | Done when retained, changed, retired, and new product requirements are listed.
+- P17.003 | PRIV | Define data disposition | Done when export, retention, deletion, and legal hold rules are documented.
+- P17.004 | SEO | Define SEO preservation plan | Done when redirects, canonicals, content merges, and removal notices are planned.
+- P17.005 | CX | Define user communication plan | Done when timing, message, channels, and support script are ready.
+- P17.006 | OPS | Define operational transition plan | Done when old and new operating processes are mapped.
+- P17.007 | DEVOPS | Define technical decommission plan | Done when domains, DNS, hosting, databases, storage, cron jobs, queues, and integrations are listed.
+- P17.007A | SA | Define replacement SRD impact if replatforming | Done when technical requirements, integrations, data flows, controls, and decommission constraints are mapped.
+- P17.008 | DATA | Define analytics archive plan | Done when historical data is exported or retained appropriately.
+- P17.009 | FIN | Define contract cancellation plan | Done when renewals, termination dates, and penalties are known.
+- P17.010 | SEC | Revoke unnecessary access | Done when old system accounts and keys are removed.
+- P17.011 | SRE | Archive logs/backups as required | Done when retention and deletion rules are met.
+- P17.012 | DEVOPS | Decommission infrastructure | Done when unused infrastructure is shut down safely.
+- P17.013 | SEO | Verify redirects/removals | Done when old URLs behave as planned.
+- P17.014 | CX | Monitor user confusion | Done when support spikes are handled.
+- P17.015 | PM | Close project | Done when final report, lessons learned, PRD/SRD baselines, traceability matrices, artifacts, and owners are recorded.
+
+========================================================================
+21. SPECIALIZED CHECKLISTS BY WEBSITE TYPE
+========================================================================
+
+Marketing/brand website
+- Define brand narrative.
+- Define lead magnets.
+- Define conversion goals.
+- Define campaign landing page templates.
+- Define attribution rules.
+- Define form-to-CRM workflow.
+- Define sales handoff SLA.
+- Define content refresh cadence.
+- Define testimonial/case study approval process.
+- Define claim substantiation process.
+
+WordPress/CMS website
+- Select theme strategy: custom theme, child theme, block theme, or trusted commercial theme.
+- Disable Gutenberg/block editor for project CPTs that are authored through custom metadata UI.
+- Register project CPTs with explicit supports and editor behavior; do not let the generic content editor appear by default.
+- Build custom metaboxes/metadata fields for project CPT authoring.
+- Use WordPress media uploader fields for CPT photo/image/document uploads where required.
+- Test add/edit screens for every CPT to confirm authors see only the approved custom fields, taxonomies, media controls, and workflow actions.
+- Limit plugins to approved, maintained, necessary plugins.
+- Disable unused themes and plugins.
+- Enforce MFA for administrators.
+- Disable direct file editing in admin where appropriate.
+- Restrict admin access by role and business need.
+- Configure backups for database and uploads.
+- Test plugin updates in staging before production.
+- Monitor abandoned plugins.
+- Document editor workflow and block usage rules.
+- Configure image sizes and media cleanup.
+- Configure SEO plugin rules without letting editors override critical technical settings accidentally.
+- Run and record a full-site SEO crawl before launch; remediate applicable issues until 90%+ audit target is met or exceptions are approved.
+- Configure security plugin/WAF only after verifying it does not break legitimate flows.
+- Use prepared statements/`$wpdb->prepare()` for all custom SQL and never concatenate untrusted input into database queries.
+- Verify all custom forms, CPT saves, AJAX actions, REST endpoints, imports, exports, and settings changes use nonces/CSRF protection, capability checks, server validation, sanitization, and context-aware escaping.
+- Harden uploads so only approved file types/sizes are accepted and uploaded files cannot execute code.
+- Protect wp-admin with least privilege, MFA for privileged users, login throttling, staging restrictions, and monitored audit events.
+- Protect the database with least-privilege credentials, backup/restore testing, retention rules, encrypted backups where required, and no public database errors.
+
+Ecommerce website
+- Define product data model.
+- Define pricing/tax rules.
+- Define inventory rules.
+- Define shipping methods.
+- Define payment methods.
+- Define refund/cancellation process.
+- Define fraud review rules.
+- Define chargeback process.
+- Define order confirmation emails.
+- Define abandoned cart rules with consent.
+- Define customer account rules.
+- Define accessibility of checkout.
+- Define PCI scope reduction strategy.
+- Define reconciliation process.
+- Define customer service scripts.
+
+SaaS or authenticated portal
+- Define tenant/account model.
+- Define role and permission model.
+- Define subscription/billing lifecycle.
+- Define onboarding checklist.
+- Define trial, upgrade, downgrade, cancellation, and renewal flows.
+- Define audit logs.
+- Define data export and deletion.
+- Define account recovery.
+- Define admin impersonation policy, if any.
+- Define API keys and token lifecycle.
+- Define customer status page.
+- Define SLA/SLO commitments.
+
+Marketplace/community/user-generated-content site
+- Define trust and safety policy.
+- Define user verification rules.
+- Define report/appeal process.
+- Define moderation queue.
+- Define spam and abuse controls.
+- Define reputation/rating rules.
+- Define dispute resolution.
+- Define content takedown workflow.
+- Define legal escalation path.
+- Define community guideline enforcement.
+
+Media/publication site
+- Define editorial calendar.
+- Define author profiles.
+- Define fact-check workflow.
+- Define corrections policy.
+- Define paywall/membership rules if any.
+- Define newsletter signup and consent rules.
+- Define syndication rules.
+- Define image licensing workflow.
+- Define archive strategy.
+- Define evergreen content refresh schedule.
+
+AI-assisted delivery project
+- Define AI delivery owner.
+- Define accountable human owner for every AI-executable task.
+- Define human-only decisions.
+- Define AI task packet template.
+- Define prompt/context library.
+- Define AI-safe data and redaction rules.
+- Define AI tool permission matrix.
+- Define AI run log and evidence format.
+- Define self-review and independent review process.
+- Define required automated checks.
+- Define hallucination and unsupported-claim handling.
+- Define production access restrictions.
+- Define stop/escalation triggers.
+- Define AI cost limits and monitoring.
+- Define AI delivery metrics: acceptance rate, rework rate, defect rate, escalation rate, and review latency.
+
+AI-enabled website
+- Define AI feature purpose.
+- Define data sent to model.
+- Define prohibited inputs.
+- Define human review requirements.
+- Define prompt/version management.
+- Define output safety checks.
+- Define user disclosure requirements.
+- Define hallucination/error handling.
+- Define abuse monitoring.
+- Define cost limits.
+- Define model fallback.
+- Define logging retention.
+
+========================================================================
+22. "DO NOT MISS" CROSS-CUTTING EDGE CASES
+========================================================================
+
+User experience edge cases
+- First visit.
+- Returning visit.
+- Logged out.
+- Logged in.
+- Expired session.
+- Forgotten password.
+- No search results.
+- Empty cart.
+- Payment failure.
+- Duplicate form submission.
+- Slow network.
+- Offline or interrupted connection.
+- File too large.
+- Unsupported file type.
+- Permission denied.
+- Account locked.
+- User wants to delete account.
+- User wants to change consent.
+- User uses keyboard only.
+- User uses screen reader.
+- User uses high zoom.
+- User prefers reduced motion.
+- User has low bandwidth.
+- User is on mobile with one hand.
+- User changes language.
+- User changes currency.
+- User arrives through old URL.
+- User arrives through ad with tracking blocked.
+- User opens email link after token expired.
+- User need conflicts with a business, compliance, or technical requirement.
+
+Operational edge cases
+- DNS provider is unavailable.
+- Payment provider is degraded.
+- Email provider is blacklisted or rate limited.
+- CRM API is down.
+- CMS admin is inaccessible.
+- Search provider is stale.
+- CDN caches wrong content.
+- Backup job silently fails.
+- Staging site becomes indexed.
+- Developer commits secret.
+- Plugin update breaks checkout.
+- Editor deletes important page.
+- Bot floods forms.
+- Account credential stuffing begins.
+- Social campaign creates traffic spike.
+- Legal asks for urgent policy update.
+- Customer requests deletion while order retention applies.
+- Vendor contract auto-renews unexpectedly.
+- Key employee leaves.
+- Domain renewal is missed.
+- SSL certificate renewal fails.
+- Requirement changes after PRD, design, architecture, QA, or launch baseline.
+- PRD or SRD owner leaves before approval or handoff.
+
+Out-of-the-box resilience ideas
+- Create a one-click "disable risky feature" kill switch for payments, AI, search, forms, or chat.
+- Add "known issue" content blocks support can activate without a developer.
+- Maintain a plain static emergency page that can be served if the app is down.
+- Practice a "fake launch" one week before launch with all real people and timing.
+- Run a "staging leak drill" to verify staging cannot be indexed or accessed publicly.
+- Run an "editor disaster drill" where a page is accidentally deleted and restored.
+- Run a "vendor outage drill" for CRM, payment, email, or search.
+- Run a "privacy request drill" to export/delete a test user's data.
+- Add a "data nutrition label" for each form: why each field is collected and how long it is kept.
+- Add a "third-party script budget" requiring approval for every new external script.
+- Maintain a "graveyard list" of removed pages, features, vendors, plugins, and reasons.
+- Track "user trust debt" separately from technical debt.
+- Maintain a requirements decision ledger linking PRD/SRD changes to backlog, tests, approvals, release notes, and support documentation.
+
+========================================================================
+23. FINAL LAUNCH GO/NO-GO MASTER CHECKLIST
+========================================================================
+
+Business
+- Sponsor approved launch.
+- Product owner accepted MVP.
+- Approved PRD and SRD baselines are current.
+- Launch-scope PRD/SRD requirements are accepted or formally deferred.
+- Budget for post-launch support exists.
+- Legal/privacy approved required pages and notices.
+- Support team is ready.
+- Sales/marketing team is ready.
+- Operations team is ready.
+
+Content and SEO
+- All MVP pages are approved.
+- All links are checked.
+- All metadata is checked.
+- Full-site SEO crawl is complete for all applicable public pages, posts, CPTs, archives, taxonomies, pagination, and important URL patterns.
+- SEO audit score target is 90%+ or exceptions are approved.
+- Major browser rendered-output checks are complete where tools allow.
+- XML sitemap is ready.
+- robots.txt is correct.
+- Redirect map is implemented.
+- Structured data is valid where used.
+- Open graph/social previews are checked.
+- Staging is blocked from indexing.
+- Production is indexable where intended.
+
+Design and accessibility
+- Responsive design is verified.
+- Keyboard navigation is verified.
+- Screen reader basics are verified.
+- Focus states are visible.
+- Contrast passes target.
+- Forms have labels and errors.
+- Touch targets are usable.
+- Reduced motion is respected.
+- Accessibility statement is published if required.
+
+Engineering
+- Production build is tagged.
+- CI/CD is passing.
+- Requirements-to-test matrix is complete for launch scope.
+- WordPress project CPT admin screens, if used, open custom metadata fields/metaboxes with required photo/media uploads and do not open the block builder unless an approved exception exists.
+- Environment variables are correct.
+- Secrets are not in code.
+- Database migrations are tested.
+- Backups are current.
+- Restore is tested.
+- Rollback is tested.
+- Error pages exist.
+- Feature flags/kill switches work where used.
+
+AI-assisted delivery, if used
+- AI-assisted delivery policy is approved.
+- AI task packets exist for AI-executed launch-scope work.
+- AI run log and evidence package are complete.
+- Human approvers reviewed AI-generated launch-scope work.
+- Independent review covered AI-generated code, content, configuration, tests, and documentation.
+- AI tools have no unauthorized access to production, secrets, payments, DNS, email sends, customer data, or destructive operations.
+- AI-related open risks are fixed, deferred, or accepted by accountable human owners.
+
+Security and privacy
+- MFA is enabled for privileged access.
+- Admin access is least privilege.
+- Security headers are configured.
+- Cybersecurity evidence package is complete and linked.
+- SQL injection, XSS, CSRF, authz, upload, form abuse, database, encryption, secrets, WAF/network, and WordPress hardening checks pass or have approved risk acceptance.
+- TLS certificate is valid.
+- Dependency scan is reviewed.
+- Auth and authorization tests pass.
+- Rate limiting/spam controls are enabled.
+- Consent tools work.
+- Tracking respects consent.
+- Data export/deletion process exists where applicable.
+- AI data handling and tool access restrictions are verified if AI-assisted delivery was used.
+- Incident response owner is assigned.
+
+Analytics and operations
+- Analytics events are validated.
+- Conversion tracking is validated.
+- Dashboards are ready.
+- Uptime monitoring is active.
+- Error monitoring is active.
+- Performance monitoring is active.
+- Alert routing is tested.
+- Support queue is tested.
+- Knowledge base/support scripts are ready.
+- Launch communications are ready.
+
+========================================================================
+24. PRIMARY REFERENCES REVIEWED FOR CURRENT BEST PRACTICE
+========================================================================
+
+Accessibility
+- W3C Web Content Accessibility Guidelines WCAG 2.2 Recommendation:
+  https://www.w3.org/news/2023/web-content-accessibility-guidelines-wcag-2-2-is-a-w3c-recommendation/
+
+Security
+- OWASP Top 10:
+  https://owasp.org/Top10/
+- OWASP Application Security Verification Standard:
+  https://owasp.org/www-project-application-security-verification-standard/
+- OWASP SQL Injection Prevention Cheat Sheet:
+  https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html
+- OWASP Cross-Site Request Forgery Prevention Cheat Sheet:
+  https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html
+- OWASP Content Security Policy Cheat Sheet:
+  https://cheatsheetseries.owasp.org/cheatsheets/Content_Security_Policy_Cheat_Sheet.html
+- OWASP Cryptographic Storage Cheat Sheet:
+  https://cheatsheetseries.owasp.org/cheatsheets/Cryptographic_Storage_Cheat_Sheet.html
+- OWASP Secrets Management Cheat Sheet:
+  https://cheatsheetseries.owasp.org/cheatsheets/Secrets_Management_Cheat_Sheet.html
+- WordPress Hardening guidance:
+  https://developer.wordpress.org/advanced-administration/security/hardening/
+- OWASP Web Security Testing Guide:
+  https://owasp.org/www-project-web-security-testing-guide/
+- OWASP WSTG testing framework phases:
+  https://owasp.org/www-project-web-security-testing-guide/latest/3-The_OWASP_Testing_Framework/
+- NIST Cybersecurity Framework 2.0:
+  https://www.nist.gov/publications/nist-cybersecurity-framework-csf-20
+
+Performance
+- web.dev Core Web Vitals metrics and thresholds:
+  https://web.dev/articles/defining-core-web-vitals-thresholds
+
+Search/SEO
+- Google Search Essentials:
+  https://developers.google.com/search/docs/essentials
+
+Privacy and compliance
+- European Commission GDPR data protection overview:
+  https://commission.europa.eu/law/law-topic/data-protection/eu-data-protection-rules_en
+- European Data Protection Board controller/processor guide:
+  https://www.edpb.europa.eu/sme-data-protection-guide/data-controller-data-processor_en
+- ICO data protection by design and default guidance:
+  https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/accountability-and-governance/guide-to-accountability-and-governance/data-protection-by-design-and-default/
+- California Attorney General CCPA overview:
+  https://oag.ca.gov/privacy/ccpa
+- California Privacy Protection Agency laws and regulations:
+  https://cppa.ca.gov/regulations/
+
+Payments
+- PCI Security Standards Council PCI DSS v4.0 publication:
+  https://www.pcisecuritystandards.org/about_us/press_releases/securing-the-future-of-payments-pci-ssc-publishes-pci-data-security-standard-v4-0/
+- PCI Security Standards Council PCI DSS v4.0.1 publication note:
+  https://blog.pcisecuritystandards.org/just-published-pci-dss-v4-0-1
+
+========================================================================
+25. CLOSING NOTE
+========================================================================
+
+This blueprint is intentionally broad. No single project should execute every optional task blindly.
+The correct use is to mark each task as:
+- Required now
+- Required later
+- Not applicable
+- Requires specialist review
+- Accepted risk
+
+The strongest teams do not treat launch as the finish line. They treat launch as the start of measured operations.
+If AI assists delivery, the strongest teams also treat every AI output as supervised work product: traceable, reviewed, tested, approved, and continuously improved.
+
+

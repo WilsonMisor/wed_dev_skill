@@ -1,0 +1,2459 @@
+Workplace UX/UI Design and Wireframing Framework
+
+Purpose
+
+This framework is a practical operating system for designing digital products from early product thinking through low fidelity wireframes, high fidelity UI, prototypes, developer handoff, implementation QA, and post-launch improvement.
+
+Use it for websites, web applications, mobile applications, tablet interfaces, dashboards, admin systems, portals, commerce flows, internal tools, and service products.
+
+Core principle
+
+Design one coherent product.
+
+Do not design a mobile product, a tablet product, and a desktop product as separate products. Define one user model, one information architecture, one terminology system, one interaction model, one accessibility standard, and one design system. Then adapt the composition to available space, input method, device capabilities, platform conventions, user context, and task complexity.
+
+UX defines what should happen, for whom, why it matters, and how people can complete their goals.
+
+UI defines how that logic is perceived, understood, operated, and trusted.
+
+Low fidelity wireframing proves structure, flow, hierarchy, and interaction logic.
+
+High fidelity design proves realistic interface quality, content, components, visual system, accessibility, and implementation detail.
+
+Prototyping proves behavior.
+
+Testing proves whether users can actually use the product.
+
+Developer handoff proves the design can be built without guesswork.
+
+Production measurement proves whether the product works in the real world.
+
+
+PART 1. COMPLETE WORKPLACE DESIGN LIFECYCLE
+
+Use these gates as the default product design sequence.
+
+Gate 0. Intake and scope
+
+Goal:
+
+Understand what is being requested, why now, who cares, and what the design work must produce.
+
+Activities:
+
+1. Clarify the business request.
+2. Identify the product surface involved.
+3. Define in-scope and out-of-scope work.
+4. Identify stakeholders, decision makers, and reviewers.
+5. Identify known constraints.
+6. Identify unknowns and research needs.
+7. Confirm deliverables and review points.
+
+Outputs:
+
+1. Project brief.
+2. Stakeholder map.
+3. Scope boundaries.
+4. Assumption list.
+5. Risk list.
+6. Delivery plan.
+
+Exit criteria:
+
+1. The problem is understood.
+2. The target user is identified.
+3. The business goal is explicit.
+4. The next decision is clear.
+
+
+Gate 1. Discovery and product understanding
+
+Goal:
+
+Understand users, business objectives, context, behavior, pain points, constraints, and success metrics before designing screens.
+
+Activities:
+
+1. Review analytics, support tickets, sales notes, product data, and existing research.
+2. Interview stakeholders.
+3. Interview or observe users where possible.
+4. Study current workflows and workarounds.
+5. Identify user groups and roles.
+6. Identify user goals, anxieties, and success signals.
+7. Identify business goals.
+8. Identify technical, legal, privacy, operational, and brand constraints.
+9. Define success metrics.
+
+Outputs:
+
+1. Problem statement.
+2. User groups.
+3. Jobs to be done or user goals.
+4. Current-state journey.
+5. Pain points.
+6. Opportunity areas.
+7. Business objectives.
+8. Success metrics.
+9. Product design principles.
+
+Exit criteria:
+
+1. The problem is specific, not generic.
+2. The primary user is known.
+3. The business objective is measurable.
+4. Major assumptions are visible.
+
+
+Gate 2. Requirements and rules
+
+Goal:
+
+Translate product understanding into functional behavior, nonfunctional expectations, content needs, permissions, data rules, and edge cases.
+
+Activities:
+
+1. Define user stories or jobs.
+2. Define functional requirements.
+3. Define nonfunctional requirements.
+4. Define business rules.
+5. Define data objects and attributes.
+6. Define roles and permissions.
+7. Define required content.
+8. Define system states.
+9. Define failure scenarios.
+10. Define analytics and event needs.
+
+Outputs:
+
+1. Requirement list.
+2. Role and permission matrix.
+3. Business rule matrix.
+4. Content inventory.
+5. Data requirements.
+6. State inventory.
+7. Edge case list.
+8. Acceptance criteria.
+
+Exit criteria:
+
+1. Designers know what the product must allow users to do.
+2. Developers can see the behavioral rules early.
+3. Stakeholders can confirm what matters before screen design begins.
+
+
+Gate 3. UX architecture
+
+Goal:
+
+Define how information, navigation, journeys, tasks, and flows fit together.
+
+Activities:
+
+1. Create information architecture.
+2. Define the main navigation model.
+3. Map user journeys.
+4. Map task flows.
+5. Map user flows with decisions and failure paths.
+6. Define object relationships.
+7. Define screen inventory.
+8. Define entry points and exit points.
+9. Define responsive strategy.
+
+Outputs:
+
+1. Sitemap or product map.
+2. Navigation model.
+3. User journeys.
+4. Task flows.
+5. User flows.
+6. Screen inventory.
+7. Responsive behavior model.
+
+Exit criteria:
+
+1. The team knows what screens or views are needed.
+2. The team knows how users move through them.
+3. The team knows which flows are critical.
+4. The team knows what must be tested in low fidelity.
+
+
+Gate 4. Low fidelity wireframing
+
+Goal:
+
+Explore and validate structure before investing in visual design.
+
+Activities:
+
+1. Sketch multiple layout approaches.
+2. Define page hierarchy.
+3. Define content order.
+4. Place navigation and primary actions.
+5. Map screen states.
+6. Map responsive behavior.
+7. Compare alternatives.
+8. Test flows with users or stakeholders.
+9. Revise based on findings.
+
+Outputs:
+
+1. Low fidelity mobile wireframes.
+2. Low fidelity tablet wireframes where relevant.
+3. Low fidelity desktop wireframes.
+4. Flow diagrams.
+5. State diagrams.
+6. Responsive notes.
+7. Findings from structural testing.
+
+Exit criteria:
+
+1. Users can understand the structure.
+2. Users can find the correct starting point.
+3. Users can complete primary tasks.
+4. Navigation and terminology make sense.
+5. Major layout and flow risks have been addressed.
+
+
+Gate 5. Visual system and high fidelity design
+
+Goal:
+
+Turn validated structure into a realistic product interface.
+
+Activities:
+
+1. Define or apply the design system.
+2. Define layout grid and spacing.
+3. Define typography roles.
+4. Define color tokens and semantic usage.
+5. Define iconography and imagery rules.
+6. Build reusable components.
+7. Create high fidelity screens.
+8. Create component and screen states.
+9. Add realistic content.
+10. Specify responsive behavior.
+
+Outputs:
+
+1. Design system foundations.
+2. Component library or component references.
+3. High fidelity screens.
+4. Screen states.
+5. Responsive variants.
+6. Prototype-ready flows.
+7. Accessibility annotations.
+
+Exit criteria:
+
+1. The interface works with realistic content.
+2. Important component states exist.
+3. Responsive behavior is documented.
+4. Accessibility has been designed, not left for later.
+5. The product looks and behaves coherently.
+
+
+Gate 6. Prototype validation
+
+Goal:
+
+Test whether realistic interactions, content, visual hierarchy, accessibility, and flow behavior work.
+
+Activities:
+
+1. Prototype critical workflows.
+2. Test task completion.
+3. Test form behavior.
+4. Test navigation.
+5. Test responsive layouts.
+6. Test keyboard behavior.
+7. Test screen reader assumptions where possible.
+8. Test error recovery.
+9. Capture findings and revise.
+
+Outputs:
+
+1. Interactive prototype.
+2. Test plan.
+3. Usability findings.
+4. Accessibility findings.
+5. Final design revisions.
+
+Exit criteria:
+
+1. Primary workflows are understandable.
+2. Users can recover from common problems.
+3. The design supports required devices and input methods.
+4. Remaining risks are documented.
+
+
+Gate 7. Developer handoff
+
+Goal:
+
+Give developers enough structure, specification, and context to build the intended experience without guessing.
+
+Activities:
+
+1. Confirm final screens.
+2. Confirm component usage.
+3. Confirm design tokens.
+4. Annotate spacing, states, behavior, and responsive rules.
+5. Define validation rules.
+6. Define loading, empty, error, and success states.
+7. Define accessibility expectations.
+8. Review feasibility with engineering.
+9. Resolve gaps before build begins.
+
+Outputs:
+
+1. Final design file.
+2. Prototype link where useful.
+3. Component specifications.
+4. Responsive specifications.
+5. Interaction specifications.
+6. Content rules.
+7. Accessibility notes.
+8. QA checklist.
+
+Exit criteria:
+
+1. Developers can identify what to build.
+2. Designers can identify what to review.
+3. Product managers can identify expected behavior.
+4. QA can identify expected states and acceptance criteria.
+
+
+Gate 8. Implementation QA
+
+Goal:
+
+Ensure the built product preserves the intended UX/UI quality.
+
+Activities:
+
+1. Compare implementation against design.
+2. Test responsive behavior.
+3. Test accessibility.
+4. Test forms and validation.
+5. Test loading, empty, error, and success states.
+6. Test permissions.
+7. Test performance experience.
+8. Log design defects with severity.
+9. Review fixes.
+
+Outputs:
+
+1. Design QA report.
+2. Accessibility QA report.
+3. Responsive QA report.
+4. Defect list.
+5. Signoff or exception list.
+
+Exit criteria:
+
+1. Critical UX defects are resolved.
+2. Accessibility blockers are resolved.
+3. Responsive layouts are usable.
+4. Product behavior matches the accepted design or documented exceptions.
+
+
+Gate 9. Production measurement and improvement
+
+Goal:
+
+Measure whether the live product achieves user and business outcomes.
+
+Activities:
+
+1. Review analytics.
+2. Review conversion or completion rates.
+3. Review abandonment.
+4. Review support tickets.
+5. Review search logs.
+6. Review error logs.
+7. Review session recordings where permitted.
+8. Interview users after launch.
+9. Prioritize improvements.
+
+Outputs:
+
+1. Product health report.
+2. UX issue backlog.
+3. Experiment ideas.
+4. Design improvement plan.
+
+Exit criteria:
+
+1. The team knows whether the design works in production.
+2. Improvements are based on evidence, not opinion alone.
+
+
+PART 2. UX AND UI FOUNDATIONS
+
+UX includes:
+
+1. Problem framing.
+2. User research.
+3. User needs.
+4. Product requirements.
+5. Information architecture.
+6. Navigation.
+7. Content strategy.
+8. User journeys.
+9. Task flows.
+10. User flows.
+11. Interaction design.
+12. Accessibility.
+13. Error prevention.
+14. Recovery.
+15. Usability testing.
+16. Performance expectations.
+17. Product measurement.
+
+UI includes:
+
+1. Layout.
+2. Grid.
+3. Spacing.
+4. Typography.
+5. Color.
+6. Iconography.
+7. Imagery.
+8. Components.
+9. States.
+10. Motion.
+11. Data visualization.
+12. Visual hierarchy.
+13. Density.
+14. Responsive composition.
+15. Design tokens.
+
+Good UX with weak UI can still fail because users cannot understand, trust, or operate the product.
+
+Good UI with weak UX can still fail because the product may look polished while solving the wrong problem or hiding critical actions.
+
+Professional product design requires both.
+
+
+PART 3. PRODUCT STRATEGY AND DISCOVERY
+
+Start with the problem, not with screens.
+
+Before opening a design tool, answer:
+
+1. What problem exists?
+2. Who experiences it?
+3. How often does it happen?
+4. How severe is it?
+5. How do users solve it today?
+6. What is broken about the current solution?
+7. What user outcome should improve?
+8. What business outcome should improve?
+9. What constraints exist?
+10. What risk exists if the design is wrong?
+11. What would prove the solution is working?
+
+Research sources:
+
+1. User interviews.
+2. Contextual observation.
+3. Customer support tickets.
+4. Sales calls.
+5. Product analytics.
+6. Search logs.
+7. Funnel data.
+8. Usability recordings.
+9. Competitor and comparator products.
+10. Existing documentation.
+11. Stakeholder interviews.
+12. Compliance and policy documents.
+
+User segmentation:
+
+1. Primary users.
+2. Secondary users.
+3. Administrators.
+4. Managers.
+5. Internal operators.
+6. External customers.
+7. New users.
+8. Returning users.
+9. Frequent users.
+10. Occasional users.
+11. Expert users.
+12. Low-confidence users.
+13. Users with disabilities.
+14. Users with poor connectivity.
+15. Mobile-first users.
+16. Desktop-heavy users.
+17. Users switching across devices.
+
+For each user group define:
+
+1. Main goal.
+2. Trigger for using the product.
+3. Current workaround.
+4. Knowledge level.
+5. Emotional context.
+6. Time pressure.
+7. Device context.
+8. Permissions.
+9. Success signal.
+10. Failure risk.
+
+Business goals may include:
+
+1. Increase revenue.
+2. Increase conversion.
+3. Increase retention.
+4. Reduce support load.
+5. Reduce operational cost.
+6. Reduce processing time.
+7. Improve data quality.
+8. Reduce errors.
+9. Improve compliance.
+10. Increase task completion.
+11. Improve employee productivity.
+12. Improve customer satisfaction.
+
+Discovery deliverable template:
+
+1. Problem statement:
+   The product needs to help [user group] accomplish [goal] because [current pain or business issue].
+2. Target users:
+   Primary, secondary, edge cases, accessibility needs, device context.
+3. Current behavior:
+   How users complete the task today.
+4. Success metrics:
+   Completion, conversion, time, error rate, retention, satisfaction, support reduction.
+5. Constraints:
+   Technical, legal, privacy, operational, timeline, budget, brand, platform.
+6. Risks:
+   Wrong user, wrong flow, missing state, complex permissions, poor data, poor performance.
+7. Open questions:
+   Items that must be researched, decided, or validated.
+
+
+PART 4. REQUIREMENTS, RULES, AND STATES
+
+Functional requirements explain what users must be able to do.
+
+Examples:
+
+1. Register.
+2. Log in.
+3. Search.
+4. Create records.
+5. Edit records.
+6. Delete records.
+7. Upload files.
+8. Download files.
+9. Make payments.
+10. Book appointments.
+11. Approve requests.
+12. Reject requests.
+13. Send messages.
+14. Manage users.
+15. Assign permissions.
+16. Filter data.
+17. Export reports.
+18. View history.
+19. Recover an account.
+20. Contact support.
+
+Nonfunctional requirements describe how the system must behave.
+
+Cover:
+
+1. Accessibility.
+2. Performance.
+3. Reliability.
+4. Availability.
+5. Security.
+6. Privacy.
+7. Scalability.
+8. Responsiveness.
+9. Browser support.
+10. Operating system support.
+11. Localization.
+12. Offline or low-connectivity behavior.
+13. Compatibility with assistive technology.
+14. Data retention.
+15. Auditability.
+
+Business rules frequently determine interface behavior.
+
+Define:
+
+1. Who can see each screen.
+2. Who can create, edit, approve, reject, archive, or delete.
+3. Which fields are required.
+4. Which statuses can change into other statuses.
+5. Which actions require confirmation.
+6. Which actions are reversible.
+7. Which actions are irreversible.
+8. Which data is visible by role.
+9. Which documents are required.
+10. Which limits apply.
+11. Which notifications are sent.
+12. Which records are locked and why.
+
+State inventory:
+
+1. Default.
+2. Loading.
+3. Empty.
+4. Partially populated.
+5. Populated.
+6. Searching.
+7. Search results.
+8. No search results.
+9. Filtered.
+10. No filtered results.
+11. Editing.
+12. Saving.
+13. Saved.
+14. Save failed.
+15. Uploading.
+16. Upload failed.
+17. Offline.
+18. Permission denied.
+19. Session expired.
+20. Validation error.
+21. System error.
+22. Success.
+23. Warning.
+24. Destructive confirmation.
+
+Requirement readiness checklist:
+
+1. The actor is clear.
+2. The task is clear.
+3. The success condition is clear.
+4. The data needed is clear.
+5. The permission rule is clear.
+6. The failure cases are clear.
+7. The responsive context is clear.
+8. The accessibility expectation is clear.
+9. The analytics need is clear.
+10. The acceptance criteria are testable.
+
+
+PART 5. INFORMATION ARCHITECTURE AND CONTENT STRATEGY
+
+Information architecture determines how information is grouped, named, ordered, navigated, and found.
+
+Define:
+
+1. Main objects.
+2. Object relationships.
+3. Primary sections.
+4. Secondary sections.
+5. Screen hierarchy.
+6. Navigation hierarchy.
+7. Content hierarchy.
+8. Search scope.
+9. Filter categories.
+10. Sort options.
+11. Cross-links.
+12. User entry points.
+13. User exit points.
+
+Common IA artifacts:
+
+1. Content inventory.
+2. Sitemap.
+3. Object model.
+4. Navigation map.
+5. Taxonomy.
+6. Card sort findings.
+7. Page table.
+8. Screen inventory.
+9. URL or route map.
+
+Navigation principles:
+
+1. Use user language, not internal jargon.
+2. Keep labels short and specific.
+3. Make current location obvious.
+4. Make next actions discoverable.
+5. Keep frequent destinations easier to reach.
+6. Avoid deep nesting unless the content genuinely requires it.
+7. Support direct links to important views.
+8. Preserve user context when moving between related screens.
+9. Keep navigation consistent across similar areas.
+10. Adapt navigation to viewport and input method.
+
+Content strategy:
+
+1. Page titles.
+2. Section headings.
+3. Labels.
+4. Helper text.
+5. Empty state messages.
+6. Error messages.
+7. Success messages.
+8. Tooltips.
+9. Button text.
+10. Notification text.
+11. Confirmation text.
+12. Legal and consent text.
+13. Placeholder data for design testing.
+
+Content quality rules:
+
+1. Use plain language.
+2. Put the user action first.
+3. Avoid vague buttons such as Submit when a specific verb is better.
+4. Explain problems in a way users can fix.
+5. Avoid blaming the user.
+6. Avoid unnecessary instructions when the interface is self-explanatory.
+7. Keep labels stable across the product.
+8. Write for translation and longer strings.
+9. Do not hide critical meaning in icons alone.
+10. Use consistent terminology for the same object or action.
+
+
+PART 6. JOURNEYS, TASK FLOWS, AND USER FLOWS
+
+User journeys show the broader experience over time.
+
+A journey may include:
+
+1. Trigger.
+2. Awareness.
+3. Entry.
+4. Authentication.
+5. Onboarding.
+6. Discovery.
+7. Main task.
+8. Decision.
+9. Confirmation.
+10. Failure.
+11. Recovery.
+12. Support.
+13. Return visit.
+14. Exit.
+
+Task flows show the ideal sequence for completing one task.
+
+Example:
+
+1. Open Customers.
+2. Search customer.
+3. Select customer.
+4. Edit customer.
+5. Save.
+6. See confirmation.
+
+User flows include decisions, branches, errors, permissions, cancellation, validation, and recovery.
+
+For each flow document:
+
+1. Actor.
+2. Goal.
+3. Entry point.
+4. Preconditions.
+5. Trigger.
+6. Main path.
+7. Decision points.
+8. Alternate paths.
+9. Error paths.
+10. Permission restrictions.
+11. System responses.
+12. Success state.
+13. Recovery path.
+14. Exit point.
+15. Analytics events.
+
+Account for:
+
+1. Incorrect input.
+2. Missing data.
+3. Duplicate data.
+4. Permission denial.
+5. Payment failure.
+6. Upload failure.
+7. Network loss.
+8. Timeout.
+9. Expired session.
+10. Record deleted by another user.
+11. Server error.
+12. User cancellation.
+13. Interrupted workflow.
+
+
+PART 7. RESPONSIVE AND ADAPTIVE PRODUCT DESIGN
+
+Design for available space, not for named devices only.
+
+A useful viewport model:
+
+1. Compact.
+2. Medium.
+3. Expanded.
+4. Large.
+5. Extra large.
+
+Breakpoints should be based on where the layout stops working, not only on common device sizes.
+
+Responsive behavior can include:
+
+1. Resize.
+2. Reflow.
+3. Stack.
+4. Unstack.
+5. Wrap.
+6. Collapse.
+7. Expand.
+8. Hide lower-priority content.
+9. Reveal additional context.
+10. Move controls.
+11. Change navigation pattern.
+12. Change table behavior.
+13. Change density.
+14. Change interaction model.
+
+Mobile UX:
+
+1. Prioritize the main task.
+2. Prefer one-column layouts.
+3. Keep primary actions reachable.
+4. Minimize typing.
+5. Use appropriate keyboards.
+6. Support autofill.
+7. Use bottom sheets where suitable.
+8. Respect safe areas.
+9. Account for the software keyboard.
+10. Avoid hidden gestures for essential actions.
+11. Preserve progress during interruptions.
+12. Handle poor connectivity.
+
+Tablet UX:
+
+1. Treat tablet as its own context.
+2. Support touch, stylus, keyboard, pointer, and split screen where relevant.
+3. Consider navigation rails.
+4. Consider sidebars.
+5. Consider two-pane layouts.
+6. Consider master-detail views.
+7. Design portrait and landscape.
+8. Avoid assuming full-screen width.
+
+Desktop UX:
+
+1. Prioritize efficiency and simultaneous context.
+2. Support persistent navigation.
+3. Support richer tables and filters.
+4. Support keyboard navigation.
+5. Support bulk actions where useful.
+6. Support resizable windows.
+7. Avoid overly stretched content on wide screens.
+8. Do not make hover the only way to discover essential functionality.
+9. Support browser zoom.
+10. Keep related information close enough to compare.
+
+Input methods:
+
+1. Touch.
+2. Mouse.
+3. Trackpad.
+4. Keyboard.
+5. Stylus.
+6. Screen reader.
+7. Voice input where relevant.
+
+Responsive specification template:
+
+1. Component or screen name.
+2. Compact behavior.
+3. Medium behavior.
+4. Expanded behavior.
+5. Large behavior.
+6. Navigation behavior.
+7. Primary action behavior.
+8. Content priority.
+9. Hidden or collapsed content.
+10. Overflow behavior.
+11. Touch and keyboard behavior.
+12. Breakpoint rationale.
+
+
+PART 8. INTERACTION DESIGN
+
+Interaction design defines how users operate the product and how the system responds.
+
+Design the object-action model:
+
+1. What objects exist?
+2. What actions can users take on each object?
+3. Which actions are global?
+4. Which actions are contextual?
+5. Which actions are destructive?
+6. Which actions require permission?
+7. Which actions are reversible?
+8. Which actions require confirmation?
+
+Action hierarchy:
+
+1. Primary action: the most likely next action.
+2. Secondary action: useful but less important.
+3. Tertiary action: available but visually quiet.
+4. Destructive action: visually distinct and protected.
+
+Feedback should answer:
+
+1. Did the system receive my action?
+2. What is happening now?
+3. Did it succeed?
+4. Did it fail?
+5. What should I do next?
+
+Error prevention:
+
+1. Constraints.
+2. Clear labels.
+3. Reasonable defaults.
+4. Inline validation.
+5. Preview.
+6. Review screens.
+7. Undo.
+8. Confirmation for high-consequence actions.
+9. Clear permission boundaries.
+10. Safe destructive flows.
+
+Recovery:
+
+1. Failed save.
+2. Failed payment.
+3. Failed upload.
+4. Lost connection.
+5. Invalid input.
+6. Expired session.
+7. Insufficient permission.
+8. Missing record.
+9. Duplicate record.
+10. Interrupted workflow.
+
+Progressive disclosure:
+
+Use progressive disclosure when complexity is real. Do not hide essential information simply to make a screen look clean.
+
+Good uses:
+
+1. Advanced filters.
+2. Optional settings.
+3. Secondary metadata.
+4. Complex configuration.
+5. Expert features.
+
+Poor uses:
+
+1. Hiding the primary action.
+2. Hiding required information.
+3. Hiding error details needed for recovery.
+4. Hiding navigation that users need frequently.
+
+
+PART 9. CORE PRODUCT PATTERNS
+
+Forms:
+
+1. Persistent labels.
+2. Required and optional fields.
+3. Help text.
+4. Input masks where useful.
+5. Appropriate field types.
+6. Appropriate mobile keyboards.
+7. Autofill.
+8. Defaults.
+9. Validation timing.
+10. Inline errors.
+11. Form-level errors.
+12. Save progress.
+13. Cancel behavior.
+14. Reset behavior.
+15. Review before submission where needed.
+16. Success state.
+17. Failure state.
+18. Privacy and consent text.
+
+Tables and data grids:
+
+1. Column priority.
+2. Column labels.
+3. Sorting.
+4. Filtering.
+5. Search.
+6. Pagination or infinite loading.
+7. Row selection.
+8. Select all.
+9. Bulk actions.
+10. Row actions.
+11. Expandable rows.
+12. Sticky headers.
+13. Sticky columns.
+14. Horizontal overflow.
+15. Missing data.
+16. Long content.
+17. Empty state.
+18. Loading state.
+19. Error state.
+20. Export.
+21. Responsive transformation.
+22. Keyboard navigation.
+23. Screen reader meaning.
+
+Search:
+
+1. Search entry.
+2. Search scope.
+3. Suggestions.
+4. Recent searches.
+5. Typographical errors.
+6. Result count.
+7. Highlighted matches.
+8. Filters.
+9. Sorting.
+10. No results.
+11. Search loading.
+12. Search error.
+
+Filtering:
+
+1. Use understandable terms.
+2. Show active filters.
+3. Allow individual removal.
+4. Allow clearing all.
+5. Update results predictably.
+6. Preserve filters when users inspect a result and return.
+7. Work on mobile without overwhelming the screen.
+
+Dashboards:
+
+1. User role.
+2. Decision supported.
+3. Metrics shown.
+4. Time range.
+5. Data source.
+6. Update frequency.
+7. Alert thresholds.
+8. Drill-down path.
+9. Empty and loading states.
+10. Export or sharing needs.
+
+Modals, drawers, and overlays:
+
+1. Trigger.
+2. Purpose.
+3. Size.
+4. Placement.
+5. Scroll behavior.
+6. Dismiss behavior.
+7. Escape key behavior.
+8. Focus trap.
+9. Return focus.
+10. Background interaction.
+11. Mobile adaptation.
+12. Tablet adaptation.
+13. Desktop adaptation.
+
+Notifications:
+
+1. Type.
+2. Trigger.
+3. Timing.
+4. Persistence.
+5. User action required.
+6. Dismiss behavior.
+7. Accessibility announcement.
+8. History or inbox where needed.
+
+Onboarding:
+
+1. Keep it short.
+2. Make it skippable where appropriate.
+3. Make it contextual.
+4. Focus on the first meaningful task.
+5. Support return visits.
+6. Do not block expert users unnecessarily.
+
+
+PART 10. VISUAL UI DESIGN FOUNDATION
+
+Layout:
+
+1. Grid.
+2. Columns.
+3. Gutters.
+4. Margins.
+5. Containers.
+6. Maximum widths.
+7. Alignment rules.
+8. Responsive behavior.
+
+Spacing:
+
+Use a spacing scale. Common values include 4, 8, 12, 16, 24, 32, 40, 48, and 64. The exact values matter less than consistent use.
+
+Visual hierarchy:
+
+Every screen should communicate:
+
+1. Where the user is.
+2. What the screen is about.
+3. What information matters most.
+4. What action matters most.
+5. What secondary actions exist.
+6. What changed.
+7. What needs attention.
+
+Build hierarchy through:
+
+1. Position.
+2. Size.
+3. Weight.
+4. Spacing.
+5. Grouping.
+6. Alignment.
+7. Contrast.
+8. Color.
+9. Motion where useful.
+
+Typography:
+
+Typical roles:
+
+1. Display.
+2. Page title.
+3. Section heading.
+4. Subheading.
+5. Body.
+6. Supporting text.
+7. Label.
+8. Caption.
+9. Data value.
+10. Code or monospace.
+
+Typography rules:
+
+1. Maintain readable line lengths.
+2. Avoid too many font families.
+3. Avoid too many weights.
+4. Support text enlargement.
+5. Keep labels legible.
+6. Avoid decorative type for operational interfaces.
+7. Ensure text does not clip, overlap, or disappear.
+
+Color:
+
+Semantic color roles:
+
+1. Primary.
+2. Secondary.
+3. Background.
+4. Surface.
+5. Border.
+6. Primary text.
+7. Secondary text.
+8. Link.
+9. Information.
+10. Success.
+11. Warning.
+12. Error.
+13. Disabled.
+14. Selected.
+15. Focus.
+
+Color rules:
+
+1. Do not communicate meaning through color alone.
+2. Use contrast suitable for the text and component purpose.
+3. Use semantic colors consistently.
+4. Reserve warning and error colors for real warnings and errors.
+5. Test color in light mode, dark mode where supported, and high contrast settings where relevant.
+
+Icons:
+
+1. Use familiar icons for familiar actions.
+2. Pair unfamiliar icons with labels or tooltips.
+3. Keep stroke weight and style consistent.
+4. Do not use decorative icons where they add noise.
+5. Ensure icon buttons have accessible names.
+
+Imagery:
+
+1. Purpose.
+2. Style.
+3. Aspect ratio.
+4. Cropping rules.
+5. Loading behavior.
+6. Fallback behavior.
+7. Alt text expectations.
+8. Performance limits.
+
+Data visualization:
+
+1. Chart type.
+2. Scale.
+3. Labels.
+4. Legend.
+5. Empty state.
+6. Loading state.
+7. Error state.
+8. Tooltip behavior.
+9. Keyboard access where feasible.
+10. Color accessibility.
+11. Data source.
+12. Update frequency.
+
+Motion:
+
+Motion should communicate cause and effect, state change, navigation relationship, expansion, collapse, progress, success, or error. Avoid motion that slows users down, distracts from the task, or creates discomfort.
+
+
+PART 11. ACCESSIBILITY AND INCLUSIVE DESIGN
+
+Accessibility is not a final audit step. It is a design requirement from the beginning.
+
+Design for:
+
+1. Keyboard users.
+2. Screen reader users.
+3. Screen magnifier users.
+4. Voice input users.
+5. Touch users.
+6. Pointer users.
+7. Users with low vision.
+8. Users with color vision differences.
+9. Users with motor impairments.
+10. Users with cognitive load constraints.
+11. Users with temporary injuries.
+12. Users in poor lighting.
+13. Users on slow networks.
+
+Accessibility design requirements:
+
+1. Logical heading structure.
+2. Logical reading order.
+3. Logical focus order.
+4. Visible focus indicators.
+5. Keyboard access.
+6. Accessible names for controls.
+7. Persistent labels.
+8. Clear error messages.
+9. Error messages linked to affected fields.
+10. Sufficient color contrast.
+11. Meaning not conveyed by color alone.
+12. Comfortable target sizes.
+13. Support for zoom and text enlargement.
+14. Reflow without horizontal scrolling for normal content.
+15. Alternatives to dragging.
+16. Alternatives to complex gestures.
+17. Reduced motion support.
+18. Orientation flexibility unless orientation is essential.
+19. Captions or transcripts for media where relevant.
+20. Alt text for meaningful images.
+
+Accessibility testing:
+
+1. Keyboard-only operation.
+2. Screen reader smoke test.
+3. Browser zoom.
+4. Text enlargement.
+5. High contrast settings.
+6. Reduced motion.
+7. Small viewport.
+8. Touch target review.
+9. Error message review.
+10. Focus order review.
+
+Automated accessibility tools are useful, but they do not replace manual testing.
+
+
+PART 12. DESIGN SYSTEM AND COMPONENT GOVERNANCE
+
+A design system prevents each screen from becoming a separate invention.
+
+Foundations:
+
+1. Color tokens.
+2. Typography tokens.
+3. Spacing tokens.
+4. Radius tokens.
+5. Elevation tokens.
+6. Motion tokens.
+7. Icon rules.
+8. Layout grid.
+9. Breakpoints.
+10. Content rules.
+
+Component specification:
+
+1. Name.
+2. Purpose.
+3. Anatomy.
+4. Variants.
+5. Sizes.
+6. States.
+7. Required and optional content.
+8. Behavior.
+9. Keyboard interaction.
+10. Accessibility notes.
+11. Responsive behavior.
+12. Usage guidelines.
+13. Do and do not examples.
+
+Component states:
+
+1. Default.
+2. Hover.
+3. Focus.
+4. Pressed.
+5. Active.
+6. Selected.
+7. Disabled.
+8. Loading.
+9. Success.
+10. Warning.
+11. Error.
+12. Expanded.
+13. Collapsed.
+14. Checked.
+15. Unchecked.
+16. Indeterminate.
+17. Read-only.
+
+Governance:
+
+1. Reuse existing components before creating new ones.
+2. Add new variants only when there is a recurring need.
+3. Document why a component exists.
+4. Keep token names stable.
+5. Deprecate old components intentionally.
+6. Align design components with code components where possible.
+7. Review accessibility before adoption.
+
+
+PART 13. LOW FIDELITY WIREFRAMING
+
+Low fidelity wireframing begins after the product logic, IA, and flows are understood enough to explore screen structure.
+
+Primary question:
+
+Is this the right structure, flow, hierarchy, and interaction model?
+
+Low fidelity should focus on:
+
+1. Information architecture.
+2. Screen hierarchy.
+3. Content priority.
+4. Navigation.
+5. Primary actions.
+6. Secondary actions.
+7. Task flows.
+8. Decision points.
+9. Error paths.
+10. Responsive behavior.
+11. Screen states.
+12. Alternative concepts.
+
+Low fidelity should avoid:
+
+1. Brand colors.
+2. Final typography.
+3. Decorative imagery.
+4. Shadows.
+5. Gradients.
+6. Pixel-perfect spacing.
+7. Detailed icon styling.
+8. Animation polish.
+
+Low fidelity does not mean careless.
+
+Maintain:
+
+1. Alignment.
+2. Clear hierarchy.
+3. Recognizable controls.
+4. Logical grouping.
+5. Reasonable spacing.
+6. Realistic labels.
+7. Plausible content lengths.
+
+Low fidelity process:
+
+1. Start from the task flow.
+2. List required information and actions.
+3. Define the primary decision on each screen.
+4. Sketch the simplest structure.
+5. Sketch at least one alternative for important screens.
+6. Map states.
+7. Map responsive behavior.
+8. Walk through the user flow.
+9. Test with users or stakeholders.
+10. Revise before high fidelity.
+
+Each low fidelity screen should show:
+
+1. Screen name.
+2. User role.
+3. User goal.
+4. Entry point.
+5. Main content.
+6. Primary action.
+7. Secondary actions.
+8. Navigation.
+9. Status or feedback area.
+10. Error or empty state where relevant.
+11. Next step.
+12. Responsive notes.
+
+Use realistic content where content affects structure.
+
+Realistic content is especially important for:
+
+1. Navigation labels.
+2. Form labels.
+3. Table columns.
+4. Dashboard metrics.
+5. Search results.
+6. Empty states.
+7. Error messages.
+8. Calls to action.
+9. Prices.
+10. Dates.
+11. Names.
+12. Long titles.
+
+Low fidelity responsive work:
+
+1. What stays visible on compact screens.
+2. What moves lower on compact screens.
+3. What becomes a sheet, drawer, menu, or separate screen.
+4. What becomes persistent on larger screens.
+5. What content can be hidden behind disclosure.
+6. What action must remain reachable.
+7. How tables transform.
+8. How filters transform.
+9. How navigation transforms.
+10. Where the layout breaks.
+
+Low fidelity testing should evaluate:
+
+1. Can users understand where they are?
+2. Can users find the starting point?
+3. Can users understand the terminology?
+4. Can users complete the primary task?
+5. Can users recover from common mistakes?
+6. Can users identify the primary action?
+7. Can users understand navigation?
+8. Can users understand the empty or error state?
+9. Does the responsive structure preserve the same product logic?
+
+Do not ask whether users like the visual style during low fidelity testing. Ask whether they understand and can use the structure.
+
+Low fidelity definition of done:
+
+1. Primary users are identified.
+2. User goals are identified.
+3. Main task flow is represented.
+4. Required content is represented.
+5. Information hierarchy is clear.
+6. Navigation is understandable.
+7. Primary action is clear.
+8. Secondary actions are present but not dominant.
+9. Error, empty, loading, and success states are considered.
+10. Permission restrictions are considered.
+11. Mobile behavior is defined.
+12. Tablet behavior is defined where relevant.
+13. Desktop behavior is defined.
+14. Alternatives have been explored for risky screens.
+15. Structural usability has been tested or reviewed.
+16. Open questions are documented.
+
+
+PART 14. LOW FIDELITY WIREFRAMING BY VIEWPORT
+
+Mobile low fidelity:
+
+1. One-column flow.
+2. Content order.
+3. Primary action placement.
+4. Navigation pattern.
+5. Forms with keyboard open.
+6. Filters as sheets or separate views.
+7. Touch target planning.
+8. Safe area awareness.
+9. Interrupted task recovery.
+10. Loading, empty, and error states.
+
+Avoid:
+
+1. Copying desktop layouts directly.
+2. Making every desktop column a mobile card without priority.
+3. Hiding frequent actions in deep menus.
+4. Depending on swipe or long press for essential actions.
+
+Tablet low fidelity:
+
+1. One-pane layout.
+2. Two-pane layout.
+3. Navigation rail.
+4. Persistent sidebar.
+5. Master-detail pattern.
+6. Side panels.
+7. Tool palettes.
+8. Larger previews.
+9. Portrait behavior.
+10. Landscape behavior.
+11. Split-screen behavior.
+
+Desktop low fidelity:
+
+1. Persistent navigation.
+2. Toolbars.
+3. Multi-column layouts.
+4. Side panels.
+5. Advanced filters.
+6. Data tables.
+7. Bulk actions.
+8. Contextual controls.
+9. Keyboard shortcuts.
+10. Narrow desktop behavior.
+11. Wide desktop behavior.
+
+
+PART 15. HIGH FIDELITY UX/UI DESIGN
+
+High fidelity begins when the structure is mature enough to justify detailed design.
+
+Primary question:
+
+Can this work as a realistic, accessible, complete interface?
+
+High fidelity should include:
+
+1. Design system components.
+2. Real typography.
+3. Semantic color.
+4. Layout grid.
+5. Spacing tokens.
+6. Icons.
+7. Images or realistic media.
+8. Realistic content.
+9. Component states.
+10. Screen states.
+11. Responsive variants.
+12. Interaction behavior.
+13. Accessibility annotations.
+14. Prototype connections.
+15. Developer handoff notes.
+
+High fidelity process:
+
+1. Confirm low fidelity structure.
+2. Apply grid and spacing.
+3. Apply typography roles.
+4. Apply color tokens.
+5. Replace placeholders with realistic content.
+6. Build screens from reusable components.
+7. Design states.
+8. Design responsive variants.
+9. Prototype critical flows.
+10. Test usability and accessibility.
+11. Prepare developer specs.
+
+Realistic content testing:
+
+1. Short content.
+2. Long content.
+3. Missing content.
+4. Long translated strings.
+5. Large numbers.
+6. Negative numbers.
+7. Many tags.
+8. Missing images.
+9. Unusual names.
+10. Long addresses.
+11. Multiple statuses.
+12. Dense tables.
+13. Empty dashboards.
+
+High fidelity screen states:
+
+1. Default.
+2. Loading.
+3. Empty.
+4. Populated.
+5. Partially populated.
+6. Searching.
+7. Search results.
+8. No search results.
+9. Filtered results.
+10. No filtered results.
+11. Editing.
+12. Saving.
+13. Saved.
+14. Save failed.
+15. Deleting.
+16. Delete failed.
+17. Uploading.
+18. Upload failed.
+19. Offline.
+20. Permission denied.
+21. Session expired.
+22. Restricted access.
+
+High fidelity form requirements:
+
+1. Empty form.
+2. Partially completed form.
+3. Completed form.
+4. Required fields.
+5. Optional fields.
+6. Help text.
+7. Character limits.
+8. Validation.
+9. Inline errors.
+10. Form-level errors.
+11. Disabled submit.
+12. Loading submit.
+13. Success.
+14. Submission failure.
+15. Review step where needed.
+16. Confirmation where needed.
+17. Reversibility or undo where possible.
+
+High fidelity navigation requirements:
+
+1. Default navigation.
+2. Active item.
+3. Hover.
+4. Focus.
+5. Expanded groups.
+6. Collapsed groups.
+7. Overflow.
+8. Mobile navigation.
+9. Tablet navigation.
+10. Desktop navigation.
+11. Breadcrumbs where useful.
+12. Back behavior.
+13. Account menu.
+14. Permission-limited navigation.
+
+High fidelity definition of done:
+
+1. Design system components are used.
+2. Typography roles are applied consistently.
+3. Color tokens are applied semantically.
+4. Spacing rules are consistent.
+5. Primary and secondary actions are clear.
+6. All important component states are designed.
+7. Loading states are designed.
+8. Empty states are designed.
+9. Error states are designed.
+10. Success states are designed.
+11. Long and missing content are tested.
+12. Mobile behavior is designed.
+13. Tablet behavior is designed where relevant.
+14. Desktop behavior is designed.
+15. Keyboard focus is visible.
+16. Accessibility requirements are documented.
+17. Important interactions are prototyped.
+18. Developer specifications are complete.
+19. Usability and accessibility risks have been reviewed.
+
+
+PART 16. HIGH FIDELITY RESPONSIVE DESIGN
+
+Do not create only three attractive static screenshots.
+
+Document how the product transforms.
+
+Examples:
+
+1. Mobile navigation may become bottom navigation or a compact menu.
+2. Tablet navigation may become a rail.
+3. Desktop navigation may become a persistent sidebar.
+4. Mobile filters may appear in a sheet.
+5. Tablet filters may use a collapsible panel.
+6. Desktop filters may remain persistent.
+7. Mobile detail views may use separate screens.
+8. Tablet detail views may use split view.
+9. Desktop detail views may use persistent detail panes.
+10. Tables may become priority rows, cards, or horizontally scrollable grids depending on task needs.
+
+Test intermediate widths. Resize continuously and identify where layout, text, controls, or content stops working. Use that evidence to refine breakpoints.
+
+
+PART 17. PROTOTYPING
+
+Prototype critical behavior, not decorative motion.
+
+Prioritize:
+
+1. Authentication.
+2. Onboarding.
+3. Navigation.
+4. Search.
+5. Filtering.
+6. Forms.
+7. Checkout.
+8. Payment.
+9. Booking.
+10. Create, edit, delete.
+11. Permission requests.
+12. Error recovery.
+13. Complex interactions.
+14. Responsive transitions.
+
+Prototype fidelity levels:
+
+1. Click-through prototype for basic flow.
+2. Interactive prototype for decision paths.
+3. Form prototype for validation and error recovery.
+4. Motion prototype for state transitions.
+5. Technical prototype where feasibility is uncertain.
+
+Prototype notes should define:
+
+1. Trigger.
+2. Transition.
+3. System response.
+4. Timing.
+5. Loading behavior.
+6. Error behavior.
+7. Keyboard behavior.
+8. Focus behavior.
+9. Mobile behavior.
+10. Accessibility concern.
+
+
+PART 18. USABILITY, ACCESSIBILITY, AND CROSS-DEVICE TESTING
+
+Low fidelity testing focuses on:
+
+1. Structure.
+2. Flow.
+3. Terminology.
+4. Navigation.
+5. Information priority.
+6. Task completion.
+7. Missing screens.
+8. Responsive logic.
+
+High fidelity testing adds:
+
+1. Visual hierarchy.
+2. Readability.
+3. Component clarity.
+4. Form usability.
+5. Error recovery.
+6. Trust and confidence.
+7. Accessibility.
+8. Mobile comfort.
+9. Desktop efficiency.
+10. Realistic content handling.
+
+Test across:
+
+1. Small phone.
+2. Normal phone.
+3. Large phone.
+4. Tablet portrait.
+5. Tablet landscape.
+6. Narrow desktop.
+7. Standard desktop.
+8. Wide desktop.
+9. Browser zoom.
+10. Split screen.
+11. Keyboard only.
+12. Touch.
+13. Pointer.
+14. Poor connection where relevant.
+
+Usability test plan template:
+
+1. Research question.
+2. Target users.
+3. Prototype or design version.
+4. Tasks.
+5. Success criteria.
+6. Observed behaviors.
+7. Errors.
+8. Confusions.
+9. Evidence.
+10. Severity.
+11. Recommendation.
+12. Decision.
+
+Severity scale:
+
+1. Critical: prevents task completion or causes harmful outcome.
+2. High: causes major confusion, delay, or repeated mistakes.
+3. Medium: creates friction but users can continue.
+4. Low: polish issue or minor preference.
+
+
+PART 19. DEVELOPER HANDOFF AND SPECIFICATIONS
+
+Developers should not have to infer product behavior from screenshots.
+
+Document:
+
+1. Screen purpose.
+2. User role.
+3. Component names.
+4. Component variants.
+5. Component states.
+6. Spacing tokens.
+7. Typography tokens.
+8. Color tokens.
+9. Responsive behavior.
+10. Validation rules.
+11. Loading behavior.
+12. Empty states.
+13. Error states.
+14. Success states.
+15. Permission rules.
+16. Business rules.
+17. Keyboard interaction.
+18. Focus behavior.
+19. Accessibility requirements.
+20. Content rules.
+21. Analytics events.
+22. Animation rules.
+
+Component handoff template:
+
+1. Component name.
+2. Purpose.
+3. Anatomy.
+4. Props or configurable options.
+5. Variants.
+6. States.
+7. Content limits.
+8. Interaction behavior.
+9. Accessibility behavior.
+10. Responsive behavior.
+11. Examples.
+12. Related components.
+
+Screen handoff template:
+
+1. Screen name.
+2. Route or location.
+3. User roles.
+4. Entry points.
+5. Main task.
+6. Required data.
+7. Primary action.
+8. Secondary actions.
+9. States.
+10. Validation.
+11. Error handling.
+12. Empty state.
+13. Loading state.
+14. Responsive behavior.
+15. Accessibility notes.
+16. Analytics.
+17. Open issues.
+
+Design QA checklist:
+
+1. Layout matches approved design.
+2. Spacing matches tokens.
+3. Typography matches tokens.
+4. Colors match tokens.
+5. Components use approved variants.
+6. States are implemented.
+7. Forms validate correctly.
+8. Errors are understandable.
+9. Loading and empty states exist.
+10. Responsive behavior works.
+11. Keyboard operation works.
+12. Focus is visible.
+13. Screen reader basics work.
+14. Content does not overflow.
+15. Long text does not break layout.
+16. Performance does not undermine the experience.
+
+
+PART 20. DESIGN FILE ORGANIZATION
+
+A workplace design file should be easy for designers, product managers, engineers, QA, and stakeholders to navigate.
+
+Recommended pages or sections:
+
+1. 00 Cover and status.
+2. 01 Brief and requirements.
+3. 02 Research and insights.
+4. 03 User journeys.
+5. 04 Information architecture.
+6. 05 User flows.
+7. 06 Low fidelity mobile.
+8. 07 Low fidelity tablet.
+9. 08 Low fidelity desktop.
+10. 09 Design system.
+11. 10 Components.
+12. 11 High fidelity mobile.
+13. 12 High fidelity tablet.
+14. 13 High fidelity desktop.
+15. 14 Prototypes.
+16. 15 Responsive specifications.
+17. 16 Accessibility.
+18. 17 Handoff.
+19. 18 Archive.
+
+Naming examples:
+
+1. Mobile Login Default.
+2. Mobile Login Error.
+3. Tablet Dashboard Empty.
+4. Desktop Dashboard Loading.
+5. Desktop Customer Detail Editing.
+6. Desktop Customer Detail Permission Denied.
+
+Versioning rules:
+
+1. Keep the current approved design easy to find.
+2. Keep work in progress separate from approved work.
+3. Archive rejected concepts instead of silently deleting important decisions.
+4. Record major decisions and rationale.
+5. Label designs by date, version, or release where needed.
+6. Do not change shipped behavior without documenting the reason.
+
+
+PART 21. WORKPLACE TEMPLATES
+
+Screen brief template:
+
+1. Screen name:
+2. User role:
+3. User goal:
+4. Business goal:
+5. Entry point:
+6. Exit point:
+7. Primary action:
+8. Secondary actions:
+9. Required content:
+10. Required data:
+11. Permissions:
+12. Empty state:
+13. Loading state:
+14. Error state:
+15. Success state:
+16. Responsive behavior:
+17. Accessibility notes:
+18. Analytics:
+19. Open questions:
+
+UX decision log template:
+
+1. Date:
+2. Decision:
+3. Options considered:
+4. Evidence:
+5. Rationale:
+6. Impact:
+7. Owner:
+8. Revisit condition:
+
+Low fidelity review checklist:
+
+1. Is the user clear?
+2. Is the task clear?
+3. Is the content priority clear?
+4. Is the primary action clear?
+5. Is navigation clear?
+6. Are states considered?
+7. Are errors and recovery considered?
+8. Are permissions considered?
+9. Does mobile work?
+10. Does tablet work where relevant?
+11. Does desktop work?
+12. Has an alternative layout been considered for risky screens?
+13. Are open questions documented?
+
+High fidelity review checklist:
+
+1. Does the design use approved components?
+2. Are typography, spacing, and color consistent?
+3. Is visual hierarchy strong?
+4. Is realistic content used?
+5. Are component states complete?
+6. Are screen states complete?
+7. Is accessibility designed?
+8. Is responsive behavior complete?
+9. Are interactions prototyped where needed?
+10. Can developers build without guessing?
+11. Are risks and tradeoffs documented?
+
+Responsive review checklist:
+
+1. Does the screen work at compact width?
+2. Does it work at medium width?
+3. Does it work at expanded width?
+4. Does it work at wide desktop width?
+5. Does navigation adapt correctly?
+6. Does the primary action remain reachable?
+7. Does text wrap safely?
+8. Do tables or dense content transform correctly?
+9. Do overlays adapt correctly?
+10. Does keyboard and touch interaction still work?
+
+Accessibility review checklist:
+
+1. Heading order is logical.
+2. Reading order is logical.
+3. Focus order is logical.
+4. Focus is visible.
+5. Controls have accessible names.
+6. Labels are persistent.
+7. Errors are visually and programmatically associated with fields.
+8. Color is not the only signal.
+9. Contrast is suitable.
+10. Text can enlarge.
+11. Layout can reflow.
+12. Target sizes are comfortable.
+13. Motion can be reduced.
+14. Dragging has alternatives where necessary.
+15. Keyboard-only operation is possible.
+
+Developer handoff checklist:
+
+1. Final screens are marked.
+2. Prototype is linked where useful.
+3. Components are named.
+4. Variants are identified.
+5. States are documented.
+6. Tokens are identified.
+7. Responsive rules are documented.
+8. Validation rules are documented.
+9. Error messages are written.
+10. Empty states are written.
+11. Loading states are defined.
+12. Permissions are documented.
+13. Accessibility notes are documented.
+14. Analytics events are documented where needed.
+15. Open decisions are resolved or assigned.
+
+
+PART 22. QUALITY BAR
+
+Use this rubric to judge whether a design is ready to move forward.
+
+Score each category from 1 to 5.
+
+1. Product clarity:
+   Does the design solve a specific user and business problem?
+2. UX architecture:
+   Are IA, navigation, journeys, and flows coherent?
+3. Low fidelity quality:
+   Does the structure work before visual polish?
+4. Interaction quality:
+   Are actions, feedback, errors, permissions, and recovery designed?
+5. Visual quality:
+   Are hierarchy, typography, spacing, color, and components consistent?
+6. Responsive quality:
+   Does the product adapt well across compact, medium, expanded, and large spaces?
+7. Accessibility:
+   Can users with different abilities and input methods use the product?
+8. Content quality:
+   Are labels, messages, instructions, and realistic data clear?
+9. Handoff quality:
+   Can engineering build the intended behavior without guessing?
+10. Evidence:
+   Are important decisions supported by research, testing, analytics, or clear rationale?
+
+A product design should not move to build with unresolved critical issues in product clarity, task completion, accessibility, or responsive behavior.
+
+
+PART 23. COMMON ANTI-PATTERNS
+
+Avoid:
+
+1. Starting with visual inspiration before defining the problem.
+2. Designing only the happy path.
+3. Treating mobile, tablet, and desktop as separate products.
+4. Using lorem ipsum where content affects layout.
+5. Hiding primary actions to make screens look clean.
+6. Communicating state through color alone.
+7. Designing forms without validation and error states.
+8. Designing tables without overflow, sorting, filtering, empty, and loading states.
+9. Designing modals without focus, dismissal, and keyboard behavior.
+10. Treating accessibility as a final scan.
+11. Handing developers screenshots without behavior specs.
+12. Creating new components when existing ones would work.
+13. Ignoring slow networks and loading states.
+14. Ignoring permissions and role differences.
+15. Overusing decorative motion.
+16. Making desktop layouts stretch endlessly on wide monitors.
+17. Copying desktop UI directly to mobile.
+18. Asking users whether they like low fidelity visuals instead of testing structure.
+19. Measuring preference while ignoring task failure.
+20. Shipping without design QA.
+
+
+PART 24. FINAL OPERATING MODEL
+
+For day-to-day workplace delivery, use this sequence:
+
+1. Frame the problem.
+2. Understand users and business goals.
+3. Define requirements, rules, content, and states.
+4. Create IA, navigation, journeys, and flows.
+5. Define responsive strategy.
+6. Create low fidelity wireframes.
+7. Test structure and revise.
+8. Define or apply the design system.
+9. Create high fidelity screens and states.
+10. Prototype critical interactions.
+11. Test usability, accessibility, and responsive behavior.
+12. Specify behavior for developers.
+13. Support implementation.
+14. Perform design QA.
+15. Measure production outcomes.
+16. Improve continuously.
+
+The central standard:
+
+Low fidelity wireframes must prove that the product structure works.
+
+High fidelity designs must prove that the real interface works.
+
+Prototypes must prove that interactions work.
+
+Usability testing must prove that users can complete tasks.
+
+Accessibility testing must prove that people can operate the product across abilities and input methods.
+
+Developer handoff must prove that the design can be built as intended.
+
+Production measurement must prove whether the product creates real user and business value.
+
+When all of those are connected, UX/UI design becomes a repeatable workplace discipline instead of a collection of attractive screens.
+
+ADDENDUM. ADVANCED UX/UI BEST PRACTICES
+
+This addendum makes explicit the judgement areas that often separate basic wireframes from professional product design. No single framework can contain every possible practice for every product category, but these are the core best-practice areas that should be considered in serious workplace UX/UI work.
+
+
+1. Color psychology and emotional intent
+
+Color influences attention, mood, trust, urgency, and perceived meaning. It is not universal. Culture, brand context, product category, accessibility needs, and user expectations matter more than simplistic rules such as blue means trust or red means danger.
+
+Use color psychology carefully:
+
+1. Blue often communicates stability, calm, security, or professionalism.
+2. Green often communicates success, growth, progress, money, or safety.
+3. Red often communicates danger, error, urgency, deletion, debt, or stopping.
+4. Yellow or amber often communicates caution, pending status, or attention.
+5. Orange often communicates energy, warmth, affordability, or warning depending on context.
+6. Purple often communicates creativity, premium positioning, or imagination.
+7. Black often communicates seriousness, luxury, authority, or technical confidence.
+8. White often communicates clarity, cleanliness, simplicity, or openness.
+9. Gray often communicates neutrality, structure, disabled states, or secondary importance.
+
+Color psychology rules:
+
+1. Let user expectations and product domain override generic color associations.
+2. Use semantic color consistently.
+3. Reserve red for true errors, destructive actions, or critical warnings.
+4. Avoid using too many saturated colors on operational screens.
+5. Use color to guide attention, not to decorate every element.
+6. Do not rely on color alone for status or instruction.
+7. Test contrast before finalizing a palette.
+8. Test colors with realistic content and real screen density.
+9. Consider cultural and regional meaning for global products.
+10. Document why important colors are used.
+
+Color system checklist:
+
+1. Does each color have a role?
+2. Are primary, secondary, success, warning, error, information, disabled, selected, and focus colors defined?
+3. Do status colors work for color-blind users with icons, text, labels, patterns, or shape?
+4. Are destructive actions visually distinct without being visually excessive?
+5. Are charts and status indicators understandable without relying only on hue?
+6. Does the palette support light and dark backgrounds where needed?
+7. Are hover, active, focus, loading, and disabled states defined?
+
+
+2. Form hierarchy and form UX
+
+Form hierarchy determines the order, grouping, emphasis, and effort level of user input. A form should feel like a guided conversation, not a database schema exposed to the user.
+
+Form hierarchy principles:
+
+1. Ask for the easiest and most confidence-building information first when possible.
+2. Group related fields into meaningful sections.
+3. Place dependent fields after the fields they depend on.
+4. Put high-friction or sensitive fields only where they are justified.
+5. Separate required information from optional information.
+6. Use progressive disclosure for advanced or conditional fields.
+7. Keep the primary submission action visually clear.
+8. Keep destructive or cancel actions away from the primary submit action.
+9. Use section headings when a form has multiple mental steps.
+10. Avoid making users decide before they have enough context.
+
+Recommended field ordering:
+
+1. Identity fields.
+2. Contact fields.
+3. Task-specific fields.
+4. Preferences or configuration.
+5. Payment, consent, or legal fields.
+6. Review and confirmation.
+
+Field grouping:
+
+1. Use one section for one concept.
+2. Avoid mixing personal details, payment details, and preferences in one undifferentiated list.
+3. Keep related labels, helper text, fields, and errors visually connected.
+4. Use spacing to separate groups more strongly than fields within a group.
+5. Use dividers only when spacing and headings are not enough.
+
+Form control selection:
+
+1. Text input: free text with many possible answers.
+2. Text area: longer free text.
+3. Radio group: one choice from a small visible set.
+4. Checkbox group: multiple choices from a visible set.
+5. Switch: immediate binary setting, not a delayed form submission choice.
+6. Select menu: many options where scanning all options is not essential.
+7. Combobox: search plus selection from a large set.
+8. Date picker: dates that benefit from calendar context.
+9. Stepper: small numeric changes.
+10. Slider: approximate numeric choice where precision is not critical.
+
+Validation:
+
+1. Validate format-sensitive fields before submission where useful.
+2. Do not show errors before the user has had a fair chance to enter data.
+3. Preserve entered data after errors.
+4. Place field errors near the affected field.
+5. Summarize errors at form level when the form is long or complex.
+6. Explain how to fix the problem.
+7. Do not use technical error messages.
+8. Confirm success clearly after submission.
+
+Long-form design:
+
+1. Break complex forms into meaningful steps.
+2. Show progress when completion requires multiple steps.
+3. Allow saving and returning later for high-effort forms.
+4. Keep previously completed steps editable.
+5. Use review screens for legal, financial, medical, or irreversible submissions.
+6. Avoid hiding required fields in collapsed sections.
+
+
+3. Cognitive load and decision quality
+
+Users have limited attention, memory, and patience. Good UX reduces unnecessary mental effort while preserving the information needed to make good decisions.
+
+Reduce cognitive load by:
+
+1. Showing only relevant options.
+2. Using familiar patterns.
+3. Grouping related information.
+4. Reducing visual noise.
+5. Using plain language.
+6. Providing defaults.
+7. Breaking complex tasks into steps.
+8. Showing progress.
+9. Keeping important information visible during decisions.
+10. Avoiding unnecessary mode changes.
+
+Decision design:
+
+1. Make the recommended path clear when one exists.
+2. Explain tradeoffs when users must choose.
+3. Avoid overwhelming users with too many equivalent options.
+4. Use comparison tables only when users need to compare attributes.
+5. Use confirmation steps for high-consequence decisions.
+6. Use undo for low-consequence reversible actions.
+7. Avoid dark patterns and manipulative defaults.
+
+Attention management:
+
+1. Use size, position, contrast, and spacing to guide attention.
+2. Make alerts visually distinct from normal content.
+3. Avoid competing primary actions.
+4. Do not overuse badges, banners, or notifications.
+5. Place important actions close to the content they affect.
+6. Keep persistent UI limited to what users need repeatedly.
+
+
+4. Visual perception and Gestalt principles
+
+Users understand interfaces through visual relationships before they read every word.
+
+Use Gestalt principles:
+
+1. Proximity: elements close together appear related.
+2. Similarity: elements that look alike appear to have the same purpose.
+3. Continuity: aligned elements create a clear path for the eye.
+4. Closure: users complete incomplete shapes or patterns mentally.
+5. Common region: elements inside the same boundary appear grouped.
+6. Figure-ground: users need to distinguish foreground action from background context.
+7. Simplicity: users prefer the simplest stable interpretation of a layout.
+
+Visual hierarchy best practices:
+
+1. One screen should not have many equally dominant elements.
+2. Headings should describe the content beneath them.
+3. Primary actions should be visually stronger than secondary actions.
+4. Related controls should sit near the content they affect.
+5. Repeated patterns should remain consistent.
+6. Dense interfaces still need clear grouping.
+7. White space should clarify relationships, not merely fill empty areas.
+
+
+5. Affordance, signifiers, and discoverability
+
+Users should understand what can be done without trial and error.
+
+Affordance rules:
+
+1. Buttons should look actionable.
+2. Links should look navigational.
+3. Inputs should look editable.
+4. Selected items should look selected.
+5. Disabled controls should look unavailable and explain why when needed.
+6. Draggable items should provide a handle or clear signifier.
+7. Expandable items should show expansion state.
+8. Destructive actions should be visually and behaviorally protected.
+
+Discoverability rules:
+
+1. Essential actions should not depend only on hover.
+2. Essential actions should not depend only on hidden gestures.
+3. Icon-only actions need accessible names and tooltips where meaning is not obvious.
+4. Context menus should supplement, not replace, visible essential actions.
+5. New or rare interactions need clear signifiers.
+
+
+6. Microcopy, tone, and trust
+
+Microcopy includes labels, button text, helper text, errors, empty states, confirmation messages, tooltips, and notifications.
+
+Microcopy principles:
+
+1. Be specific.
+2. Use the user's language.
+3. Use active verbs.
+4. Explain what happens next.
+5. Avoid blame.
+6. Avoid internal system language.
+7. Keep button labels action-specific.
+8. Keep legal and consent language clear.
+9. Use a tone appropriate to the product category.
+10. Write for translation and longer strings.
+
+Trust signals:
+
+1. Show clear pricing and fees.
+2. Explain why sensitive information is needed.
+3. Show security and privacy information near relevant decisions.
+4. Make cancellation, refund, deletion, and data use rules clear.
+5. Avoid surprise permissions.
+6. Avoid manipulative urgency.
+7. Make system status and errors honest.
+8. Provide human support paths for high-risk tasks.
+
+
+7. Heuristic review
+
+Use heuristic review before testing or handoff.
+
+Review against:
+
+1. Visibility of system status.
+2. Match between system and user language.
+3. User control and freedom.
+4. Consistency and standards.
+5. Error prevention.
+6. Recognition instead of recall.
+7. Flexibility and efficiency.
+8. Minimal but sufficient design.
+9. Error recognition, diagnosis, and recovery.
+10. Help and documentation where needed.
+
+
+8. Design critique best practices
+
+Good critique evaluates the design against goals, users, constraints, and evidence. It is not a taste debate.
+
+Critique should ask:
+
+1. What user problem is this solving?
+2. Which user group is this for?
+3. What task should this screen support?
+4. What is the primary action?
+5. What evidence supports this direction?
+6. What is the biggest usability risk?
+7. What happens when content is long, missing, or wrong?
+8. What happens on mobile, tablet, and desktop?
+9. What accessibility issue could block use?
+10. What should be tested next?
+
+Critique rules:
+
+1. Discuss the work, not the designer.
+2. Tie feedback to user goals and product goals.
+3. Separate blocking issues from preferences.
+4. Give examples when suggesting changes.
+5. Capture decisions and unresolved questions.
+
+
+9. Wireframing craft best practices
+
+Low fidelity craft:
+
+1. Use enough realism to test structure.
+2. Keep visual styling intentionally limited.
+3. Label boxes clearly.
+4. Show hierarchy through size, placement, and grouping.
+5. Include real navigation terms.
+6. Include state placeholders.
+7. Show key responsive transformations.
+8. Explore multiple alternatives before choosing a direction.
+
+High fidelity craft:
+
+1. Use real components.
+2. Use real content or realistic production-like content.
+3. Align to tokens.
+4. Design states thoroughly.
+5. Test edge cases.
+6. Annotate behavior.
+7. Check accessibility.
+8. Prepare for engineering implementation.
+
+Design tool best practices:
+
+1. Name frames and components clearly.
+2. Use styles and variables instead of one-off values.
+3. Use auto layout or equivalent layout systems where possible.
+4. Keep components reusable.
+5. Separate exploration from approved design.
+6. Keep file pages organized.
+7. Archive old versions intentionally.
+8. Add annotations where behavior is not obvious.
+9. Keep design files performant.
+10. Align design components with code components where possible.
+
+
+10. Additional anti-patterns to avoid
+
+1. Treating color psychology as universal truth instead of contextual guidance.
+2. Designing forms in database order instead of user task order.
+3. Overloading users with too many choices at once.
+4. Hiding required fields behind progressive disclosure.
+5. Using icon-only controls where the meaning is not familiar.
+6. Asking for sensitive information before explaining why it is needed.
+7. Treating critique as subjective preference instead of goal-based review.
+8. Adding animation before the core interaction is understandable.
+9. Using visual polish to hide unresolved UX structure.
+10. Treating high fidelity screens as final when states, accessibility, and responsive behavior are incomplete.

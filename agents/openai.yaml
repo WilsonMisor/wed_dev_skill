@@ -1,0 +1,7 @@
+interface:
+  display_name: "AI Web Delivery Blueprint"
+  short_description: "Secure flowchart-guided AI WordPress delivery"
+  default_prompt: "Use $ai-web-delivery-blueprint to plan and execute a flowchart-guided AI-assisted WordPress project with PRD-first requirements, flexible Design Artifact Strategy plus Human Design Governance, anti-AI visual audit, Human Design Scorecard, content resilience/WordPress visual QA, and UX/UI Framework Compliance Matrix including 10 UX laws and 20 UX/UI dos/don'ts for Figma Make/Claude Design/JSON specs/coded mockups, optional wireframing, owner-approved page mockups/design baseline, SRD baseline, CPT custom-field admin screens, full-site SEO crawl/remediation toward 90%+ audit scores, cybersecurity-by-design controls for forms/web/network/database/encryption, gated decision loops, conversion/SEO/security applicability matrix, AI execution posture for planning/build/refine/ship clarity, and human supervision."
+
+policy:
+  allow_implicit_invocation: true

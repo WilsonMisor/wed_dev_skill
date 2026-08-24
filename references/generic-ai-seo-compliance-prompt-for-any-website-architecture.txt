@@ -1,0 +1,643 @@
+# Generic AI SEO Compliance Prompt for Any Website Architecture
+
+Use this prompt when you want any AI to examine a website architecture and build SEO into it from the start.
+
+This prompt is generic. It must adapt to any website type, any niche, any sitemap, any custom post type model, any CMS, and any page structure that you provide.
+
+Copy everything below and paste it into another AI.
+
+# Master Prompt
+
+You are a senior SEO strategist, technical SEO auditor, information architect, content strategist, web performance consultant, structured data specialist, and website implementation planner.
+
+I will give you a website architecture, sitemap, page list, content model, custom post types, templates, features, or website brief.
+
+Your job is to examine the architecture and produce a complete SEO compliant implementation plan that is adapted to the exact website I provide.
+
+Do not give generic SEO advice. Map every SEO requirement to the actual pages, templates, post types, taxonomies, content types, features, and user journeys in the architecture I provide.
+
+Use official search engine documentation and current SEO best practice where necessary. Prioritise Google Search Central, Google Search Essentials, Google Search Console guidance, Lighthouse documentation, Core Web Vitals guidance, Bing Webmaster Guidelines, Schema.org, Open Graph, and other reliable primary sources.
+
+# Website Architecture Input
+
+Paste the website architecture below:
+
+[PASTE WEBSITE ARCHITECTURE, SITEMAP, CPTs, PAGE LIST, TEMPLATE LIST, FEATURES, BUSINESS GOALS, TARGET AUDIENCE, CONTENT TYPES, AND SPECIAL REQUIREMENTS HERE]
+
+# Website Context
+
+Website name:
+[INSERT WEBSITE NAME]
+
+Website type:
+[INSERT WEBSITE TYPE, FOR EXAMPLE PORTFOLIO, BUSINESS WEBSITE, NONPROFIT WEBSITE, E-COMMERCE WEBSITE, BLOG, COURSE PLATFORM, SaaS WEBSITE, DIRECTORY, AGENCY WEBSITE, OR MARKETPLACE]
+
+Primary audience:
+[INSERT PRIMARY AUDIENCE]
+
+Secondary audience:
+[INSERT SECONDARY AUDIENCE]
+
+Main business goal:
+[INSERT MAIN GOAL]
+
+Main conversion goal:
+[INSERT CONVERSION GOAL]
+
+Geographic target:
+[INSERT TARGET COUNTRY, CITY, REGION, OR GLOBAL]
+
+Languages:
+[INSERT LANGUAGES]
+
+CMS or stack:
+[INSERT CMS OR STACK, FOR EXAMPLE WORDPRESS CLASSIC THEME, WORDPRESS BLOCK THEME, STATIC HTML, NEXT.JS, WEBFLOW, SHOPIFY, CUSTOM PHP, LARAVEL, REACT, OR OTHER]
+
+Important constraints:
+[INSERT CONSTRAINTS, FOR EXAMPLE NO ELEMENTOR, NO GUTENBERG, MUST USE CUSTOM POST TYPES, MUST SUPPORT MULTILINGUAL SEO, MUST BE FAST, MUST BE EASY TO UPDATE]
+
+# Your Main Task
+
+Create a full SEO compliant implementation plan for the website architecture I provided.
+
+The result must be practical enough for an AI builder, developer, SEO specialist, or website owner to implement.
+
+Your output must include the sections below.
+
+# 1. SEO Diagnosis
+
+Explain the real SEO problem the website must solve.
+
+Cover:
+
+1. What the website must rank for.
+2. What the website must communicate to search engines.
+3. What the website must communicate to users.
+4. What pages are likely to carry the most SEO value.
+5. What pages are likely to be thin or risky.
+6. What parts of the architecture may cause duplicate content.
+7. What parts of the architecture may cause crawl waste.
+8. What parts of the architecture may create index bloat.
+9. What pages should be indexable.
+10. What pages should be noindexed.
+11. What pages should be excluded from the sitemap.
+12. What technical SEO risks exist in the architecture.
+
+# 2. SEO Architecture Review
+
+Review the website structure I provided.
+
+Create a table with these columns:
+
+1. Page or template.
+2. Purpose.
+3. Search intent.
+4. Primary keyword theme.
+5. Secondary keyword themes.
+6. Indexing decision.
+7. Canonical decision.
+8. Sitemap decision.
+9. Required schema.
+10. Internal link priority.
+11. SEO risk.
+12. Recommended fix.
+
+Make the table specific to the architecture I provided.
+
+Do not invent pages that are not needed. You may recommend additional pages only if they clearly improve SEO, user experience, conversion, or content organisation.
+
+# 3. Keyword and Search Intent Mapping
+
+Create a keyword and search intent map for the architecture.
+
+For each major page or template, define:
+
+1. Primary keyword.
+2. Secondary keywords.
+3. Long-tail keywords.
+4. Related questions.
+5. Search intent.
+6. Funnel stage.
+7. Content angle.
+8. Title tag direction.
+9. Meta description direction.
+10. Internal link targets.
+
+Do not keyword stuff.
+
+If keyword research data is not available, mark keyword volumes as unknown and recommend how to validate them using tools such as Google Keyword Planner, Google Search Console, Keyword Surfer, Keywords Everywhere, Ahrefs, Semrush, Ubersuggest, SE Ranking, AlsoAsked, or other suitable tools.
+
+# 4. Page-Level SEO Requirements
+
+For every page type, template, post type, custom post type, archive, taxonomy, product page, service page, resource page, blog post, landing page, or detail page in the provided architecture, define the SEO requirements.
+
+Include:
+
+1. Title tag format.
+2. Meta description format.
+3. H1 rule.
+4. H2 and H3 structure.
+5. URL slug rule.
+6. Canonical rule.
+7. Robots meta rule.
+8. Word count or content depth rule.
+9. Image alt text rule.
+10. Internal link rule.
+11. External link rule.
+12. Schema rule.
+13. Open Graph rule.
+14. Twitter or X card rule.
+15. Breadcrumb rule.
+16. FAQ rule if needed.
+17. Conversion CTA rule.
+
+# 5. Technical SEO Requirements
+
+Build a technical SEO checklist for this architecture.
+
+Include:
+
+1. Crawlability.
+2. Indexability.
+3. XML sitemap.
+4. HTML sitemap if needed.
+5. robots.txt.
+6. Meta robots.
+7. X-Robots-Tag if needed.
+8. Canonical tags.
+9. Redirects.
+10. 404 handling.
+11. Pagination.
+12. Faceted navigation if relevant.
+13. Filtered pages.
+14. Search result pages.
+15. Duplicate content control.
+16. HTTPS.
+17. Mixed content prevention.
+18. Mobile-first design.
+19. Responsive layout.
+20. JavaScript rendering risks.
+21. Server-side rendering or server-rendered SEO output where needed.
+22. Crawlable links.
+23. Descriptive anchor text.
+24. Broken link prevention.
+25. External link attributes.
+26. Sitemap submission.
+27. Search Console and Bing Webmaster Tools setup.
+
+# 6. Core Web Vitals and Performance Requirements
+
+Create a performance SEO plan.
+
+Include:
+
+1. Largest Contentful Paint.
+2. Interaction to Next Paint.
+3. Cumulative Layout Shift.
+4. Image compression.
+5. Image dimensions.
+6. Responsive images.
+7. WebP or AVIF where suitable.
+8. Lazy loading.
+9. Font loading.
+10. CSS optimisation.
+11. JavaScript optimisation.
+12. Embed optimisation.
+13. Third-party script control.
+14. Caching.
+15. CDN if needed.
+16. Database query optimisation if CMS-based.
+17. Mobile performance.
+18. Lighthouse audit readiness.
+
+Provide target thresholds where relevant.
+
+# 7. Structured Data Plan
+
+Recommend structured data for each relevant page type.
+
+Use only appropriate schema.
+
+Consider:
+
+1. WebSite.
+2. Organization.
+3. Person.
+4. LocalBusiness.
+5. BreadcrumbList.
+6. Article.
+7. BlogPosting.
+8. NewsArticle if relevant.
+9. Product if relevant.
+10. Service if relevant.
+11. Course if relevant.
+12. FAQPage if real FAQs exist.
+13. HowTo if real step-by-step content exists.
+14. Event if relevant.
+15. JobPosting if relevant.
+16. Review only if real reviews exist.
+17. CreativeWork.
+18. CollectionPage.
+19. ItemList.
+20. ContactPage.
+21. AboutPage.
+22. ProfilePage.
+
+For each schema recommendation, explain:
+
+1. Which page gets it.
+2. Why it fits.
+3. Required fields.
+4. Optional fields.
+5. Risk of misuse.
+6. Validation tool to use.
+
+Do not recommend fake ratings, fake reviews, fake jobs, fake credentials, or fake local business markup.
+
+# 8. Metadata and Social Sharing System
+
+Design the metadata system for the website.
+
+Include:
+
+1. Title tag generation rules.
+2. Meta description generation rules.
+3. Canonical generation rules.
+4. Robots generation rules.
+5. Open Graph title.
+6. Open Graph description.
+7. Open Graph image.
+8. Open Graph URL.
+9. Open Graph type.
+10. Twitter or X card.
+11. Fallback social image.
+12. Page-specific social image.
+13. Social preview testing workflow.
+14. Character length guidance.
+15. What to do if a page has missing custom metadata.
+
+# 9. Image SEO System
+
+Design the image SEO system.
+
+Include:
+
+1. Image filename rules.
+2. Alt text rules.
+3. Caption rules.
+4. Image title rules if used.
+5. Width and height attributes.
+6. Responsive image sizes.
+7. Compression.
+8. Lazy loading.
+9. LCP hero image handling.
+10. Image sitemap if needed.
+11. Open Graph image generation.
+12. Screenshot optimisation if relevant.
+13. Product image optimisation if relevant.
+14. Accessibility checks.
+
+# 10. Internal Linking System
+
+Create an internal linking strategy adapted to the website architecture.
+
+Include:
+
+1. Main navigation links.
+2. Footer links.
+3. Breadcrumb links.
+4. Contextual links.
+5. Related content links.
+6. Related product or service links if relevant.
+7. Related project links if relevant.
+8. Related article links if relevant.
+9. Hub and spoke content clusters.
+10. Anchor text rules.
+11. Links from high-authority pages.
+12. Links to conversion pages.
+13. Links to resources.
+14. Avoiding orphan pages.
+15. Avoiding excessive irrelevant links.
+
+# 11. External Link System
+
+Create external link rules.
+
+Include:
+
+1. When to link out.
+2. How to label external links.
+3. When to use rel nofollow.
+4. When to use rel sponsored.
+5. When to use rel ugc.
+6. When to use rel noopener noreferrer.
+7. How to handle affiliate links if relevant.
+8. How to handle third-party platforms.
+9. How to handle downloads.
+10. How to handle embedded tools.
+11. How to prevent broken external links.
+12. How to avoid linking to unsafe or private assets.
+
+# 12. Content Quality and On-Page SEO Rules
+
+Create content rules for the website.
+
+Include:
+
+1. Content purpose.
+2. Search intent match.
+3. Originality.
+4. Expertise signals.
+5. Experience signals.
+6. Trust signals.
+7. Content depth.
+8. Readability.
+9. Heading structure.
+10. Tables and lists.
+11. Use of examples.
+12. Avoiding thin content.
+13. Avoiding duplicated boilerplate.
+14. Avoiding keyword stuffing.
+15. Avoiding generic AI text.
+16. Updating content.
+17. Dates and freshness.
+18. Author information if relevant.
+19. Citations or references if relevant.
+20. Conversion CTA placement.
+
+# 13. CMS or Implementation Rules
+
+Adapt this section to the stack or CMS I provide.
+
+If the website uses WordPress, include:
+
+1. Theme-level SEO output.
+2. Plugin-level custom post types where needed.
+3. Template files.
+4. Custom fields.
+5. Taxonomies.
+6. Archive templates.
+7. Single templates.
+8. Taxonomy templates.
+9. Search template.
+10. 404 template.
+11. Sitemap inclusion.
+12. noindex handling.
+13. Schema output.
+14. Metadata fallback logic.
+15. Performance safeguards.
+16. Image sizes.
+17. Admin workflow.
+
+If the website uses another stack, adapt the implementation to that stack.
+
+# 14. SEO Tool Audit Mapping
+
+Map the SEO plan to common audit tools.
+
+Include how the website should pass checks from tools such as:
+
+1. Google Search Console.
+2. Bing Webmaster Tools.
+3. Lighthouse.
+4. PageSpeed Insights.
+5. Detailed SEO Extension.
+6. SEOquake.
+7. SEOwallet.
+8. SEO META in 1 Click.
+9. Meta SEO Inspector.
+10. SEO Minion.
+11. Check My Links.
+12. Redirect Path.
+13. Link Redirect Trace.
+14. View Rendered Source.
+15. NoFollow.
+16. Wappalyzer.
+17. Schema Builder.
+18. Ahrefs.
+19. Semrush.
+20. Ubersuggest.
+21. SE Ranking.
+22. Mangools.
+23. SimilarWeb.
+24. BuzzSumo.
+25. Keyword Surfer.
+26. Keywords Everywhere.
+27. AlsoAsked.
+28. Google Keyword Planner.
+29. Looker Studio.
+
+For each tool group, explain:
+
+1. What it will test.
+2. What the website must output.
+3. How to prevent common failures.
+4. What to check before launch.
+5. What to monitor after launch.
+
+# 15. Indexing, Noindex, Canonical, and Sitemap Matrix
+
+Create a matrix for the provided architecture.
+
+Use these columns:
+
+1. Page or URL pattern.
+2. Index or noindex.
+3. Follow or nofollow.
+4. Canonical target.
+5. Include in XML sitemap.
+6. Include in HTML sitemap.
+7. Reason.
+8. Risk if handled wrongly.
+
+Include all important URL patterns from the architecture.
+
+# 16. URL and Slug Rules
+
+Create URL rules.
+
+Include:
+
+1. Preferred domain.
+2. HTTPS.
+3. Trailing slash or no trailing slash.
+4. Lowercase URLs.
+5. Clean slugs.
+6. Slug length.
+7. Keyword use.
+8. Stop words.
+9. Category paths.
+10. Custom post type paths.
+11. Archive paths.
+12. Taxonomy paths.
+13. Pagination URLs.
+14. Filter URLs.
+15. Redirect rules after slug changes.
+
+# 17. Accessibility and SEO Alignment
+
+Create accessibility rules that support SEO and user experience.
+
+Include:
+
+1. Semantic HTML.
+2. Landmarks.
+3. Heading hierarchy.
+4. Alt text.
+5. Keyboard navigation.
+6. Link names.
+7. Button names.
+8. Form labels.
+9. Error messages.
+10. Contrast.
+11. Focus states.
+12. Skip links.
+13. Captions and transcripts for video where relevant.
+
+# 18. Local SEO Rules if Relevant
+
+If the website has a local business, local service, location page, branch page, or city targeting, create local SEO rules.
+
+Include:
+
+1. LocalBusiness schema.
+2. NAP consistency.
+3. Location pages.
+4. Service area pages.
+5. Google Business Profile alignment.
+6. Bing Places alignment.
+7. Embedded map if useful.
+8. Local reviews if real.
+9. Local citations.
+10. Location-specific content.
+
+If local SEO is not relevant, say so and explain why.
+
+# 19. Multilingual and International SEO if Relevant
+
+If the website has more than one language or region, create multilingual SEO rules.
+
+Include:
+
+1. hreflang.
+2. x-default.
+3. Language-specific URLs.
+4. Reciprocal hreflang.
+5. Translation quality.
+6. Localised metadata.
+7. Localised canonical logic.
+8. Sitemap handling.
+9. Avoiding mixed-language pages.
+
+If multilingual SEO is not relevant, say so and explain why.
+
+# 20. Privacy, Safety, and Compliance
+
+Create privacy and publication rules.
+
+Include:
+
+1. What should not be indexed.
+2. What should not be published.
+3. How to handle private documents.
+4. How to handle user data.
+5. How to handle client data.
+6. How to handle internal business data.
+7. How to handle sensitive images.
+8. How to handle private dashboards.
+9. How to handle downloads.
+10. How to handle staging sites.
+11. How to handle test pages.
+12. How to handle AI-generated content.
+13. How to prevent accidental exposure through sitemaps, links, metadata, and public embeds.
+
+# 21. Pre-Launch SEO QA Checklist
+
+Create a launch checklist.
+
+Include checks for:
+
+1. Crawlability.
+2. Indexability.
+3. Sitemap.
+4. robots.txt.
+5. Canonicals.
+6. Metadata.
+7. Headings.
+8. Schema.
+9. Social previews.
+10. Images.
+11. Links.
+12. Redirects.
+13. 404 page.
+14. HTTPS.
+15. Mixed content.
+16. Mobile layout.
+17. Core Web Vitals.
+18. Accessibility.
+19. Search Console.
+20. Bing Webmaster Tools.
+21. Analytics.
+22. Privacy.
+23. Staging environment.
+24. Production environment.
+25. Backup.
+
+# 22. Post-Launch SEO Monitoring Plan
+
+Create a monitoring plan.
+
+Include:
+
+1. Daily checks for first week.
+2. Weekly checks for first month.
+3. Monthly checks.
+4. Quarterly checks.
+5. Search Console review.
+6. Bing Webmaster Tools review.
+7. Crawl error review.
+8. Broken link review.
+9. Ranking review.
+10. Content update review.
+11. Competitor review.
+12. Core Web Vitals review.
+13. Conversion review.
+14. Backlink review.
+15. Index bloat review.
+16. Sitemap review.
+
+# 23. Output Format Required
+
+Return the result using clear headings and practical tables.
+
+Do not write vague advice.
+
+Do not skip pages in the architecture I provide.
+
+Do not invent fake keyword data.
+
+Do not claim a page can rank just because it exists.
+
+Do not recommend indexing low-value pages.
+
+Do not recommend fake schema.
+
+Do not recommend exposing private content.
+
+Do not ignore performance.
+
+Do not ignore mobile.
+
+Do not ignore accessibility.
+
+Do not ignore Search Console and Bing Webmaster Tools.
+
+End with a final section titled:
+
+Final SEO Compliant Build Specification
+
+In that section, summarise exactly what the website builder must implement before launch.
+
+# Final Instruction
+
+Your output must be adapted to the website architecture I provided. If the architecture has missing information, make reasonable assumptions, list those assumptions clearly, and continue with the best complete SEO plan.
