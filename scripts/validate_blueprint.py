@@ -3,7 +3,6 @@
 from pathlib import Path
 import re
 import subprocess
-import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 INDEX = ROOT / "references" / "INDEX.md"
@@ -46,10 +45,11 @@ def manifest_paths() -> list[str]:
 
 
 def validate_manifest() -> None:
-    missing = [path for path in manifest_paths() if not (ROOT / path).is_file()]
+    paths = manifest_paths()
+    missing = [path for path in paths if not (ROOT / path).is_file()]
     if missing:
         fail("manifest paths missing:\n" + "\n".join(missing))
-    print(f"PASS: manifest paths exist, {len(manifest_paths())} files checked")
+    print(f"PASS: manifest paths exist, {len(paths)} files checked")
 
 
 def validate_skill_identity() -> None:
@@ -61,7 +61,7 @@ def validate_skill_identity() -> None:
         "orchestration/profile-routing.md",
         "orchestration/gstack-routing.md",
         "orchestration/cross-platform-routing.md",
-        "references/wordpress/wordpress-lifecycle.md",
+        "## WordPress preservation rule",
         "references/saas/saas-lifecycle.md",
         "references/mobile/mobile-lifecycle.md",
     ]
