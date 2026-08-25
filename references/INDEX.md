@@ -184,6 +184,7 @@ This manifest is the completeness guard for the upgraded skill. The branch must 
 5. `orchestration/approval-routing.md`.
 6. `orchestration/cross-platform-routing.md`.
 7. `orchestration/coverage-matrix.md`.
+8. `orchestration/recommendation-coverage.md`.
 
 ## Templates
 
@@ -218,4 +219,4 @@ This manifest is the completeness guard for the upgraded skill. The branch must 
 
 ## Validation rule
 
-Before merge, compare the branch tree to this manifest. Any missing listed file is a stop condition. Also verify the original 14 WordPress references still use the same blob SHA as `main`, proving the upgrade did not mutate them.
+Before merge, compare the branch tree to this manifest and `orchestration/recommendation-coverage.md`. Any missing listed file or missing required recommendation is a stop condition. Also verify the original 14 WordPress references still use the same blob SHA as `main`, proving the upgrade did not mutate them.
