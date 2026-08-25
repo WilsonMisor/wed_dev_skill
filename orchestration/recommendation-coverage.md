@@ -46,7 +46,7 @@ A recommendation is not considered covered merely because a similarly named file
 | R34 | Preserve PREOS G0-G11, GREEN/AMBER/RED/HUMAN REVIEW/UNKNOWN semantics, control dependency propagation, evidence freshness, and the rule that UNKNOWN never silently becomes GREEN | `orchestration/preos-routing.md`, `references/core/lifecycle.md`, `SKILL.md` | Required |
 | R35 | Keep consequential risk acceptance and production authority human; missing accountable roles become role gaps/HUMAN REVIEW rather than AI personas | `orchestration/preos-routing.md`, `references/production-assurance/preos-integration.md`, `SKILL.md` | Required |
 | R36 | Store project-specific assurance state under `.ai-product-delivery/preos/` and runtime/recovery state under independent `PREOS_STATE_ROOT`, never under `.gstack` or `GSTACK_STATE_ROOT` | `orchestration/preos-routing.md`, `references/production-assurance/preos-integration.md`, `SKILL.md` | Required |
-| R37 | Close the production loop by routing incidents, near misses, support findings, cost/reliability anomalies, and security findings through PREOS learning and then Blueprint change control | `orchestration/preos-routing.md`, `references/core/lifecycle.md`, `SKILL.md` | Required |
+| R37 | Close the production loop by routing incidents, near misses, support findings, cost/reliability anomalies, and security findings through PREOS production learning and then Blueprint change control | `orchestration/preos-routing.md`, `references/core/lifecycle.md`, `SKILL.md` | Required |
 | R38 | Route PREOS assurance needs to gstack specialists while preserving separation of responsibility: PREOS determines required assurance, gstack performs specialist review, Codex implements, Blueprint governs, and humans authorize | `orchestration/preos-routing.md`, `references/production-assurance/preos-integration.md`, `orchestration/gstack-routing.md`, `SKILL.md` | Required |
 
 ## Integrated layer model
@@ -70,7 +70,7 @@ Production
       |
 telemetry / incidents / cost / support
       |
-PREOS learning
+PREOS production learning
       |
 Blueprint change control
 ```
