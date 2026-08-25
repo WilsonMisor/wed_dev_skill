@@ -6,6 +6,18 @@ gstack is the specialist engineering workforce. The AI Product Delivery Blueprin
 
 When gstack is installed beside this skill in Codex, prefer the gstack namespaced installation so its commands do not collide with other skills. The expected forms below therefore use the `gstack-` prefix. If the local installation uses short names, map the same specialist to its unprefixed equivalent.
 
+## Repository and tool boundary
+
+Keep the blueprint, gstack, Codex, and the application repository as separate responsibility layers.
+
+1. The AI Product Delivery Blueprint repository owns governance, lifecycle rules, profiles, templates, routing, and validation.
+2. gstack remains an independently installed specialist tool or skill. Do not copy or merge the gstack repository into this blueprint merely to integrate it.
+3. Codex is the execution engine. It consumes approved requirements, task packets, and specialist findings rather than becoming a replacement source of truth.
+4. The application repository owns product source code and project specific artifacts.
+5. Do not merge the blueprint repository, gstack repository, and application repository merely to make them cooperate.
+6. Integrate through namespaced skill invocation, bounded task packets, approved artifacts, review findings, and explicit handoff contracts.
+7. Vendor or copy another layer only when an approved Architecture Decision Record documents the concrete need, ownership, version pinning, update process, security impact, and rollback path.
+
 ## Mandatory lifecycle routing for substantial work
 
 1. Discovery and problem reframing, use `gstack-office-hours`.
