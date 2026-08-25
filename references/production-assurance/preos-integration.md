@@ -1,6 +1,6 @@
 # PREOS Integration Contract
 
-PREOS is the production assurance plane for the AI Product Delivery Blueprint. Its canonical implementation and source corpus live in the separate `WilsonMisor/PREOS` repository. This Blueprint repository contains only the governance contract and routing required to activate PREOS correctly.
+PREOS is the production assurance plane for the AI Product Delivery Blueprint. Its canonical implementation and canonical PREOS source corpus live in the separate `WilsonMisor/PREOS` repository. This Blueprint repository contains only the governance contract and routing required to activate PREOS correctly.
 
 ## What remains authoritative here
 
@@ -18,7 +18,7 @@ PREOS may identify a problem with these artifacts, but it does not silently repl
 
 ## What PREOS owns
 
-PREOS owns the reusable production-assurance methodology and canonical source corpus for:
+PREOS owns the reusable production-assurance methodology and canonical PREOS source corpus for:
 
 1. the deterministic 75-control baseline;
 2. the atomic production-risk catalogue;
@@ -57,7 +57,7 @@ Production runtime
       |
 telemetry / incidents / cost / support
       |
-PREOS learning
+PREOS production learning
       |
 Blueprint change control
 ```
@@ -119,7 +119,7 @@ Not every field applies to every requirement, but critical production behavior m
 
 ## No duplicate implementation unit
 
-PREOS may describe implementation-unit semantics, but the integrated system uses the Blueprint AI Task Packet as the single bounded implementation work unit. PREOS enriches that packet with risk, control, evidence, economics, monitoring, recovery, reconciliation, and gate requirements.
+The integrated system has one implementation work unit: the Blueprint AI Task Packet. PREOS may describe implementation-unit semantics, but it does not create a competing source of implementation truth. PREOS enriches that one implementation work unit with risk, control, evidence, economics, monitoring, recovery, reconciliation, and gate requirements.
 
 ## State ownership
 
