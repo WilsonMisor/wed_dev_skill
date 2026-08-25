@@ -18,6 +18,12 @@ AI_TASK_PACKET_GUIDE = ROOT / "references" / "core" / "ai-task-packets.md"
 AI_TASK_PACKET_TEMPLATE = ROOT / "templates" / "ai-task-packet.md"
 LEGACY_SKILL_SNAPSHOT = ROOT / "references" / "wordpress" / "legacy-ai-web-delivery-blueprint.md"
 
+# Immutable pre-upgrade WordPress baseline. This commit is an ancestor of the
+# upgraded Blueprint main branch and remains the preservation authority after
+# main:SKILL.md becomes the parent AI Product Delivery Blueprint.
+LEGACY_BASE_COMMIT = "aee7f8f7ba8e9e6d4af8dc681892e51bef411a7b"
+LEGACY_SKILL_BLOB = "74698dfa2c6fb631af5c1399cefaaaee9f0548c2"
+
 LEGACY_WORDPRESS = [
     "references/ai-delivery-artifact-templates.md",
     "references/ai-ui-ux-design-tool-prompt-workflow.md",
@@ -233,33 +239,51 @@ def validate_legacy_wordpress() -> None:
     if missing:
         fail("legacy WordPress references missing:\n" + "\n".join(missing))
 
-    result = subprocess.run(
-        ["git", "rev-parse", "--verify", "origin/main"],
+    baseline = subprocess.run(
+        ["git", "cat-file", "-e", f"{LEGACY_BASE_COMMIT}^{{commit}}"],
         cwd=ROOT,
         stdout=subprocess.DEVNULL,
         stderr=subprocess.DEVNULL,
     )
-    if result.returncode != 0:
-        print("WARN: origin/main is unavailable, legacy content comparison skipped")
-        return
+    if baseline.returncode != 0:
+        fail(
+            "immutable legacy WordPress baseline commit is unavailable; "
+            "fetch full repository history before validating preservation"
+        )
 
     diff = subprocess.run(
-        ["git", "diff", "--exit-code", "origin/main", "--", *LEGACY_WORDPRESS],
+        ["git", "diff", "--exit-code", LEGACY_BASE_COMMIT, "--", *LEGACY_WORDPRESS],
         cwd=ROOT,
     )
     if diff.returncode != 0:
-        fail("one or more preserved WordPress reference files differ from origin/main")
+        fail("one or more preserved WordPress reference files differ from the immutable pre-upgrade baseline")
 
     original_skill = subprocess.run(
-        ["git", "show", "origin/main:SKILL.md"],
+        ["git", "show", f"{LEGACY_BASE_COMMIT}:SKILL.md"],
         cwd=ROOT,
         check=True,
         stdout=subprocess.PIPE,
     ).stdout
     if LEGACY_SKILL_SNAPSHOT.read_bytes() != original_skill:
-        fail("legacy WordPress skill snapshot differs from origin/main:SKILL.md")
+        fail("legacy WordPress skill snapshot differs from immutable pre-upgrade SKILL.md")
 
-    print("PASS: original WordPress references and legacy skill text are preserved")
+    legacy_blob = subprocess.run(
+        ["git", "hash-object", str(LEGACY_SKILL_SNAPSHOT)],
+        cwd=ROOT,
+        check=True,
+        stdout=subprocess.PIPE,
+        text=True,
+    ).stdout.strip()
+    if legacy_blob != LEGACY_SKILL_BLOB:
+        fail(
+            "legacy WordPress skill snapshot Git blob changed: "
+            f"expected {LEGACY_SKILL_BLOB}, got {legacy_blob}"
+        )
+
+    print(
+        "PASS: original WordPress references and legacy skill text are preserved "
+        "against immutable pre-upgrade baseline"
+    )
 
 
 def main() -> None:
