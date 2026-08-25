@@ -1,72 +1,262 @@
 ---
-name: ai-web-delivery-blueprint
-description: End-to-end AI-assisted WordPress/web delivery workflow with human supervision. Use when Codex or Claude Code must plan, build, refine, ship, audit, rescue, or hand off a website using PRD-first requirements, flexible AI design artifact strategy, Human Design Governance for deliberate brand-specific content-driven design, UX/UI framework compliance matrix with workplace UX/UI, 10 UX laws, 20 UX/UI dos/don'ts, anti-AI visual audit, human design scorecard, content resilience and WordPress visual completeness QA, Figma Make, Claude Design, JSON specs, coded mockups, owner-approved design baseline gates before SRD/coding, SEO crawl/remediation toward 90%+, cybersecurity controls, flowchart/state-machine loops, AI task packets, architecture/pages/components/user flows, UI copy/error clarity, testing/deployment checklists, launch readiness, operations, and WordPress CPT admin screens with custom metadata/media fields.
+name: ai-product-delivery-blueprint
+description: End to end AI assisted product delivery governance for web applications, WordPress, SaaS, APIs, data, infrastructure, Flutter mobile products, and PREOS production assurance. Classifies the project, loads only applicable delivery profiles, enforces PRD, SRS and SRD baselines, architecture and domain contracts, security and privacy controls, UX and design evidence, testing and QA, traceability, human approval gates, bounded AI task packets, production risk/economics/evidence assurance, deployment, operations, and gstack specialist routing. WordPress remains a specialised profile and retains the existing deep WordPress delivery framework.
 ---
 
-# AI Web Delivery Blueprint
+# AI Product Delivery Blueprint
 
-## Operating Rule
+## Authority
 
-Use this skill when AI is expected to do substantial web delivery work while humans supervise decisions, risk, access, and launch. Do not treat AI output as accepted work until it is traceable, reviewed, tested, and approved by the accountable human role owner.
+Use this skill as the governing delivery layer for substantial AI assisted software and digital product work. It decides what must exist, what profiles apply, what evidence is required, which gates must pass, when PREOS production assurance applies, and when implementation may advance.
 
-AI execution posture:
-- Plan with intention: define the site architecture, map pages and components, choose the stack and tools, and outline user flows before implementation begins.
-- Build with speed: generate page structure, draft reusable components, create boilerplate faster, and keep implementation aligned with approved PRD/SRD, mockups, SEO, security, and task-packet constraints.
-- Communicate with clarity: write clearer UI copy, explain error messages clearly, write better README files, and draft cleaner documentation that a future maintainer can use.
-- Refine with judgment: spot bugs and edge cases, refactor messy logic, improve readability and structure, and avoid clever code when a simpler maintainable structure works.
-- Verify before handoff: create testing checklists, run applicable checks, prepare deployment steps, package evidence, and ship with clarity through release notes, rollback notes, launch status, and operations handoff.
+The skill does not replace specialist engineering judgment. It coordinates PREOS production assurance, Codex implementation, and gstack specialist review while keeping human owners responsible for risk acceptance and consequential approvals.
 
-Use this normal sequence for WordPress website delivery: approve the PRD first, create page briefs/sitemap, create the Conversion/SEO/Security Applicability Matrix, create SEO architecture and cybersecurity threat model/control matrix, define the Design Artifact Strategy, create the UX/UI Framework Compliance Matrix, generate and review the AI design-tool prompt package, use the approved strategy and prompt package to create reviewable design artifacts and individual page/template mockups, get website-owner review, rework until approved, freeze the design baseline, then baseline the SRD/SRS, then start main WordPress/theme/template coding. Early technical constraints and SRD notes may be captured before mockups, but the final SRD and build tickets must reflect the approved Design Artifact Strategy, UX/UI Framework Compliance Matrix, AI design prompt package, mockups, and design baseline.
+## Core operating rules
 
-Before main WordPress/theme/template coding begins, require the website's Design Artifact Strategy, UX/UI Framework Compliance Matrix, AI design-tool prompt package, and individual page/template mockups or equivalent design-baseline artifacts to be developed, reviewed, reworked until approved, and frozen. Wireframing is optional as a separate artifact, but design proof is mandatory: the chosen path must prove structure, hierarchy, flows, states, responsiveness, accessibility, WordPress/CPT/admin mapping, SEO/security/privacy UX, and implementation feasibility. Allow Figma Make, Claude Design, JSON low/high-fidelity wireframe specifications generated by Codex or Claude Code, coded HTML/CSS mockups, clickable prototypes, static screenshots, or hybrid workflows. Treat this as a hard UI/UX gate, because unresolved client UI/UX approval is a build risk, not a cosmetic detail.
+1. Classify the project before loading specialist references.
+2. Load `references/core/*` for every substantial project.
+3. Load only the applicable delivery profiles from `references/web`, `references/wordpress`, `references/saas`, `references/mobile`, `references/api`, `references/data`, and `references/infrastructure`.
+4. Classify PREOS separately as a production-assurance overlay: inactive, lightweight, standard, or high-assurance. PREOS is not a delivery profile and does not replace the active product profiles.
+5. Treat WordPress as a specialised web profile. Do not apply WordPress rules to general web, SaaS, API, or mobile work unless WordPress is actually in scope.
+6. Treat SaaS, web, mobile, API, data, and infrastructure as composable profiles. A project may require several at once.
+7. Establish canonical domain language and cross platform contracts before independent clients implement the same concepts.
+8. Require approved product requirements before architecture is frozen, and require approved architecture and applicable design evidence before main implementation begins.
+9. Convert implementation into bounded AI Task Packets. Each packet must state goal, non goals, requirement IDs, allowed files or systems, prohibited actions, acceptance criteria, tests, evidence, reviewer, approver, and rollback or handoff notes. When PREOS is active, enrich the same packet with applicable risk, control, economics, evidence-freshness, monitoring, recovery/reconciliation, change-impact, and production-gate requirements.
+10. Preserve traceability from product requirement to architecture decision, design, code, test, security control, release evidence, and operations documentation. When PREOS is active, extend this chain through production risk, control, monitoring, recovery/reconciliation, and production-gate evidence as applicable.
+11. Treat security, privacy, accessibility, reliability, backup, recovery, observability, production economics, hostile-user behavior, and operational readiness as build concerns when applicable, not post release advice.
+12. Do not silently skip a required gate. A Blueprint gate outcome is pass, rework, approved exception, escalate, or stop. PREOS assurance states are GREEN, AMBER, RED, HUMAN REVIEW, and UNKNOWN. UNKNOWN never silently becomes GREEN.
+13. AI may recommend. Human accountable owners approve major scope, legal and compliance interpretation, security or privacy risk acceptance, destructive operations, production deployment, payments, external spending, user communications, and final launch.
+14. Do not broaden an approved implementation packet into adjacent cleanup, speculative hardening, new features, or architecture changes without a new approved packet.
+15. Require independent review and applicable QA before launch scope work is treated as complete.
+16. If source artifacts conflict, stop the affected work and surface the conflict rather than inventing a resolution.
+17. Do not duplicate PREOS canonical risk/control/readiness corpora in this repository. Their authoritative implementation lives in `WilsonMisor/PREOS`; this repository stores only the integration contract and routing.
 
-For WordPress website design, apply Human Design Governance as an enforceable design-quality layer. Every significant visual and interaction decision must be justified by user needs, content, information hierarchy, brand identity, business goals, conversion goals, accessibility, interaction requirements, responsive behavior, or the established design system. Do not use a visual treatment only because it is common in modern websites or common in AI-generated output. Do not interpret "avoid the AI look" as a reason for arbitrary asymmetry, unusual controls, inconsistent spacing, random radius values, decorative complexity, or novelty over usability. Familiar patterns, coherent grids, reusable tokens, consistent components, and systematic spacing are professional strengths when they are selected deliberately. Before design baseline freeze, require project-specific design intent, content-driven composition, responsive recomposition, anti-AI visual pattern audit, content resilience and WordPress visual completeness checks, rendered visual QA where tools are available, and Human Design Scorecard pass or approved exception.
+## Project classification
 
-For WordPress web development, treat cybersecurity as build behavior and a launch gate, not a post-build checklist. Create a threat model and control matrix early; map controls to every form, endpoint, admin action, REST/AJAX route, CPT save handler, upload, database query, integration, cron job, environment, and hosting/network surface. Require coding-phase evidence for SQL injection prevention, input validation, output escaping, CSRF/nonces, authorization, authentication/session safety, encryption, secrets, logging, rate limiting, file upload security, dependency hygiene, WordPress hardening, backups, and monitoring. Stop on unresolved critical/high security findings unless an accountable human records accepted risk with mitigation and expiry.
+Before planning or coding, read `orchestration/project-classification.md` and create a Project Classification Record. At minimum identify:
 
-For WordPress web development, treat SEO as build behavior, not post-build advice. Create SEO requirements from the architecture, implement them in templates/CPTs/content workflows, crawl the full staging site before launch, remediate applicable issues, and target 90%+ SEO audit scores in Lighthouse/PageSpeed or equivalent audit tooling. Check rendered output in major browser engines where tools allow, document unavailable engines, and record accepted exceptions; do not claim ranking guarantees.
-For conversion, trust, local, analytics, privacy, SEO, and security items that may be compulsory or contextual, create a Conversion/SEO/Security Applicability Matrix. Treat compulsory defaults as required unless an accountable human approves an exception. Treat contextual items as mandatory when their trigger applies. Do not add fake reviews, fake local schema, unsupported response-time promises, unapproved team photos, or unnecessary sticky CTAs.
+1. Product type and business model.
+2. User groups and privileged roles.
+3. Delivery surfaces, including browser, WordPress, mobile, API, background workers, data pipelines, and administrative tools.
+4. Data sensitivity and compliance triggers.
+5. Tenant model if SaaS is present.
+6. Identity and authorization model.
+7. External integrations and payment dependencies.
+8. Hosting and deployment constraints.
+9. Production intent and expected blast radius.
+10. Required profiles.
+11. Explicitly excluded profiles.
+12. PREOS assurance level and maturity stage.
+13. Accountable production/risk owner and known role gaps when PREOS is active.
 
-For the execution flowchart and state-machine rules, read `references/wordpress-ai-delivery-flowchart.md`. For compulsory/contextual conversion, trust, local, analytics, privacy, SEO, and security decisions, read `references/conversion-seo-security-applicability-matrix.md`. For AI-powered design artifact strategy, UX/UI framework compliance matrix creation, optional wireframing, JSON low/high-fidelity specs, coded mockups, prototyping, or mockup generation, read `references/ai-ui-ux-design-tool-prompt-workflow.md`. For Human Design Governance, design intent, deliberate design rationale, and hard guardrails against generic AI visual convergence, read `references/human-design-governance.md`. For anti-AI pattern warnings, pattern convergence audit, pattern budget, brand specificity, swap-the-logo, restraint, and component justification tests, read `references/ai-visual-antipatterns-and-audit.md`. For the Human Design Scorecard and hard failure conditions, read `references/human-design-scorecard.md`. For content resilience, WordPress visual completeness, component differentiation, and rendered visual QA, read `references/content-resilience-and-wordpress-visual-qa.md`. For UX law and tactical UI dos/don'ts coverage in prompts, mockups, forms, responsive layouts, loading/error states, onboarding, search, coded UI, and design QA, read `references/ux-laws-and-ui-dos-donts.md`. For the detailed workplace UX/UI lifecycle and checklists, search/read `references/workplace-ux-ui-design-and-wireframing-framework.txt` when the task needs full UI/UX framework depth. For cybersecurity-by-design controls, read `references/wordpress-cybersecurity-build-workflow.md`. For the full phase checklist, read `references/end-to-end-ai-assisted-web-development-blueprint.txt`. For reusable artifact formats, read `references/ai-delivery-artifact-templates.md`.
+Then apply `orchestration/profile-routing.md` and `orchestration/preos-routing.md` when PREOS is active.
 
-## Workflow
+## Profile inheritance and assurance overlay
 
-1. Classify the project type: marketing site, WordPress/CMS site, ecommerce, SaaS app, portal, marketplace, media site, community site, internal app, AI-enabled site, or AI-assisted delivery project.
-2. For WordPress/CMS projects, run delivery as the flowchart/state machine in `references/wordpress-ai-delivery-flowchart.md`: identify the current state, required inputs, decision gate, allowed AI actions, human approval needed, evidence required, and next branch before executing work.
-3. Establish accountable human owners before execution: sponsor, website owner/client approver, product, delivery, architecture, QA, security/privacy, accessibility, SEO, operations, and AI supervision.
-4. Create or verify governing artifacts in the correct baseline order: charter/discovery, approved PRD, page briefs/sitemap, Conversion/SEO/Security Applicability Matrix, SEO architecture plan, cybersecurity threat model/control matrix, Design Artifact Strategy, Human Design Governance record with design intent and anti-pattern risks, UX/UI Framework Compliance Matrix with workplace framework, Human Design Governance, 10 UX laws, and 20 UX/UI dos/don'ts coverage where UI is in scope, AI design-tool prompt package, owner-approved page mockup/design baseline package, frozen design baseline, approved SRD/SRS, traceability matrices, AI task packet template, AI run log, human supervision matrix, tool permission matrix, QA plan, launch plan, and operations handoff.
-5. Enforce the AI-assisted UI/UX gate after PRD and before SRD final baseline/build: every launch-scope page/template must have a Design Artifact Strategy, Human Design Governance record, UX/UI Framework Compliance Matrix, AI design-tool prompt package, chosen design artifacts, generated/reviewable mockup or equivalent design baseline, owner feedback, rework history, explicit owner approval, approved version link, and design-baseline freeze record before main WordPress/theme/template coding starts. The UX/UI Framework Compliance Matrix must classify relevant workplace framework sections, Human Design Governance guardrails/principles/warnings, the 10 UX laws, and the 20 UX/UI dos/don'ts for user-facing UI, admin UI, forms, workflows, onboarding, search, responsive behavior, loading/error/success states, and coded mockups. Low-fidelity wireframes are optional when the strategy proves structure through another artifact path. Exceptions require sponsor/product-owner approval and must be visible in the task packet.
-6. For WordPress/CMS projects, enforce the CPT admin UI rule: new project CPTs must not open the Gutenberg/block builder by default; they must open a purpose-built custom metadata/metabox UI with WordPress media/photo upload fields where required. Exceptions require explicit human approval and QA evidence.
-7. For WordPress/CMS projects, enforce cybersecurity implementation behavior: map security controls to every form, login/reset/account flow, admin action, CPT save handler, REST/AJAX endpoint, database query, upload/media path, webhook, integration, cron job, secret, environment, hosting/network surface, backup, and monitoring path before build tickets are released.
-8. For WordPress/CMS projects, enforce SEO and applicability-matrix behavior: map SEO and conversion/trust/local/privacy/analytics requirements to every page, template, CPT, taxonomy, archive, URL pattern, metadata rule, canonical rule, schema output, internal link path, image requirement, sitemap rule, robots/noindex rule, redirect, conversion path, thank-you/success state, analytics event, and performance budget before build tickets are released.
-9. Convert work into AI task packets before assigning it to an AI agent. Each packet must include owner, goal, non-goals, source artifacts, Conversion/SEO/Security Applicability Matrix entries where relevant, PRD requirement IDs, Design Artifact Strategy, Human Design Governance record and scorecard/audit requirements where design-sensitive, UX/UI Framework Compliance Matrix entries, and selected artifact path for design work, AI design-tool prompt package links for AI-generated design work, approved mockup/design baseline links for UI work, SRD requirement IDs for build work, SEO crawl scope/target score when relevant, cybersecurity control IDs/security checks when relevant, allowed tools/files/systems, prohibited actions, data limits, acceptance criteria, required checks, evidence, reviewer, approver, and rollback/handoff notes.
-10. Execute phase work from the blueprint and flowchart. Treat every gate as pass, rework loop, approved exception, escalate, or stop; never advance silently. Mark tasks as required now, required later, not applicable, requires specialist review, or accepted risk. Never skip a relevant gate silently.
-11. Preserve traceability from PRD IDs to page briefs, AI design-tool prompt packages, design, page mockups, SRD requirements, SEO requirements, cybersecurity controls, content, code, tests, crawl evidence, release notes, and operations documentation.
-12. Require self-review, independent review, automated checks where feasible, and human approval for AI-generated launch-scope work.
-13. Stop and escalate on missing Conversion/SEO/Security Applicability Matrix for WordPress/CMS work, missing Design Artifact Strategy, Human Design Governance record, UX/UI Framework Compliance Matrix, or AI design-tool prompt package for AI-generated design work, missing owner-approved mockups/design baseline for user-facing build work, missing design intent for high-fidelity work, failed anti-AI visual audit without approved exception, Human Design Score below pass threshold without approved remediation/exception, unresolved Human Design hard failure, missing content resilience or WordPress visual completeness evidence, pre-launch SEO score below 90% without accepted exception, unresolved critical/high security finding, SQL injection risk, broken authorization, exposed secret, missing required encryption, unsafe upload path, unprotected form/admin action, requirement conflicts, unclear source material, legal/privacy/security/accessibility/compliance interpretation, sensitive data exposure, destructive actions, production access, external spending, failed tests with unclear cause, or unsupported factual claims.
-14. Before launch, verify approved PRD baseline, Conversion/SEO/Security Applicability Matrix coverage, Design Artifact Strategy coverage, Human Design Governance coverage, UX/UI Framework Compliance Matrix coverage, AI design-tool prompt package coverage, anti-AI visual audit evidence, Human Design Scorecard pass or approved exception, content resilience and WordPress visual completeness evidence, rendered visual QA evidence where tools are available, owner-approved page mockup/design baseline coverage, approved SRD baseline, cybersecurity evidence package, security scan/review status, full-site SEO crawl/remediation evidence, 90%+ SEO audit target or accepted exceptions, requirements-to-test coverage, AI-generated work evidence, human approvals, rollback, monitoring, support readiness, and AI tool production-access restrictions.
-15. During hypercare and operations, review AI defects, cybersecurity findings, vulnerability scans, WAF/rate-limit/auth logs, SEO crawl/indexing results, Search Console/Bing Webmaster findings, run logs, prompt/context quality, permission boundaries, costs, acceptance rate, rework rate, defect rate, escalation rate, and review latency.
+Use this default inheritance model.
 
-## Human-Only Decisions
+```text
+Core
+  Web
+    WordPress
+  SaaS
+    Web when browser UI exists
+    API when programmatic services exist
+    Data when persistent application data exists
+    Infrastructure for production operation
+  Mobile
+    API when remote services exist
+    Data contracts when shared entities exist
+    Infrastructure for production services
+  API
+    Data when persistence exists
+    Infrastructure for production operation
 
-AI cannot be the sole approver for legal/privacy/security/accessibility risk acceptance, Design Artifact Strategy, Human Design Governance record, UX/UI Framework Compliance Matrix approval, AI design prompt package completeness approval, website owner page mockup approval, Human Design hard-failure exceptions, anti-AI pattern risk acceptance, Human Design Scorecard acceptance below pass threshold, SEO exceptions that affect indexation or launch readiness, cybersecurity exceptions that affect user data, admin access, encryption, launch readiness, or critical/high findings, production deployment, destructive data operations, payment/tax/compliance decisions, vendor contract decisions, real-user communications, major scope changes, or final launch.
+PREOS production assurance overlays any applicable combination above.
+```
 
-## Reference Loading Guidance
+Profile inheritance does not mean load every file. Load the minimum references needed for the current phase and task. PREOS likewise selects only relevant risks and readiness questions rather than loading its entire catalogue into every Codex context.
 
-- Read the WordPress AI delivery flowchart when producing a complete WordPress project plan, determining current project state, deciding next actions, auditing execution order, handling rework loops, or preparing handoff.
-- Read the full blueprint reference when producing a complete project plan, audit, rescue plan, or handoff.
-- Read only relevant blueprint sections when working on a narrow phase or artifact.
-- Read the artifact templates whenever creating PRDs, SRDs, Conversion/SEO/Security Applicability Matrices, Design Artifact Strategies, UX/UI Framework Compliance Matrices, AI design-tool prompt packages, page mockup approval packages, cybersecurity threat models/control matrices, cybersecurity evidence packages, SEO crawl/compliance audit packages, AI task packets, WordPress CPT admin UI specs, supervision matrices, permission matrices, run logs, QA evidence, or launch evidence.
-- Read the Conversion/SEO/Security Applicability Matrix reference when deciding whether custom forms, above-the-fold CTAs, internal links, thank-you pages, breadcrumbs, case studies, FAQs, response-time promises, sticky mobile CTAs, maps/directions, reviews, local schema, privacy pages, analytics, and security controls are compulsory, contextual, not applicable, or excepted.
-- Read the AI UI/UX design tool prompt workflow when choosing a Design Artifact Strategy, creating the UX/UI Framework Compliance Matrix, or using Figma Make, Claude Design, JSON low/high-fidelity wireframe specs, coded HTML/CSS mockups, clickable prototypes, page mockups, component sheets, design-system sheets, workflow states, or revision prompts. Low-fidelity wireframes are optional only when the strategy proves structure another way.
-- Read Human Design Governance before design intent, high-fidelity direction, AI design prompt creation, generated mockup audit, coded mockup review, frontend implementation, or design rescue where generic AI visual convergence is a risk.
-- Read the AI visual antipatterns reference before selecting major layouts/components, approving generated design artifacts, or auditing pages for generic AI visual convergence.
-- Read the Human Design Scorecard before accepting major page/template mockups, coded mockups, frontend implementation, or launch-scope visual QA.
-- Read the content resilience and WordPress visual QA reference before final design acceptance, frontend QA, UAT, launch readiness, or any audit of secondary WordPress templates/states.
-- Read the UX laws and UI dos/don'ts reference when creating or auditing AI design-tool prompts, UX/UI Framework Compliance Matrix rows, generated mockups, coded mockups, form UX, mobile/touch layouts, onboarding, search, loading/success/error states, spacing/hierarchy, button copy, color semantics, gradients, nested radius, progress indicators, or design QA evidence.
-- Read or search the workplace UX/UI framework when the task requires detailed lifecycle gates, UX/UI Framework Compliance Matrix coverage, low/high-fidelity review checklists, responsive design strategy, accessibility review, prototype validation, developer handoff, design QA, post-launch UX measurement, or anti-pattern checks.
-- Read the cybersecurity build workflow when planning, implementing, auditing, or remediating WordPress security, SQL injection prevention, form protection, admin protection, REST/AJAX security, uploads, authentication, authorization, encryption, secrets, web/network protection, database protection, WordPress hardening, scans, monitoring, or launch security evidence.
-- Read the SEO crawl workflow when planning, implementing, auditing, or remediating WordPress SEO, metadata, schema, sitemap, robots, canonical, redirects, image SEO, internal links, Core Web Vitals, browser-rendered SEO output, or launch SEO evidence.
-- Read the generic SEO compliance prompt when producing a full SEO implementation plan from a sitemap, architecture, CPT model, page list, template list, or website brief.
-- If the user's repo or workspace has a newer project-specific blueprint, compare it with the bundled reference and prefer the project-specific source after noting the difference.
+## Lifecycle
 
+Use `references/core/lifecycle.md` as the master state machine and `orchestration/preos-routing.md` for production-assurance transitions.
+
+The normal integrated sequence is:
+
+1. Discovery and problem definition.
+2. Product definition and scope.
+3. PRD baseline.
+4. Project classification, profile activation, and PREOS assurance classification.
+5. When PREOS is active, create/refresh the PREOS Project Contract and perform the first product/classification risk pass.
+6. Architecture, data, API, threat, privacy, environment, and architecture-economics planning as applicable.
+7. Perform the architecture-dependent PREOS risk pass and update the Deferred Complexity Registry where applicable.
+8. UX and design strategy and approval for user facing work.
+9. SRS and SRD baseline.
+10. Traceability and test planning.
+11. For each substantial change, run PREOS change-impact/risk delta when active and create one bounded AI Task Packet enriched by PREOS requirements.
+12. Implementation by Codex under the approved packet.
+13. Self review and independent review.
+14. Security and specialist review where triggered, including gstack specialists routed by the Blueprint/PREOS evidence need.
+15. Automated, integration, device, browser, contract, accessibility, performance, failure, recovery, reconciliation, and capacity testing as applicable.
+16. UAT and launch readiness.
+17. When PREOS is active, evaluate G0-G11 production assurance and evidence/authority state.
+18. Accountable human production approval.
+19. Deployment and verification, including canary/staged verification when selected.
+20. Hypercare, monitoring, incident handling, maintenance, cost/reliability review, PREOS production learning, gstack retrospective, and Blueprint change control.
+
+## Mandatory core artifacts
+
+For a substantial project, create or verify the applicable artifacts below. Mark an artifact not applicable only with a reason.
+
+1. Project Charter or Discovery Record.
+2. Project Classification Record.
+3. Approved PRD.
+4. SRS where system requirements need formal separation from product intent.
+5. SRD with build level requirements.
+6. Architecture Decision Records.
+7. Canonical Domain Model and contract map when data crosses components or clients.
+8. Threat Model and Security Control Matrix.
+9. Privacy and data handling record when personal or sensitive data exists.
+10. UX and design evidence for user facing scope.
+11. Environment and deployment plan.
+12. Test Strategy and Test Plan.
+13. Traceability Matrix.
+14. AI Task Packets.
+15. AI Run or Change Evidence for consequential work.
+16. Release Checklist and rollback plan.
+17. Operations and handoff documentation.
+18. When PREOS is active: hash-bound Project Contract, relevant risk/control assessments, architecture-economics/deferred-complexity evidence, evidence-freshness state, risk acceptances if any, and applicable G0-G11 gate evidence.
+
+Templates live in `templates/`. PREOS-specific canonical schemas/templates remain in the PREOS repository; do not create drifting duplicate sources here.
+
+## Cross platform contract rule
+
+When web, mobile, API, workers, integrations, or data services share a business entity or action, define one canonical contract before separate implementations proceed. Follow `orchestration/cross-platform-routing.md`.
+
+Canonical contracts must cover, as applicable:
+
+1. Entity names and field semantics.
+2. Identifiers and ownership.
+3. Date, time, timezone, money, currency, enumeration, and nullability semantics.
+4. Validation rules.
+5. Authorization requirements.
+6. API request and response contracts.
+7. Event and webhook contracts.
+8. Error contracts.
+9. Versioning and compatibility.
+10. Audit and observability requirements.
+
+Do not allow clients to invent conflicting representations without an explicit Architecture Decision Record.
+
+## PREOS production assurance
+
+When PREOS is active, read `orchestration/preos-routing.md` and `references/production-assurance/preos-integration.md`.
+
+PREOS is responsible for production-assurance analysis and evidence, including:
+
+1. deterministic baseline controls;
+2. contextual and catalogue production risks;
+3. production-readiness questions;
+4. architecture economics and complexity tax;
+5. Deferred Complexity activation triggers;
+6. control dependencies;
+7. evidence freshness and invalidation;
+8. change impact;
+9. risk aggregation and risk acceptance;
+10. G0-G11 production assurance;
+11. post-production learning.
+
+The PREOS Project Contract is a compiled hash/version-bound snapshot of approved governing artifacts. It does not become a second PRD/SRS/SRD or architecture source of truth.
+
+PREOS runtime/recovery state belongs under `PREOS_STATE_ROOT`. Project-specific version-controlled assurance artifacts belong under `.ai-product-delivery/preos/` in the application repository. Do not place PREOS authoritative state under `.gstack` or `GSTACK_STATE_ROOT`.
+
+PREOS cannot authorize production by itself and cannot impersonate a missing accountable human role. Missing authority becomes a role gap and HUMAN REVIEW.
+
+## WordPress preservation rule
+
+The existing WordPress blueprint and its references are authoritative for deep WordPress delivery. The new WordPress profile points to those files and adds profile wrappers for classic themes, custom plugins, third party plugins, CPTs, custom fields, media, security, SEO, performance, QA, and deployment.
+
+Never weaken the existing requirements for:
+
+1. Classic theme and code first delivery where the project requires it.
+2. Owner approved design baseline before main theme or template coding.
+3. Human Design Governance and anti generic AI design review.
+4. Purpose built CPT administration instead of default block editing where required.
+5. Cybersecurity by design.
+6. Full site SEO crawl and remediation.
+7. Traceability, task packets, human approvals, QA, and launch evidence.
+
+## SaaS hard gates
+
+When SaaS is active, read `references/saas/saas-lifecycle.md` and the relevant SaaS references. Treat these as hard concerns when triggered:
+
+1. Tenant definition and tenant context propagation.
+2. Tenant isolation across database, cache, files, jobs, search, logs, analytics, and administrative tooling.
+3. Authentication, authorization, RBAC or ABAC, and row level security where selected.
+4. Organisation, team, invitation, account, suspension, deletion, and retention lifecycles.
+5. Plans, entitlements, billing, subscriptions, payments, webhooks, retries, and idempotency.
+6. Rate limiting, abuse protection, feature flags, notifications, background jobs, queues, and dead letter handling.
+7. Audit logging, backups, restore testing, observability, scaling, and disaster recovery.
+
+Cross tenant data exposure is a hard failure unless the access is an explicitly designed privileged administrative operation with authorization and audit controls.
+
+## Mobile hard gates
+
+When mobile is active, read `references/mobile/mobile-lifecycle.md` and the relevant mobile references. Address:
+
+1. Mobile architecture and Flutter conventions when Flutter is used.
+2. State, navigation, API integration, authentication, secure storage, and local persistence.
+3. Offline behaviour, synchronization, conflict handling, network loss, and retries.
+4. Permissions, deep links, notifications, background execution, and device capabilities.
+5. Accessibility, performance, crash reporting, analytics, and device testing.
+6. Signing, build variants, Android and iOS release, staged rollout, store compliance, upgrade policy, and rollback or mitigation.
+
+## gstack routing
+
+Read `orchestration/gstack-routing.md` when gstack is available. When PREOS is active, PREOS identifies assurance needs and the Blueprint routes those needs to the appropriate specialist; gstack does not become the assurance authority.
+
+Default specialist routing is:
+
+1. Discovery and problem reframing, gstack office hours.
+2. Product scope challenge, gstack CEO review.
+3. Architecture and failure mode review, gstack engineering review.
+4. Design planning and design quality review, gstack design specialists.
+5. Security review, gstack CSO.
+6. Implementation, Codex under an approved AI Task Packet.
+7. Code review, gstack review plus Blueprint/PREOS acceptance criteria.
+8. Root cause debugging, gstack investigate.
+9. QA, gstack QA plus Blueprint/PREOS test/evidence requirements.
+10. Performance evidence, gstack benchmark when required.
+11. Release, Blueprint release gate plus PREOS assurance plus gstack ship.
+12. Deployment/canary execution, gstack land-and-deploy/canary only after accountable authorization.
+13. Post release reflection, PREOS production learning plus gstack retro plus Blueprint change control.
+
+A gstack recommendation does not override a hard Blueprint or PREOS requirement. Conflicts require explicit human resolution.
+
+## Stop conditions
+
+Stop or escalate the affected work when any of the following is unresolved:
+
+1. Conflicting or missing governing requirements.
+2. Missing required project classification, profile decision, or PREOS assurance classification.
+3. Missing approval for a hard gate.
+4. Unresolved critical or high security finding.
+5. Broken authentication, authorization, tenant isolation, or secret handling.
+6. Unsafe destructive migration or data operation.
+7. Unapproved design baseline for launch scope UI when design approval is required.
+8. Missing test evidence for a critical path.
+9. Failed migration, rollback, restore, recovery, or reconciliation test where required.
+10. Unknown legal, privacy, accessibility, payment, tax, or regulatory interpretation that materially changes implementation.
+11. Production access or deployment without the required accountable approval.
+12. Unsupported factual claims or invented external system behaviour.
+13. PREOS source-integrity failure, stale Project Contract, invalid risk acceptance, or required RED/HUMAN REVIEW/UNKNOWN assurance condition.
+14. Required evidence that became stale after a material source/code/configuration/environment change.
+15. Missing accountable human authority for a consequential risk decision.
+
+## Reference loading
+
+Start with `references/INDEX.md`, `orchestration/project-classification.md`, and `orchestration/profile-routing.md`. When PREOS is active, also load `orchestration/preos-routing.md` and `references/production-assurance/preos-integration.md`.
+
+Read core modules for the current phase. Then read only active profile modules. Use `templates/` when producing project artifacts. Use the existing root WordPress references when the WordPress profile points to them. Use PREOS selective risk/readiness tooling rather than loading its entire source corpus into every task.
+
+The goal is complete governance with bounded context, not maximum context loading.

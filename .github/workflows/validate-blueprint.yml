@@ -1,0 +1,30 @@
+name: Validate AI Product Delivery Blueprint
+
+on:
+  push:
+    branches:
+      - "integration/preos-production-assurance"
+      - "upgrade/ai-product-delivery-blueprint"
+      - "main"
+  pull_request:
+    branches:
+      - "upgrade/ai-product-delivery-blueprint"
+      - "main"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fetch main baseline
+        run: git fetch origin main:refs/remotes/origin/main
+
+      - name: Validate blueprint manifest, PREOS integration and preservation
+        run: python3 scripts/validate_blueprint.py
