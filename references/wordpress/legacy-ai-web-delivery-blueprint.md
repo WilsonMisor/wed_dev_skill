@@ -69,3 +69,4 @@ AI cannot be the sole approver for legal/privacy/security/accessibility risk acc
 - Read the SEO crawl workflow when planning, implementing, auditing, or remediating WordPress SEO, metadata, schema, sitemap, robots, canonical, redirects, image SEO, internal links, Core Web Vitals, browser-rendered SEO output, or launch SEO evidence.
 - Read the generic SEO compliance prompt when producing a full SEO implementation plan from a sitemap, architecture, CPT model, page list, template list, or website brief.
 - If the user's repo or workspace has a newer project-specific blueprint, compare it with the bundled reference and prefer the project-specific source after noting the difference.
+
