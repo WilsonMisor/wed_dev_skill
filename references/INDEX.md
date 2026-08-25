@@ -175,16 +175,23 @@ This manifest is the completeness guard for the upgraded skill. The branch must 
 11. `references/infrastructure/backup.md`.
 12. `references/infrastructure/disaster-recovery.md`.
 
+## Production assurance integration
+
+1. `references/production-assurance/preos-integration.md`.
+
+The canonical PREOS source corpus and executable methodology remain in the separate `WilsonMisor/PREOS` repository and are not duplicated here.
+
 ## Orchestration
 
 1. `orchestration/project-classification.md`.
 2. `orchestration/profile-routing.md`.
-3. `orchestration/gstack-routing.md`.
-4. `orchestration/codex-routing.md`.
-5. `orchestration/approval-routing.md`.
-6. `orchestration/cross-platform-routing.md`.
-7. `orchestration/coverage-matrix.md`.
-8. `orchestration/recommendation-coverage.md`.
+3. `orchestration/preos-routing.md`.
+4. `orchestration/gstack-routing.md`.
+5. `orchestration/codex-routing.md`.
+6. `orchestration/approval-routing.md`.
+7. `orchestration/cross-platform-routing.md`.
+8. `orchestration/coverage-matrix.md`.
+9. `orchestration/recommendation-coverage.md`.
 
 ## Templates
 
@@ -219,4 +226,4 @@ This manifest is the completeness guard for the upgraded skill. The branch must 
 
 ## Validation rule
 
-Before merge, compare the branch tree to this manifest and `orchestration/recommendation-coverage.md`. Any missing listed file or missing required recommendation is a stop condition. Also verify the original 14 WordPress references still use the same blob SHA as `main`, proving the upgrade did not mutate them.
+Before merge, compare the branch tree to this manifest and `orchestration/recommendation-coverage.md`. Any missing listed file or missing required recommendation is a stop condition. Verify PREOS routing/integration contracts remain present and verify the original 14 WordPress references still use the same blob SHA as `main`, proving the integration did not mutate them.
