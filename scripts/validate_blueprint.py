@@ -8,6 +8,10 @@ ROOT = Path(__file__).resolve().parents[1]
 INDEX = ROOT / "references" / "INDEX.md"
 SKILL = ROOT / "SKILL.md"
 OPENAI = ROOT / "agents" / "openai.yaml"
+RECOMMENDATION_COVERAGE = ROOT / "orchestration" / "recommendation-coverage.md"
+ARCHITECTURE_COVERAGE = ROOT / "orchestration" / "coverage-matrix.md"
+GSTACK_ROUTING = ROOT / "orchestration" / "gstack-routing.md"
+CODEX_ROUTING = ROOT / "orchestration" / "codex-routing.md"
 LEGACY_SKILL_SNAPSHOT = ROOT / "references" / "wordpress" / "legacy-ai-web-delivery-blueprint.md"
 
 LEGACY_WORDPRESS = [
@@ -76,6 +80,76 @@ def validate_skill_identity() -> None:
     print("PASS: skill identity and routing anchors are present")
 
 
+def validate_recommendation_coverage() -> None:
+    required_files = [
+        RECOMMENDATION_COVERAGE,
+        ARCHITECTURE_COVERAGE,
+        GSTACK_ROUTING,
+        CODEX_ROUTING,
+    ]
+    missing = [str(path.relative_to(ROOT)) for path in required_files if not path.is_file()]
+    if missing:
+        fail("recommendation coverage files missing:\n" + "\n".join(missing))
+
+    ledger_text = RECOMMENDATION_COVERAGE.read_text(encoding="utf-8")
+    for number in range(1, 27):
+        token = f"| R{number:02d} |"
+        if token not in ledger_text:
+            fail(f"recommendation coverage ledger missing {token}")
+
+    required_ledger_tokens = [
+        "ai-product-delivery-blueprint",
+        "WordPress as a specialised web profile",
+        "tenant isolation as a hard security boundary",
+        "canonical cross platform",
+        "bounded AI Task Packets",
+        "exact namespaced commands",
+        "separate responsibility layers",
+        "application repository the execution surface",
+        "branches, worktrees, forks, pull requests, CI, and review",
+        "byte identically",
+    ]
+    for token in required_ledger_tokens:
+        if token not in ledger_text:
+            fail(f"recommendation coverage ledger missing semantic anchor: {token}")
+
+    gstack_text = GSTACK_ROUTING.read_text(encoding="utf-8")
+    required_gstack_tokens = [
+        "Keep the blueprint, gstack, Codex, and the application repository as separate responsibility layers.",
+        "Do not merge the blueprint repository, gstack repository, and application repository merely to make them cooperate.",
+        "gstack-plan-ceo-review",
+        "gstack-plan-eng-review",
+        "gstack-cso",
+        "gstack-review",
+        "gstack-investigate",
+        "gstack-qa",
+        "gstack-ship",
+        "gstack-retro",
+    ]
+    for token in required_gstack_tokens:
+        if token not in gstack_text:
+            fail(f"gstack routing missing recommendation anchor: {token}")
+
+    codex_text = CODEX_ROUTING.read_text(encoding="utf-8")
+    required_codex_tokens = [
+        "The application repository is the execution surface",
+        "Do not merge or vendor the blueprint repository or gstack repository into an application repository merely to make the layers cooperate.",
+        "isolated branch, worktree, or fork",
+        "pull request or equivalent review boundary",
+        "Preserve naming, folder, schema, API, and environment conventions",
+        "smallest coherent change",
+    ]
+    for token in required_codex_tokens:
+        if token not in codex_text:
+            fail(f"Codex routing missing recommendation anchor: {token}")
+
+    coverage_text = ARCHITECTURE_COVERAGE.read_text(encoding="utf-8")
+    if "Recommendation coverage checks" not in coverage_text:
+        fail("architecture coverage matrix does not include semantic recommendation checks")
+
+    print("PASS: recommendation coverage, tool boundaries, and source control safeguards are present")
+
+
 def validate_legacy_wordpress() -> None:
     missing = [path for path in LEGACY_WORDPRESS if not (ROOT / path).is_file()]
     if missing:
@@ -113,6 +187,7 @@ def validate_legacy_wordpress() -> None:
 def main() -> None:
     validate_manifest()
     validate_skill_identity()
+    validate_recommendation_coverage()
     validate_legacy_wordpress()
     print("PASS: AI Product Delivery Blueprint validation complete")
 
