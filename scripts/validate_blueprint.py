@@ -8,6 +8,7 @@ ROOT = Path(__file__).resolve().parents[1]
 INDEX = ROOT / "references" / "INDEX.md"
 SKILL = ROOT / "SKILL.md"
 OPENAI = ROOT / "agents" / "openai.yaml"
+LEGACY_SKILL_SNAPSHOT = ROOT / "references" / "wordpress" / "legacy-ai-web-delivery-blueprint.md"
 
 LEGACY_WORDPRESS = [
     "references/ai-delivery-artifact-templates.md",
@@ -49,6 +50,8 @@ def validate_manifest() -> None:
     missing = [path for path in paths if not (ROOT / path).is_file()]
     if missing:
         fail("manifest paths missing:\n" + "\n".join(missing))
+    if not LEGACY_SKILL_SNAPSHOT.is_file():
+        fail("legacy WordPress SKILL.md snapshot is missing")
     print(f"PASS: manifest paths exist, {len(paths)} files checked")
 
 
@@ -94,7 +97,17 @@ def validate_legacy_wordpress() -> None:
     )
     if diff.returncode != 0:
         fail("one or more preserved WordPress reference files differ from origin/main")
-    print("PASS: original WordPress reference content is unchanged from origin/main")
+
+    original_skill = subprocess.run(
+        ["git", "show", "origin/main:SKILL.md"],
+        cwd=ROOT,
+        check=True,
+        stdout=subprocess.PIPE,
+    ).stdout
+    if LEGACY_SKILL_SNAPSHOT.read_bytes() != original_skill:
+        fail("legacy WordPress skill snapshot differs from origin/main:SKILL.md")
+
+    print("PASS: original WordPress references and legacy skill text are preserved")
 
 
 def main() -> None:
