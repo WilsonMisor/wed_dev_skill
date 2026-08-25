@@ -1,6 +1,6 @@
 # Recommendation Coverage Ledger
 
-This ledger maps the recommendations that defined the AI Product Delivery Blueprint upgrade to the repository evidence that implements them. It is a semantic completeness guard in addition to the structural manifest in `references/INDEX.md`.
+This ledger maps the recommendations that define the AI Product Delivery Blueprint and PREOS integration to repository evidence. It is a semantic completeness guard in addition to the structural manifest in `references/INDEX.md`.
 
 ## Governing rule
 
@@ -36,30 +36,46 @@ A recommendation is not considered covered merely because a similarly named file
 | R24 | Maintain reusable templates instead of recreating governance artifacts ad hoc | `templates/` | Required |
 | R25 | Maintain a complete manifest and machine validation so missing architecture is detected before merge | `references/INDEX.md`, `scripts/validate_blueprint.py`, `.github/workflows/validate-blueprint.yml` | Required |
 | R26 | Preserve the original WordPress skill text byte identically as a backward traceability source | `references/wordpress/legacy-ai-web-delivery-blueprint.md`, `scripts/validate_blueprint.py` | Required |
+| R27 | Integrate PREOS as a production-assurance overlay governed by the Blueprint rather than as a competing delivery profile or standalone product workflow | `SKILL.md`, `orchestration/preos-routing.md`, `references/production-assurance/preos-integration.md` | Required |
+| R28 | Keep PREOS canonical corpora and executable methodology in the independent `WilsonMisor/PREOS` repository while integrating through explicit contracts instead of vendoring or copying the corpora here | `references/production-assurance/preos-integration.md`, `SKILL.md` | Required |
+| R29 | Classify PREOS assurance level and maturity stage during project classification, with production consequence determining depth rather than convenience | `orchestration/project-classification.md`, `orchestration/preos-routing.md` | Required |
+| R30 | Treat the PREOS Project Contract as a hash/version-bound compiled snapshot of approved PRD/SRS/SRD/classification/architecture truth, not a competing requirements source | `orchestration/preos-routing.md`, `references/production-assurance/preos-integration.md` | Required |
+| R31 | Run PREOS risk analysis repeatedly: early product/classification pass, architecture pass, per-change risk delta/change impact, release assurance, and production-learning pass; select relevant risks/readiness questions rather than loading the entire corpus | `orchestration/preos-routing.md`, `SKILL.md` | Required |
+| R32 | Add architecture economics, complexity tax, measurable activation triggers, migration paths, review triggers, and a Deferred Complexity Registry to prevent speculative over-engineering | `orchestration/preos-routing.md`, `references/core/lifecycle.md`, `templates/ai-task-packet.md` | Required |
+| R33 | Use one canonical AI Task Packet and enrich it with PREOS risk IDs, control IDs, failure tests, evidence freshness, monitoring, recovery/reconciliation, economics, change impact, gates, and accountable risk ownership | `references/core/ai-task-packets.md`, `templates/ai-task-packet.md`, `references/production-assurance/preos-integration.md` | Required |
+| R34 | Preserve PREOS G0-G11, GREEN/AMBER/RED/HUMAN REVIEW/UNKNOWN semantics, control dependency propagation, evidence freshness, and the rule that UNKNOWN never silently becomes GREEN | `orchestration/preos-routing.md`, `references/core/lifecycle.md`, `SKILL.md` | Required |
+| R35 | Keep consequential risk acceptance and production authority human; missing accountable roles become role gaps/HUMAN REVIEW rather than AI personas | `orchestration/preos-routing.md`, `references/production-assurance/preos-integration.md`, `SKILL.md` | Required |
+| R36 | Store project-specific assurance state under `.ai-product-delivery/preos/` and runtime/recovery state under independent `PREOS_STATE_ROOT`, never under `.gstack` or `GSTACK_STATE_ROOT` | `orchestration/preos-routing.md`, `references/production-assurance/preos-integration.md`, `SKILL.md` | Required |
+| R37 | Close the production loop by routing incidents, near misses, support findings, cost/reliability anomalies, and security findings through PREOS production learning and then Blueprint change control | `orchestration/preos-routing.md`, `references/core/lifecycle.md`, `SKILL.md` | Required |
+| R38 | Route PREOS assurance needs to gstack specialists while preserving separation of responsibility: PREOS determines required assurance, gstack performs specialist review, Codex implements, Blueprint governs, and humans authorize | `orchestration/preos-routing.md`, `references/production-assurance/preos-integration.md`, `orchestration/gstack-routing.md`, `SKILL.md` | Required |
 
-## Layer model
-
-The intended separation is:
+## Integrated layer model
 
 ```text
+Human authority
+      |
 AI Product Delivery Blueprint
-  governs requirements, architecture, gates, evidence, and approvals
-
-        |
-        +--------------------+
-        |                    |
-        v                    v
-      gstack               Codex
-  specialist review     implementation engine
-        |                    |
-        +---------+----------+
-                  |
-                  v
-          Application Repository
-       product code and project artifacts
+      |
+    PREOS
+      |
+  +---+---+
+  |       |
+gstack  Codex
+  |       |
+  +---+---+
+      |
+Application Repository
+      |
+Production
+      |
+telemetry / incidents / cost / support
+      |
+PREOS production learning
+      |
+Blueprint change control
 ```
 
-These are integration layers, not one combined repository. Do not merge the blueprint repository, gstack repository, and application repository merely to make them cooperate. Prefer namespaced tool invocation, approved task packets, project artifacts, and explicit handoffs.
+These are integrated responsibility layers, not one combined repository. Do not merge or vendor the Blueprint, PREOS, gstack, and application repositories merely to make them cooperate. Prefer namespaced skill invocation, approved task packets, versioned contracts, project artifacts, risk/control/evidence IDs, and explicit handoffs.
 
 ## Source control safety
 
@@ -67,4 +83,4 @@ For substantial AI generated changes, work on an isolated branch, worktree, or f
 
 ## Audit rule
 
-Before the blueprint upgrade is accepted, verify every R item above against current repository content. Any missing or partial item is a stop or rework condition, not an accepted omission.
+Before the Blueprint/PREOS integration is accepted, verify every R item above against current repository content. Any missing or partial item is a stop or rework condition, not an accepted omission.

@@ -12,6 +12,10 @@ RECOMMENDATION_COVERAGE = ROOT / "orchestration" / "recommendation-coverage.md"
 ARCHITECTURE_COVERAGE = ROOT / "orchestration" / "coverage-matrix.md"
 GSTACK_ROUTING = ROOT / "orchestration" / "gstack-routing.md"
 CODEX_ROUTING = ROOT / "orchestration" / "codex-routing.md"
+PREOS_ROUTING = ROOT / "orchestration" / "preos-routing.md"
+PREOS_INTEGRATION = ROOT / "references" / "production-assurance" / "preos-integration.md"
+AI_TASK_PACKET_GUIDE = ROOT / "references" / "core" / "ai-task-packets.md"
+AI_TASK_PACKET_TEMPLATE = ROOT / "templates" / "ai-task-packet.md"
 LEGACY_SKILL_SNAPSHOT = ROOT / "references" / "wordpress" / "legacy-ai-web-delivery-blueprint.md"
 
 LEGACY_WORDPRESS = [
@@ -66,8 +70,14 @@ def validate_skill_identity() -> None:
         "name: ai-product-delivery-blueprint",
         "orchestration/project-classification.md",
         "orchestration/profile-routing.md",
+        "orchestration/preos-routing.md",
         "orchestration/gstack-routing.md",
         "orchestration/cross-platform-routing.md",
+        "references/production-assurance/preos-integration.md",
+        "## PREOS production assurance",
+        "UNKNOWN never silently becomes GREEN",
+        "PREOS_STATE_ROOT",
+        ".ai-product-delivery/preos/",
         "## WordPress preservation rule",
         "references/saas/saas-lifecycle.md",
         "references/mobile/mobile-lifecycle.md",
@@ -77,7 +87,7 @@ def validate_skill_identity() -> None:
             fail(f"SKILL.md missing required routing token: {token}")
     if "AI Product Delivery Blueprint" not in agent_text:
         fail("agents/openai.yaml has not been upgraded")
-    print("PASS: skill identity and routing anchors are present")
+    print("PASS: skill identity, profile routing, and PREOS assurance anchors are present")
 
 
 def validate_recommendation_coverage() -> None:
@@ -86,13 +96,17 @@ def validate_recommendation_coverage() -> None:
         ARCHITECTURE_COVERAGE,
         GSTACK_ROUTING,
         CODEX_ROUTING,
+        PREOS_ROUTING,
+        PREOS_INTEGRATION,
+        AI_TASK_PACKET_GUIDE,
+        AI_TASK_PACKET_TEMPLATE,
     ]
     missing = [str(path.relative_to(ROOT)) for path in required_files if not path.is_file()]
     if missing:
         fail("recommendation coverage files missing:\n" + "\n".join(missing))
 
     ledger_text = RECOMMENDATION_COVERAGE.read_text(encoding="utf-8")
-    for number in range(1, 27):
+    for number in range(1, 39):
         token = f"| R{number:02d} |"
         if token not in ledger_text:
             fail(f"recommendation coverage ledger missing {token}")
@@ -108,6 +122,12 @@ def validate_recommendation_coverage() -> None:
         "application repository the execution surface",
         "branches, worktrees, forks, pull requests, CI, and review",
         "byte identically",
+        "PREOS as a production-assurance overlay",
+        "Project Contract",
+        "Deferred Complexity Registry",
+        "UNKNOWN never silently becomes GREEN",
+        "PREOS_STATE_ROOT",
+        "PREOS production learning",
     ]
     for token in required_ledger_tokens:
         if token not in ledger_text:
@@ -143,11 +163,69 @@ def validate_recommendation_coverage() -> None:
         if token not in codex_text:
             fail(f"Codex routing missing recommendation anchor: {token}")
 
-    coverage_text = ARCHITECTURE_COVERAGE.read_text(encoding="utf-8")
-    if "Recommendation coverage checks" not in coverage_text:
-        fail("architecture coverage matrix does not include semantic recommendation checks")
+    preos_text = PREOS_ROUTING.read_text(encoding="utf-8")
+    required_preos_tokens = [
+        "PREOS is the Production Risk, Economics, and Evolution Operating System",
+        "inactive",
+        "lightweight",
+        "standard",
+        "high-assurance",
+        "Stage 0: Prototype",
+        "preos-project-init",
+        "preos-risk-model",
+        "preos-architecture-economics",
+        "preos-production-plan",
+        "preos-production-implement",
+        "preos-production-learn",
+        "G0 Source / Project Contract",
+        "G11 Evidence / Authority",
+        "UNKNOWN` never silently becomes `GREEN",
+        ".ai-product-delivery/",
+        "PREOS_STATE_ROOT",
+        "Deferred Complexity Registry",
+    ]
+    for token in required_preos_tokens:
+        if token not in preos_text:
+            fail(f"PREOS routing missing semantic anchor: {token}")
 
-    print("PASS: recommendation coverage, tool boundaries, and source control safeguards are present")
+    integration_text = PREOS_INTEGRATION.read_text(encoding="utf-8")
+    for token in [
+        "WilsonMisor/PREOS",
+        "does not silently replace",
+        "canonical PREOS source corpus",
+        "one implementation work unit",
+        "PREOS runtime/recovery state belongs under `PREOS_STATE_ROOT`",
+        "cannot authorize production by itself",
+    ]:
+        if token not in integration_text:
+            fail(f"PREOS integration contract missing semantic anchor: {token}")
+
+    packet_text = AI_TASK_PACKET_GUIDE.read_text(encoding="utf-8") + "\n" + AI_TASK_PACKET_TEMPLATE.read_text(encoding="utf-8")
+    for token in [
+        "PREOS risk IDs",
+        "control IDs",
+        "G0-G11",
+        "evidence",
+        "failure tests",
+        "monitoring",
+        "reconciliation",
+        "Deferred Complexity",
+        "Change impact",
+    ]:
+        if token not in packet_text:
+            fail(f"AI Task Packet PREOS integration missing anchor: {token}")
+
+    coverage_text = ARCHITECTURE_COVERAGE.read_text(encoding="utf-8")
+    for token in [
+        "Recommendation coverage checks",
+        "PREOS as a production-assurance overlay",
+        "PREOS_STATE_ROOT",
+        "production-learning",
+    ]:
+        if token not in coverage_text:
+            fail(f"architecture coverage matrix missing PREOS semantic check: {token}")
+
+    print("PASS: recommendation coverage, PREOS assurance integration, tool boundaries, and source control safeguards are present")
 
 
 def validate_legacy_wordpress() -> None:
@@ -189,7 +267,7 @@ def main() -> None:
     validate_skill_identity()
     validate_recommendation_coverage()
     validate_legacy_wordpress()
-    print("PASS: AI Product Delivery Blueprint validation complete")
+    print("PASS: AI Product Delivery Blueprint + PREOS integration validation complete")
 
 
 if __name__ == "__main__":
