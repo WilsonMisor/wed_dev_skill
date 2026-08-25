@@ -67,7 +67,7 @@ The architecture is not complete unless all of the following are represented in 
 35. Control-dependency propagation and evidence freshness/invalidation.
 36. Human-only consequential risk acceptance and role-gap handling.
 37. `.ai-product-delivery/preos/` project state plus independent `PREOS_STATE_ROOT` runtime state.
-38. Production-learning feedback through Blueprint change control.
+38. PREOS production-learning feedback through Blueprint change control.
 39. PREOS assurance needs route to gstack specialists without transferring assurance authority to gstack.
 40. Codex remains implementation engine under the approved enriched packet.
 
