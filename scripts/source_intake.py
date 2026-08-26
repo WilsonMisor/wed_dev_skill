@@ -371,15 +371,27 @@ def normalize_requirements(requirements: list[dict], records: list[dict]) -> lis
     return normalized
 
 
-def _merge_requirement_inputs(extracted: list[dict], governed: list[dict]) -> list[dict]:
-    """Merge candidates deterministically; governed duplicates replace extracted metadata."""
+def _merge_requirement_inputs(
+    extracted: list[dict], governed: list[dict], records: list[dict]
+) -> list[dict]:
+    """Merge candidates by canonical source identity; governed duplicates replace extraction."""
+    lookup = _source_lookup(records)
     merged: dict[tuple[str, str], dict] = {}
+
+    def key_for(item: dict) -> tuple[str, str]:
+        ref = item.get("source_id") or item.get("source_path")
+        if not ref:
+            raise ValueError("source requirement requires source_id or source_path")
+        source = _resolve_source_ref(str(ref), lookup)
+        wording = str(item.get("original_wording") or "").strip()
+        if not wording:
+            raise ValueError("source requirement original_wording is required")
+        return str(source["source_id"]), wording.casefold()
+
     for item in extracted:
-        key = (str(item.get("source_path") or item.get("source_id")), str(item.get("original_wording", "")).casefold())
-        merged[key] = item
+        merged[key_for(item)] = item
     for item in governed:
-        key = (str(item.get("source_path") or item.get("source_id")), str(item.get("original_wording", "")).casefold())
-        merged[key] = item
+        merged[key_for(item)] = item
     return list(merged.values())
 
 
@@ -514,7 +526,11 @@ def main() -> None:
         extracted = semantic_extract(source, records)
         warnings.extend(extracted.get("warnings", []))
 
-    requirement_inputs = _merge_requirement_inputs(extracted.get("source_requirements", []), _list(decisions, "source_requirements"))
+    requirement_inputs = _merge_requirement_inputs(
+    extracted.get("source_requirements", []),
+    _list(decisions, "source_requirements"),
+    records,
+)
     requirements = normalize_requirements(requirement_inputs, records)
     project_mode = args.project_mode or decisions.get("project_mode") or detect_mode(records)
     if project_mode not in PROJECT_MODES:
