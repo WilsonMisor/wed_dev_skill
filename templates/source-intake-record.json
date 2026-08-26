@@ -1,10 +1,11 @@
 {
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "project_mode": "UNKNOWN",
   "intent": "",
   "generated_at": "",
   "sources": [],
   "duplicate_groups": [],
+  "version_candidate_groups": [],
   "source_conflicts": [],
   "source_requirements": [],
   "observed_architecture": {},
