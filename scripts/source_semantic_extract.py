@@ -9,11 +9,11 @@ status.
 """
 from __future__ import annotations
 
+import io
 import json
 from pathlib import Path, PurePosixPath
 import re
 import stat
-from typing import Iterable
 import zipfile
 import xml.etree.ElementTree as ET
 
@@ -21,14 +21,16 @@ TEXT_EXTENSIONS = {
     ".md", ".markdown", ".txt", ".rst", ".adoc", ".json", ".jsonl",
     ".yaml", ".yml", ".toml", ".ini", ".cfg", ".conf", ".env.example",
     ".php", ".js", ".jsx", ".ts", ".tsx", ".py", ".java", ".kt", ".kts",
-    ".swift", ".dart", ".go", ".rs", ".rb", ".cs", ".sql", ".sh", ".ps1",
-    ".html", ".htm", ".css", ".scss", ".xml", ".gradle", ".properties",
+    ".swift", ".dart", ".go", ".rs", ".rb", ".cs", ".cpp", ".cc", ".c",
+    ".sql", ".sh", ".ps1", ".html", ".htm", ".css", ".scss", ".xml",
+    ".gradle", ".properties", ".vue", ".svelte",
 }
 MAX_TEXT_BYTES = 4 * 1024 * 1024
 MAX_ARCHIVE_MEMBER_BYTES = 8 * 1024 * 1024
 
 REQUIREMENT_RE = re.compile(
-    r"(?:\b(?:must|shall|required to|is required to|will need to|needs to)\b|^\s*(?:REQ[-_ ]?\d+|FR[-_ ]?\d+|NFR[-_ ]?\d+)\s*[:.-])",
+    r"(?:\b(?:must|shall|required to|is required to|will need to|needs to)\b|"
+    r"^\s*(?:REQ[-_ ]?\d+|FR[-_ ]?\d+|NFR[-_ ]?\d+)\s*[:.-])",
     re.IGNORECASE,
 )
 LIST_PREFIX_RE = re.compile(r"^\s*(?:[-*+]\s+|\d+[.)]\s+|[A-Za-z][.)]\s+)")
@@ -63,8 +65,8 @@ FRAMEWORK_MARKERS = {
 }
 
 DB_MARKERS = {
-    "postgres": "PostgreSQL", "postgresql": "PostgreSQL", "mysql": "MySQL",
-    "mariadb": "MariaDB", "sqlite": "SQLite", "mongodb": "MongoDB",
+    "postgres": "PostgreSQL", "postgresql": "PostgreSQL", "pg": "PostgreSQL",
+    "mysql": "MySQL", "mariadb": "MariaDB", "sqlite": "SQLite", "mongodb": "MongoDB",
     "redis": "Redis", "sqlserver": "SQL Server", "mssql": "SQL Server",
     "dynamodb": "DynamoDB", "firestore": "Firestore",
 }
@@ -103,20 +105,47 @@ def _decode_text(data: bytes) -> str | None:
     return None
 
 
-def _office_xml_text(data: bytes, kind: str) -> str:
+def _local_name(tag: str) -> str:
+    return tag.rsplit("}", 1)[-1]
+
+
+def _paragraph_lines(root: ET.Element) -> list[str]:
+    """Return one logical OOXML paragraph per line, preserving document boundaries."""
     lines: list[str] = []
-    with zipfile.ZipFile(__import__("io").BytesIO(data)) as zf:
-        names = []
+    for paragraph in root.iter():
+        if _local_name(paragraph.tag) != "p":
+            continue
+        pieces: list[str] = []
+        for node in paragraph.iter():
+            if _local_name(node.tag) == "t" and node.text:
+                pieces.append(node.text)
+        text = "".join(pieces).strip()
+        if text:
+            lines.append(text)
+    return lines
+
+
+def _office_xml_text(data: bytes, kind: str) -> str:
+    """Extract DOCX/PPTX text without collapsing paragraphs into one line.
+
+    Each Word paragraph becomes one line. Each PowerPoint paragraph becomes one
+    line in deterministic slide order. This gives downstream extraction stable
+    paragraph-level wording and a deterministic line/paragraph location.
+    """
+    lines: list[str] = []
+    with zipfile.ZipFile(io.BytesIO(data)) as zf:
         if kind == ".docx":
-            names = [n for n in zf.namelist() if n == "word/document.xml"]
+            names = ["word/document.xml"] if "word/document.xml" in zf.namelist() else []
         elif kind == ".pptx":
-            names = sorted(n for n in zf.namelist() if re.fullmatch(r"ppt/slides/slide\d+\.xml", n))
+            names = sorted(
+                (n for n in zf.namelist() if re.fullmatch(r"ppt/slides/slide\d+\.xml", n)),
+                key=lambda n: int(re.search(r"slide(\d+)\.xml$", n).group(1)),
+            )
+        else:
+            names = []
         for name in names:
-            raw = zf.read(name)
-            root = ET.fromstring(raw)
-            text_nodes = [t.strip() for t in root.itertext() if t and t.strip()]
-            if text_nodes:
-                lines.append(" ".join(text_nodes))
+            root = ET.fromstring(zf.read(name))
+            lines.extend(_paragraph_lines(root))
     return "\n".join(lines)
 
 
@@ -228,7 +257,10 @@ def extract_requirements(texts: dict[str, str], records: list[dict]) -> list[dic
             if not stripped:
                 continue
             heading = re.sub(r"^#+\s*", "", stripped).strip().lower().rstrip(":")
-            if heading in {"requirements", "functional requirements", "non-functional requirements", "acceptance criteria", "constraints", "business rules"}:
+            if heading in {
+                "requirements", "functional requirements", "non-functional requirements",
+                "acceptance criteria", "constraints", "business rules",
+            }:
                 in_requirement_section = True
                 continue
             if stripped.startswith("#") and in_requirement_section:
@@ -236,16 +268,21 @@ def extract_requirements(texts: dict[str, str], records: list[dict]) -> list[dic
             statement = _clean_statement(raw)
             if len(statement) < 8 or len(statement) > 1500:
                 continue
-            candidate = bool(REQUIREMENT_RE.search(statement)) or (in_requirement_section and bool(LIST_PREFIX_RE.match(raw)))
+            candidate = bool(REQUIREMENT_RE.search(statement)) or (
+                in_requirement_section and bool(LIST_PREFIX_RE.match(raw))
+            )
             if not candidate:
                 continue
-            key = (path, statement.casefold())
+            key = (str(record["source_id"]), statement.casefold())
             if key in seen:
                 continue
             seen.add(key)
+            # source_id is the canonical source reference. The corresponding
+            # path remains losslessly available in SOURCE-INTAKE.sources. Not
+            # duplicating source_path here prevents path-vs-ID merge keys from
+            # creating duplicate governed/extracted requirements.
             found.append({
                 "source_id": record["source_id"],
-                "source_path": path,
                 "source_location": f"line {line_no}",
                 "original_wording": statement,
                 "normalized_interpretation": statement,
@@ -277,12 +314,32 @@ def _package_json_stack(text: str) -> tuple[set[str], set[str]]:
             if marker in normalized:
                 frameworks.add(label)
         for marker, label in DB_MARKERS.items():
-            if marker in normalized:
+            if marker == normalized or marker in normalized:
                 databases.add(label)
     return frameworks, databases
 
 
+def _implementation_evidence_path(path: str) -> bool:
+    p = Path(path)
+    return p.name.lower() in MANIFEST_NAMES or p.suffix.lower() in LANGUAGE_BY_EXT
+
+
+def _scan_markers(text: str, markers: dict[str, str]) -> set[str]:
+    low = text.lower()
+    found: set[str] = set()
+    for marker, label in markers.items():
+        if re.search(rf"(?:^|[^a-z0-9]){re.escape(marker)}(?:[^a-z0-9]|$)", low):
+            found.add(label)
+    return found
+
+
 def extract_observed_stack(texts: dict[str, str], records: list[dict]) -> dict:
+    """Infer *observed* stack only from implementation files and manifests.
+
+    Documentary prose is intentionally excluded here; technology mentioned in a
+    plan, legacy note, rejected option, or requirements document belongs in the
+    declared stack channel, never observed implementation evidence.
+    """
     languages: set[str] = set()
     frameworks: set[str] = set()
     databases: set[str] = set()
@@ -293,15 +350,19 @@ def extract_observed_stack(texts: dict[str, str], records: list[dict]) -> dict:
         path = str(r.get("path"))
         p = Path(path)
         suffix = p.suffix.lower()
+        name = p.name.lower()
+        implementation = _implementation_evidence_path(path)
         if suffix in LANGUAGE_BY_EXT:
             languages.add(LANGUAGE_BY_EXT[suffix])
-        name = p.name.lower()
+        if not implementation:
+            continue
+
         text = texts.get(path, "")
-        low = text.lower()
         if name == "package.json":
             package_managers.add("npm-compatible")
             fws, dbs = _package_json_stack(text)
-            frameworks |= fws; databases |= dbs
+            frameworks |= fws
+            databases |= dbs
         elif name in {"pyproject.toml", "requirements.txt", "pipfile", "poetry.lock"}:
             package_managers.add("Python packaging")
         elif name == "composer.json":
@@ -316,16 +377,14 @@ def extract_observed_stack(texts: dict[str, str], records: list[dict]) -> dict:
             package_managers.add("Dart/Flutter pub")
         if name in {"dockerfile", "docker-compose.yml", "compose.yml"}:
             infrastructure.add("Docker")
-        if "wp-content/" in path.replace("\\", "/").lower() or "wordpress" in low:
+
+        normalized_path = path.replace("\\", "/").lower()
+        if "wp-content/" in normalized_path:
             frameworks.add("WordPress")
-        for marker, label in FRAMEWORK_MARKERS.items():
-            if re.search(rf"(?:^|[^a-z0-9]){re.escape(marker)}(?:[^a-z0-9]|$)", low):
-                frameworks.add(label)
-        for marker, label in DB_MARKERS.items():
-            if re.search(rf"(?:^|[^a-z0-9]){re.escape(marker)}(?:[^a-z0-9]|$)", low):
-                databases.add(label)
-        if name in MANIFEST_NAMES or suffix in LANGUAGE_BY_EXT:
-            evidence.append({"source_id": r["source_id"], "path": path})
+        frameworks |= _scan_markers(text, FRAMEWORK_MARKERS)
+        databases |= _scan_markers(text, DB_MARKERS)
+        evidence.append({"source_id": r["source_id"], "path": path})
+
     return {
         "languages": sorted(languages),
         "frameworks": sorted(frameworks),
@@ -333,7 +392,7 @@ def extract_observed_stack(texts: dict[str, str], records: list[dict]) -> dict:
         "package_managers": sorted(package_managers),
         "infrastructure": sorted(infrastructure),
         "evidence": evidence,
-        "provenance": "OBSERVED_FROM_FILES_AND_PROJECT_METADATA",
+        "provenance": "OBSERVED_FROM_IMPLEMENTATION_FILES_AND_PROJECT_METADATA",
         "requires_governed_review": True,
     }
 
@@ -344,6 +403,11 @@ def extract_declared_facts(texts: dict[str, str], records: list[dict]) -> tuple[
     stack: list[dict] = []
     arch_seen: set[tuple[str, str]] = set()
     stack_seen: set[tuple[str, str]] = set()
+    stack_tokens = [
+        *FRAMEWORK_MARKERS.keys(), *DB_MARKERS.keys(), "python", "php", "javascript",
+        "typescript", "java", "kotlin", "swift", "dart", "golang", "rust", "ruby",
+        "c#", "docker", "wordpress",
+    ]
     for path in sorted(texts):
         for line_no, raw in enumerate(texts[path].splitlines(), 1):
             statement = _clean_statement(raw)
@@ -354,21 +418,24 @@ def extract_declared_facts(texts: dict[str, str], records: list[dict]) -> tuple[
                 if key not in arch_seen:
                     arch_seen.add(key)
                     arch.append({
-                        "source_id": by_path[path]["source_id"], "path": path,
-                        "location": f"line {line_no}", "statement": statement,
-                        "confidence": "MEDIUM", "requires_governed_review": True,
+                        "source_id": by_path[path]["source_id"],
+                        "path": path,
+                        "location": f"line {line_no}",
+                        "statement": statement,
+                        "confidence": "MEDIUM",
+                        "requires_governed_review": True,
                     })
-            if STACK_DECL_RE.search(statement) and any(
-                token in statement.lower() for token in
-                [*FRAMEWORK_MARKERS.keys(), *DB_MARKERS.keys(), "python", "php", "javascript", "typescript", "java", "kotlin", "swift", "dart", "golang", "rust", "ruby", "c#", "docker", "wordpress"]
-            ):
+            if STACK_DECL_RE.search(statement) and any(token in statement.lower() for token in stack_tokens):
                 key = (path, statement.casefold())
                 if key not in stack_seen:
                     stack_seen.add(key)
                     stack.append({
-                        "source_id": by_path[path]["source_id"], "path": path,
-                        "location": f"line {line_no}", "statement": statement,
-                        "confidence": "MEDIUM", "requires_governed_review": True,
+                        "source_id": by_path[path]["source_id"],
+                        "path": path,
+                        "location": f"line {line_no}",
+                        "statement": statement,
+                        "confidence": "MEDIUM",
+                        "requires_governed_review": True,
                     })
     return (
         {"statements": arch, "provenance": "DECLARED_IN_SOURCE_TEXT", "requires_governed_review": True},
@@ -444,6 +511,6 @@ def semantic_extract(source: Path, records: list[dict]) -> dict:
         "declared_stack": declared_stack,
         "warnings": warnings,
         "documents_examined": sorted(texts),
-        "semantic_extraction_version": "1.0",
+        "semantic_extraction_version": "1.1",
         "authority_boundary": "CANDIDATES_ONLY_HUMAN_OR_GOVERNED_DECISION_REQUIRED_FOR_APPROVAL",
     }
