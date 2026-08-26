@@ -210,6 +210,7 @@ The canonical PREOS source corpus and executable methodology remain in the separ
 10. `templates/release-checklist.md`.
 11. `templates/handoff-template.md`.
 12. `templates/source-intake-record.json`.
+13. `templates/application-agents-continuity.md`.
 
 ## Preserved original WordPress references
 
