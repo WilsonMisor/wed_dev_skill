@@ -2,6 +2,8 @@
 
 Create a Project Classification Record before architecture or implementation.
 
+When a project arrives as a mixed documentation package, ZIP, existing repository, brownfield codebase, or ambiguous set of historical/current sources, complete `orchestration/source-intake.md` first. Classification must not guess which conflicting source is authoritative.
+
 ## Required fields
 
 1. Product name and problem statement.
@@ -22,6 +24,7 @@ Create a Project Classification Record before architecture or implementation.
 16. Required profiles.
 17. Excluded profiles and why.
 18. Unknowns that block a confident classification.
+19. Source-intake record/version and unresolved source-conflict IDs when source intake was required.
 
 ## Profile triggers
 

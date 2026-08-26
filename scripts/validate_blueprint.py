@@ -17,10 +17,12 @@ PREOS_INTEGRATION = ROOT / "references" / "production-assurance" / "preos-integr
 AI_TASK_PACKET_GUIDE = ROOT / "references" / "core" / "ai-task-packets.md"
 AI_TASK_PACKET_TEMPLATE = ROOT / "templates" / "ai-task-packet.md"
 LEGACY_SKILL_SNAPSHOT = ROOT / "references" / "wordpress" / "legacy-ai-web-delivery-blueprint.md"
+SOURCE_INTAKE = ROOT / "orchestration" / "source-intake.md"
+SESSION_CONTINUITY = ROOT / "references" / "core" / "session-continuity.md"
+SOURCE_INTAKE_SCRIPT = ROOT / "scripts" / "source_intake.py"
+SOURCE_INTAKE_TEMPLATE = ROOT / "templates" / "source-intake-record.json"
+UPGRADE_RECONCILIATION = ROOT / "orchestration" / "upgrade-reconciliation.md"
 
-# Immutable pre-upgrade WordPress baseline. This commit is an ancestor of the
-# upgraded Blueprint main branch and remains the preservation authority after
-# main:SKILL.md becomes the parent AI Product Delivery Blueprint.
 LEGACY_BASE_COMMIT = "aee7f8f7ba8e9e6d4af8dc681892e51bef411a7b"
 LEGACY_SKILL_BLOB = "74698dfa2c6fb631af5c1399cefaaaee9f0548c2"
 
@@ -64,9 +66,12 @@ def validate_manifest() -> None:
     missing = [path for path in paths if not (ROOT / path).is_file()]
     if missing:
         fail("manifest paths missing:\n" + "\n".join(missing))
+    for path in [SOURCE_INTAKE, SESSION_CONTINUITY, SOURCE_INTAKE_SCRIPT, SOURCE_INTAKE_TEMPLATE, UPGRADE_RECONCILIATION]:
+        if not path.is_file():
+            fail(f"upgrade governed file missing: {path.relative_to(ROOT)}")
     if not LEGACY_SKILL_SNAPSHOT.is_file():
         fail("legacy WordPress SKILL.md snapshot is missing")
-    print(f"PASS: manifest paths exist, {len(paths)} files checked")
+    print(f"PASS: manifest paths exist, {len(paths)} indexed files checked; source-intake/continuity additions present")
 
 
 def validate_skill_identity() -> None:
@@ -94,6 +99,34 @@ def validate_skill_identity() -> None:
     if "AI Product Delivery Blueprint" not in agent_text:
         fail("agents/openai.yaml has not been upgraded")
     print("PASS: skill identity, profile routing, and PREOS assurance anchors are present")
+
+
+def validate_source_intake_and_continuity() -> None:
+    intake = SOURCE_INTAKE.read_text(encoding="utf-8")
+    continuity = SESSION_CONTINUITY.read_text(encoding="utf-8")
+    codex = CODEX_ROUTING.read_text(encoding="utf-8")
+    lifecycle = (ROOT / "references" / "core" / "lifecycle.md").read_text(encoding="utf-8")
+    reconciliation = UPGRADE_RECONCILIATION.read_text(encoding="utf-8")
+    for token in ["SHA-256", "SOURCE CONFLICT", "UNCLASSIFIED", "safe", ".ai-product-delivery/source-intake/", "PREOS project-init", "--baseline-manifest"]:
+        if token not in intake:
+            fail(f"source-intake contract missing semantic anchor: {token}")
+    script_text = SOURCE_INTAKE_SCRIPT.read_text(encoding="utf-8")
+    for token in ["detect_source_hash_drift", "--baseline-manifest", "CHANGED_AUTHORITATIVE_SOURCE", "MISSING_AUTHORITATIVE_SOURCE"]:
+        if token not in script_text:
+            fail(f"source-intake helper missing source-drift implementation anchor: {token}")
+    for token in ["Conversation memory is never authoritative execution state", "PREOS_STATE_ROOT", "RECOVERY_CONFLICT", "first unverified action", "gstack semantic context"]:
+        if token not in continuity:
+            fail(f"session-continuity contract missing semantic anchor: {token}")
+    for token in ["SAFE_TO_RESUME", "RECOVERY_CONFLICT", "gstack context restore"]:
+        if token not in codex:
+            fail(f"Codex recovery routing missing anchor: {token}")
+    for token in ["Governed source intake", "AI-session interruption rule", "source-intake.md"]:
+        if token not in lifecycle:
+            fail(f"lifecycle missing source/continuity anchor: {token}")
+    for token in ["one canonical Project Contract", "one canonical 75-control baseline", "Conversation memory is never authoritative execution state"]:
+        if token not in reconciliation:
+            fail(f"upgrade reconciliation missing invariant: {token}")
+    print("PASS: source intake, authority, AI-session continuity and recovery routing are explicit")
 
 
 def validate_recommendation_coverage() -> None:
@@ -207,27 +240,12 @@ def validate_recommendation_coverage() -> None:
             fail(f"PREOS integration contract missing semantic anchor: {token}")
 
     packet_text = AI_TASK_PACKET_GUIDE.read_text(encoding="utf-8") + "\n" + AI_TASK_PACKET_TEMPLATE.read_text(encoding="utf-8")
-    for token in [
-        "PREOS risk IDs",
-        "control IDs",
-        "G0-G11",
-        "evidence",
-        "failure tests",
-        "monitoring",
-        "reconciliation",
-        "Deferred Complexity",
-        "Change impact",
-    ]:
+    for token in ["PREOS risk IDs", "control IDs", "G0-G11", "evidence", "failure tests", "monitoring", "reconciliation", "Deferred Complexity", "Change impact"]:
         if token not in packet_text:
             fail(f"AI Task Packet PREOS integration missing anchor: {token}")
 
     coverage_text = ARCHITECTURE_COVERAGE.read_text(encoding="utf-8")
-    for token in [
-        "Recommendation coverage checks",
-        "PREOS as a production-assurance overlay",
-        "PREOS_STATE_ROOT",
-        "production-learning",
-    ]:
+    for token in ["Recommendation coverage checks", "PREOS as a production-assurance overlay", "PREOS_STATE_ROOT", "production-learning"]:
         if token not in coverage_text:
             fail(f"architecture coverage matrix missing PREOS semantic check: {token}")
 
@@ -239,56 +257,29 @@ def validate_legacy_wordpress() -> None:
     if missing:
         fail("legacy WordPress references missing:\n" + "\n".join(missing))
 
-    baseline = subprocess.run(
-        ["git", "cat-file", "-e", f"{LEGACY_BASE_COMMIT}^{{commit}}"],
-        cwd=ROOT,
-        stdout=subprocess.DEVNULL,
-        stderr=subprocess.DEVNULL,
-    )
+    baseline = subprocess.run(["git", "cat-file", "-e", f"{LEGACY_BASE_COMMIT}^{{commit}}"], cwd=ROOT, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     if baseline.returncode != 0:
-        fail(
-            "immutable legacy WordPress baseline commit is unavailable; "
-            "fetch full repository history before validating preservation"
-        )
+        fail("immutable legacy WordPress baseline commit is unavailable; fetch full repository history before validating preservation")
 
-    diff = subprocess.run(
-        ["git", "diff", "--exit-code", LEGACY_BASE_COMMIT, "--", *LEGACY_WORDPRESS],
-        cwd=ROOT,
-    )
+    diff = subprocess.run(["git", "diff", "--exit-code", LEGACY_BASE_COMMIT, "--", *LEGACY_WORDPRESS], cwd=ROOT)
     if diff.returncode != 0:
         fail("one or more preserved WordPress reference files differ from the immutable pre-upgrade baseline")
 
-    original_skill = subprocess.run(
-        ["git", "show", f"{LEGACY_BASE_COMMIT}:SKILL.md"],
-        cwd=ROOT,
-        check=True,
-        stdout=subprocess.PIPE,
-    ).stdout
+    original_skill = subprocess.run(["git", "show", f"{LEGACY_BASE_COMMIT}:SKILL.md"], cwd=ROOT, check=True, stdout=subprocess.PIPE).stdout
     if LEGACY_SKILL_SNAPSHOT.read_bytes() != original_skill:
         fail("legacy WordPress skill snapshot differs from immutable pre-upgrade SKILL.md")
 
-    legacy_blob = subprocess.run(
-        ["git", "hash-object", str(LEGACY_SKILL_SNAPSHOT)],
-        cwd=ROOT,
-        check=True,
-        stdout=subprocess.PIPE,
-        text=True,
-    ).stdout.strip()
+    legacy_blob = subprocess.run(["git", "hash-object", str(LEGACY_SKILL_SNAPSHOT)], cwd=ROOT, check=True, stdout=subprocess.PIPE, text=True).stdout.strip()
     if legacy_blob != LEGACY_SKILL_BLOB:
-        fail(
-            "legacy WordPress skill snapshot Git blob changed: "
-            f"expected {LEGACY_SKILL_BLOB}, got {legacy_blob}"
-        )
+        fail(f"legacy WordPress skill snapshot Git blob changed: expected {LEGACY_SKILL_BLOB}, got {legacy_blob}")
 
-    print(
-        "PASS: original WordPress references and legacy skill text are preserved "
-        "against immutable pre-upgrade baseline"
-    )
+    print("PASS: original WordPress references and legacy skill text are preserved against immutable pre-upgrade baseline")
 
 
 def main() -> None:
     validate_manifest()
     validate_skill_identity()
+    validate_source_intake_and_continuity()
     validate_recommendation_coverage()
     validate_legacy_wordpress()
     print("PASS: AI Product Delivery Blueprint + PREOS integration validation complete")
