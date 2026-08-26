@@ -14,18 +14,18 @@ Disposition vocabulary: `KEEP`, `ALREADY_IMPLEMENTED`, `MOVE_TO_BLUEPRINT`, `MOV
 | Hybrid/migration/unknown mode | gstack | MOVE_TO_BLUEPRINT | Blueprint | governed `--project-mode` | Implemented | governed enum validation |
 | SHA-256 inventory | gstack | MOVE_TO_BLUEPRINT | Blueprint | source manifest | Implemented | duplicate/hash tests |
 | Never execute untrusted sources merely for intake | gstack | MOVE_TO_BLUEPRINT | Blueprint | `orchestration/source-intake.md` | Implemented | validator semantic anchors + code inspection |
-| Safe archive extraction | gstack | MOVE_TO_BLUEPRINT | Blueprint | ZIP staging | Implemented | traversal/absolute/symlink/reparse/overwrite checks |
+| Safe archive extraction | gstack | MOVE_TO_BLUEPRINT | Blueprint | ZIP staging | Implemented | positive safe-ZIP/original-preservation test + traversal/absolute/symlink/reparse checks |
 | Source authority map | gstack | MOVE_TO_BLUEPRINT | Blueprint | governed `source_decisions` | Implemented | authority tests |
 | Duplicate detection | gstack | MOVE_TO_BLUEPRINT | Blueprint | SHA-256 duplicate groups | Implemented | duplicate test |
 | Version detection | gstack | MOVE_TO_BLUEPRINT | Blueprint | non-authoritative version-candidate groups | Implemented | version-candidate test |
 | Superseded-source detection | gstack | MOVE_TO_BLUEPRINT | Blueprint | explicit `supersedes` / `superseded_by` | Implemented | supersession test |
 | Source conflicts | gstack | MOVE_TO_BLUEPRINT | Blueprint | conflict groups | Implemented | resolved + blocking conflict tests |
 | Requirement extraction | gstack | MOVE_TO_BLUEPRINT | Blueprint | governed source requirements / `SRCREQ-*` | Implemented deterministic binding | stable requirement-ID test |
-| Architecture extraction | gstack | MOVE_TO_BLUEPRINT | Blueprint | observed/declared/approved architecture | Implemented contract | source-intake tests + validator |
-| Stack extraction | gstack | MOVE_TO_BLUEPRINT | Blueprint | observed/declared/approved stack | Implemented contract | source-intake tests + validator |
+| Architecture extraction | gstack | MOVE_TO_BLUEPRINT | Blueprint | observed/declared/approved architecture | Implemented extraction contract | explicit observed/declared/approved architecture test + validator |
+| Stack extraction | gstack | MOVE_TO_BLUEPRINT | Blueprint | observed/declared/approved stack | Implemented extraction contract | explicit observed/declared/approved stack test + validator |
 | Intake unknowns/assumptions/role gaps | gstack | MOVE_TO_BLUEPRINT | Blueprint | intake record | Implemented | unknown-handling test |
 | Project Contract | gstack | MOVE_TO_PREOS | PREOS | `preos-project-init` / Project Contract schema | Existing canonical owner preserved | PREOS Project Contract tests |
-| Source drift | gstack | STRENGTHEN | Blueprint + PREOS | source hashes + change impact/evidence freshness | Implemented contract | Blueprint validator + PREOS recovery drift test |
+| Source drift | gstack | STRENGTHEN | Blueprint + PREOS | source hashes + change impact/evidence freshness | Implemented deterministic detection + PREOS change-impact contract | authoritative source-hash drift test + Blueprint validator + PREOS recovery drift test |
 | Human source-resolution gate | gstack | MOVE_TO_BLUEPRINT | Blueprint / human authority | source conflict stop condition | Implemented | blocking conflict test |
 | Application `AGENTS.md` continuity rule | new integrated requirement | MOVE_TO_BLUEPRINT | Blueprint | `templates/application-agents-continuity.md` | Implemented | Blueprint validator |
 | `production-implement` | gstack | REPLACE_WITH_CURRENT_ARCHITECTURE | PREOS + Codex | `preos-production-plan` -> AI Task Packet -> Codex -> `preos-production-implement` | Implemented routing | PREOS/gstack integration validators |

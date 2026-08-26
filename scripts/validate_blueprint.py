@@ -107,9 +107,13 @@ def validate_source_intake_and_continuity() -> None:
     codex = CODEX_ROUTING.read_text(encoding="utf-8")
     lifecycle = (ROOT / "references" / "core" / "lifecycle.md").read_text(encoding="utf-8")
     reconciliation = UPGRADE_RECONCILIATION.read_text(encoding="utf-8")
-    for token in ["SHA-256", "SOURCE CONFLICT", "UNCLASSIFIED", "safe", ".ai-product-delivery/source-intake/", "PREOS project-init"]:
+    for token in ["SHA-256", "SOURCE CONFLICT", "UNCLASSIFIED", "safe", ".ai-product-delivery/source-intake/", "PREOS project-init", "--baseline-manifest"]:
         if token not in intake:
             fail(f"source-intake contract missing semantic anchor: {token}")
+    script_text = SOURCE_INTAKE_SCRIPT.read_text(encoding="utf-8")
+    for token in ["detect_source_hash_drift", "--baseline-manifest", "CHANGED_AUTHORITATIVE_SOURCE", "MISSING_AUTHORITATIVE_SOURCE"]:
+        if token not in script_text:
+            fail(f"source-intake helper missing source-drift implementation anchor: {token}")
     for token in ["Conversation memory is never authoritative execution state", "PREOS_STATE_ROOT", "RECOVERY_CONFLICT", "first unverified action", "gstack semantic context"]:
         if token not in continuity:
             fail(f"session-continuity contract missing semantic anchor: {token}")

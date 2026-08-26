@@ -22,7 +22,7 @@ Intake is inspection, not execution. Do not run installers, macros, package life
 
 For ZIP input, reject path traversal, absolute paths, drive-letter paths, symlink entries, reparse/junction entries, and any extraction target that escapes the staging root. Derived extraction must never mutate the original archive or overwrite staged content with different bytes.
 
-The deterministic helper `scripts/source_intake.py` inventories files, computes SHA-256 hashes, detects exact duplicates and filename-version **candidates**, classifies greenfield/brownfield evidence, and safely stages a ZIP. It never promotes a filename such as `final.docx` into authority and never infers supersession merely because one file looks newer.
+The deterministic helper `scripts/source_intake.py` inventories files, computes SHA-256 hashes, detects exact duplicates and conservative filename-version/revision **candidates**, classifies greenfield/brownfield evidence, and safely stages a ZIP. Version candidates are the conservative near-duplicate/revision signal; they never establish byte equivalence, authority, or supersession. It never promotes a filename such as `final.docx` into authority and never infers supersession merely because one file looks newer.
 
 ## Governed decision input
 
@@ -102,6 +102,8 @@ If authoritative sources disagree and authority cannot resolve the disagreement,
 ## Source drift
 
 Bind authoritative intake sources by hash. When a bound source changes, perform impact analysis across affected PRD/SRS/SRD requirements, architecture, ADRs, risks, controls, AI Task Packets, tests, evidence, monitoring, recovery/reconciliation, and production gates. Materially affected evidence becomes stale until revalidated.
+
+For deterministic re-intake, supply an immutable prior `source-manifest.json` through `--baseline-manifest`. The helper compares previously `HUMAN_APPROVED`, `DECLARED_PRIMARY`, and `APPROVED_SUPPORTING` source hashes, reports changed or missing authoritative sources, and blocks affected downstream work until the required impact analysis is completed. The baseline manifest must be separate from the output manifest so drift evidence cannot overwrite its own comparison baseline.
 
 ## Handoff
 

@@ -40,6 +40,21 @@ class SourceIntakeTests(unittest.TestCase):
         records = [{"path": "app.py", "sha256": "x"}]
         self.assertEqual(MOD.detect_mode(records), "BROWNFIELD")
 
+    def test_safe_zip_extracts_without_mutating_original_source(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            z = root / "safe.zip"
+            staging = root / "staging"
+            with zipfile.ZipFile(z, "w") as zf:
+                zf.writestr("docs/requirements.md", "approved source bytes")
+            before = MOD.sha256_file(z)
+            records, warnings = MOD.inspect_zip(z, staging)
+            after = MOD.sha256_file(z)
+            self.assertEqual(warnings, [])
+            self.assertEqual(before, after)
+            self.assertEqual(records[0]["path"], "docs/requirements.md")
+            self.assertEqual((staging / "docs" / "requirements.md").read_text(encoding="utf-8"), "approved source bytes")
+
     def test_zip_traversal_is_rejected(self):
         with tempfile.TemporaryDirectory() as td:
             z = Path(td) / "bad.zip"
@@ -62,6 +77,16 @@ class SourceIntakeTests(unittest.TestCase):
             info = zipfile.ZipInfo("link")
             info.create_system = 3
             info.external_attr = (stat.S_IFLNK | 0o777) << 16
+            with zipfile.ZipFile(z, "w") as zf:
+                zf.writestr(info, "target")
+            with self.assertRaises(ValueError):
+                MOD.inspect_zip(z)
+
+    def test_zip_reparse_or_junction_entry_is_rejected(self):
+        with tempfile.TemporaryDirectory() as td:
+            z = Path(td) / "bad-reparse.zip"
+            info = zipfile.ZipInfo("junction")
+            info.external_attr = 0x0400
             with zipfile.ZipFile(z, "w") as zf:
                 zf.writestr(info, "target")
             with self.assertRaises(ValueError):
@@ -124,6 +149,23 @@ class SourceIntakeTests(unittest.TestCase):
         self.assertEqual(groups[0]["status"], "SOURCE CONFLICT")
         self.assertTrue(groups[0]["blocking"])
 
+    def test_authoritative_source_hash_drift_detects_changed_and_missing_sources(self):
+        previous = [
+            {"path": "requirements.md", "sha256": "a" * 64, "authority": "HUMAN_APPROVED"},
+            {"path": "architecture.md", "sha256": "b" * 64, "authority": "DECLARED_PRIMARY"},
+            {"path": "notes.md", "sha256": "c" * 64, "authority": "DRAFT_REFERENCE_HISTORY"},
+        ]
+        current = [
+            {"path": "requirements.md", "sha256": "d" * 64, "authority": "UNCLASSIFIED"},
+            {"path": "notes.md", "sha256": "e" * 64, "authority": "UNCLASSIFIED"},
+        ]
+        drift = MOD.detect_source_hash_drift(previous, current)
+        self.assertEqual([item["path"] for item in drift], ["architecture.md", "requirements.md"])
+        self.assertEqual(drift[0]["state"], "MISSING_AUTHORITATIVE_SOURCE")
+        self.assertEqual(drift[1]["state"], "CHANGED_AUTHORITATIVE_SOURCE")
+        self.assertTrue(all(item["impact_analysis_required"] and item["blocking"] for item in drift))
+        self.assertNotIn("notes.md", [item["path"] for item in drift])
+
     def test_stable_requirement_ids_do_not_depend_on_input_order(self):
         rows = self.records()
         reqs = [
@@ -148,6 +190,26 @@ class SourceIntakeTests(unittest.TestCase):
         self.assertEqual(MOD._object(payload, "approved_architecture")["api"], "REST v1")
         self.assertEqual(MOD._object(payload, "approved_stack")["language"], "PHP 8.3")
         self.assertEqual(MOD._list(payload, "unknowns"), ["hosting"])
+
+    def test_architecture_extraction_contract_preserves_observed_declared_approved(self):
+        payload = {
+            "observed_architecture": {"frontend": "server-rendered", "database": "PostgreSQL"},
+            "declared_architecture": {"frontend": "web", "database": "PostgreSQL"},
+            "approved_architecture": {"frontend": "server-rendered", "database": "PostgreSQL", "trust_boundaries": ["public", "admin"]},
+        }
+        self.assertEqual(MOD._object(payload, "observed_architecture")["frontend"], "server-rendered")
+        self.assertEqual(MOD._object(payload, "declared_architecture")["frontend"], "web")
+        self.assertEqual(MOD._object(payload, "approved_architecture")["trust_boundaries"], ["public", "admin"])
+
+    def test_stack_extraction_contract_preserves_observed_declared_approved(self):
+        payload = {
+            "observed_stack": {"language": "PHP", "package_manager": "Composer"},
+            "declared_stack": {"language": "PHP"},
+            "approved_stack": {"language": "PHP 8.3", "package_manager": "Composer"},
+        }
+        self.assertEqual(MOD._object(payload, "observed_stack")["package_manager"], "Composer")
+        self.assertEqual(MOD._object(payload, "declared_stack")["language"], "PHP")
+        self.assertEqual(MOD._object(payload, "approved_stack")["language"], "PHP 8.3")
 
     def test_invalid_authority_is_rejected(self):
         rows = self.records()

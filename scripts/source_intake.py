@@ -41,6 +41,7 @@ SOURCE_STATUS = {
     "CURRENT_CANDIDATE", "CURRENT", "SUPERSEDED", "STALE", "MISSING", "REFERENCE_ONLY"
 }
 PROJECT_MODES = {"GREENFIELD", "BROWNFIELD", "HYBRID_OR_MIGRATION", "UNKNOWN"}
+AUTHORITATIVE_SOURCE_AUTHORITIES = {"HUMAN_APPROVED", "DECLARED_PRIMARY", "APPROVED_SUPPORTING"}
 
 
 def utc_now() -> str:
@@ -217,6 +218,43 @@ def build_version_candidate_groups(records: list[dict]) -> list[dict]:
     return out
 
 
+
+def detect_source_hash_drift(previous_records: list[dict], current_records: list[dict]) -> list[dict]:
+    """Detect changed/missing previously-authoritative sources without guessing resolution."""
+    previous = {
+        str(record.get("path")): record
+        for record in previous_records
+        if record.get("path") and record.get("authority") in AUTHORITATIVE_SOURCE_AUTHORITIES
+    }
+    current = {str(record.get("path")): record for record in current_records if record.get("path")}
+    drift: list[dict] = []
+    for source_path, prior in sorted(previous.items()):
+        now = current.get(source_path)
+        prior_hash = str(prior.get("sha256") or "")
+        if now is None:
+            drift.append({
+                "path": source_path,
+                "authority": prior.get("authority"),
+                "state": "MISSING_AUTHORITATIVE_SOURCE",
+                "previous_sha256": prior_hash,
+                "current_sha256": None,
+                "impact_analysis_required": True,
+                "blocking": True,
+            })
+            continue
+        current_hash = str(now.get("sha256") or "")
+        if current_hash != prior_hash:
+            drift.append({
+                "path": source_path,
+                "authority": prior.get("authority"),
+                "state": "CHANGED_AUTHORITATIVE_SOURCE",
+                "previous_sha256": prior_hash,
+                "current_sha256": current_hash,
+                "impact_analysis_required": True,
+                "blocking": True,
+            })
+    return drift
+
 def assign_ids(records: list[dict]) -> None:
     for idx, record in enumerate(records, 1):
         record["source_id"] = f"SRC-{idx:04d}"
@@ -374,6 +412,7 @@ def write_summary(path: Path, intake: dict) -> None:
         f"Exact duplicate groups: **{len(intake['duplicate_groups'])}**",
         f"Version candidate groups: **{len(intake['version_candidate_groups'])}**",
         f"Blocking source conflicts: **{len(blocking)}**",
+        f"Authoritative source drift items: **{len(intake.get('source_drift', []))}**",
         "",
         "## Authority",
         "",
@@ -384,6 +423,12 @@ def write_summary(path: Path, intake: dict) -> None:
     ]
     warnings = intake.get("warnings", [])
     lines += [f"- {w}" for w in warnings] if warnings else ["- None."]
+    lines += ["", "## Source drift", ""]
+    drift = intake.get("source_drift", [])
+    if drift:
+        lines += [f"- {item['state']} `{item['path']}` requires downstream impact analysis before affected work advances." for item in drift]
+    else:
+        lines += ["- No authoritative source-hash drift detected against the supplied baseline manifest."]
     lines += ["", "## Conflicts", ""]
     if blocking:
         lines += [f"- SOURCE CONFLICT `{c['conflict_group']}` blocks affected downstream work." for c in blocking]
@@ -409,6 +454,15 @@ def load_decisions(path: str | None) -> dict:
     return data
 
 
+
+def load_baseline_sources(path: str | None) -> list[dict]:
+    if not path:
+        return []
+    data = json.loads(Path(path).expanduser().read_text(encoding="utf-8"))
+    if not isinstance(data, dict) or not isinstance(data.get("sources"), list):
+        raise ValueError("baseline manifest must be a JSON object containing a sources array")
+    return data["sources"]
+
 def main() -> None:
     ap = argparse.ArgumentParser(description="Safely inventory project source material without executing it.")
     ap.add_argument("source", help="Directory, repository, file, or ZIP archive to inspect")
@@ -418,6 +472,7 @@ def main() -> None:
     ap.add_argument("--intent", default="", help="Optional short human intent statement; recorded separately from documentary truth")
     ap.add_argument("--project-mode", choices=sorted(PROJECT_MODES), help="Explicit governed mode override; otherwise evidence-only detection is used")
     ap.add_argument("--decisions", help="Optional governed JSON decisions for authority/supersession/conflicts/requirements/architecture/stack")
+    ap.add_argument("--baseline-manifest", help="Optional immutable prior source-manifest.json used to detect authoritative source-hash drift")
     args = ap.parse_args()
 
     source = Path(args.source).expanduser().resolve()
@@ -426,6 +481,11 @@ def main() -> None:
     project_root = Path(args.project_root).expanduser().resolve()
     output_root = Path(args.output).expanduser().resolve() if args.output else project_root / ".ai-product-delivery" / "source-intake"
     output_root.mkdir(parents=True, exist_ok=True)
+
+    baseline_path = Path(args.baseline_manifest).expanduser().resolve() if args.baseline_manifest else None
+    output_manifest = (output_root / "source-manifest.json").resolve()
+    if baseline_path is not None and baseline_path == output_manifest:
+        raise ValueError("baseline manifest must be immutable and separate from the output source-manifest.json")
 
     staging = None
     if source.is_file() and zipfile.is_zipfile(source) and args.extract_zip:
@@ -466,6 +526,9 @@ def main() -> None:
     if project_mode not in PROJECT_MODES:
         raise SystemExit(f"invalid governed project mode: {project_mode}")
 
+    baseline_sources = load_baseline_sources(str(baseline_path) if baseline_path else None)
+    source_drift = detect_source_hash_drift(baseline_sources, records)
+
     intake = {
         "schema_version": "1.1",
         "generated_at": utc_now(),
@@ -477,6 +540,7 @@ def main() -> None:
         "duplicate_groups": build_duplicate_groups(records),
         "version_candidate_groups": build_version_candidate_groups(records),
         "source_conflicts": conflicts,
+        "source_drift": source_drift,
         "source_requirements": requirements,
         "observed_architecture": _object(decisions, "observed_architecture"),
         "declared_architecture": _object(decisions, "declared_architecture"),
@@ -498,12 +562,13 @@ def main() -> None:
         "sources": records,
         "duplicate_groups": intake["duplicate_groups"],
         "version_candidate_groups": intake["version_candidate_groups"],
+        "source_drift": intake["source_drift"],
     })
     atomic_json(output_root / "source-conflicts.json", {"generated_at": intake["generated_at"], "conflicts": conflicts})
     write_summary(output_root / "SOURCE-INTAKE.md", intake)
 
     blocking = [c for c in conflicts if c.get("blocking")]
-    status = "SOURCE_INTAKE_BLOCKED" if blocking else "SOURCE_INTAKE_COMPLETE"
+    status = "SOURCE_INTAKE_BLOCKED" if blocking or source_drift else "SOURCE_INTAKE_COMPLETE"
     print(json.dumps({
         "status": status,
         "output": str(output_root),
@@ -511,8 +576,9 @@ def main() -> None:
         "sources": len(records),
         "source_requirements": len(requirements),
         "blocking_conflicts": len(blocking),
+        "source_drift": len(source_drift),
     }, indent=2))
-    if blocking:
+    if blocking or source_drift:
         raise SystemExit(2)
 
 
