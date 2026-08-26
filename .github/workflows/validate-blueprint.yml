@@ -32,3 +32,54 @@ jobs:
 
       - name: Run Blueprint unit tests
         run: python3 -m unittest discover -s tests -p 'test_*.py'
+
+  phase4-master-plan-closure:
+    if: github.event_name == 'pull_request' && github.head_ref == 'upgrade/source-intake-continuity' && github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: upgrade/source-intake-continuity
+          fetch-depth: 0
+
+      - name: Extract and execute the already-reviewed bounded Phase 4 patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          awk '
+            /python3 <<'\''PY'\''/ && !found {found=1; capture=1; next}
+            capture && /^          PY$/ {capture=0; exit}
+            capture {sub(/^          /, ""); print}
+          ' .github/workflows/phase4-master-plan-closure.yml > /tmp/phase4_patch.py
+          test -s /tmp/phase4_patch.py
+          python3 /tmp/phase4_patch.py
+
+      - name: Enforce exact Phase 4 permanent file boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected=$'orchestration/source-intake.md\norchestration/upgrade-reconciliation.md\nscripts/source_intake.py\nscripts/validate_blueprint.py\ntests/test_source_intake.py'
+          changed="$(git diff --name-only | sort)"
+          printf 'Changed permanent files:\n%s\n' "$changed"
+          test "$changed" = "$expected"
+
+      - name: Run complete Blueprint Phase 4 verification
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m unittest discover -s tests -v
+          python3 scripts/validate_blueprint.py
+
+      - name: Commit only the validated Phase 4 closure
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'WilsonMisor'
+          git config user.email '100686890+WilsonMisor@users.noreply.github.com'
+          git add orchestration/source-intake.md orchestration/upgrade-reconciliation.md scripts/source_intake.py scripts/validate_blueprint.py tests/test_source_intake.py
+          git diff --cached --name-only | sort | diff -u <(printf '%s\n' orchestration/source-intake.md orchestration/upgrade-reconciliation.md scripts/source_intake.py scripts/validate_blueprint.py tests/test_source_intake.py | sort) -
+          git commit -m 'Close Blueprint Phase 4 source-intake gaps'
+          git push origin HEAD:upgrade/source-intake-continuity
