@@ -34,6 +34,7 @@ This manifest is the completeness guard for the upgraded skill. The branch must 
 22. `references/core/change-control.md`.
 23. `references/core/human-approval-gates.md`.
 24. `references/core/ai-task-packets.md`.
+25. `references/core/session-continuity.md`.
 
 ## Web profile
 
@@ -192,6 +193,8 @@ The canonical PREOS source corpus and executable methodology remain in the separ
 7. `orchestration/cross-platform-routing.md`.
 8. `orchestration/coverage-matrix.md`.
 9. `orchestration/recommendation-coverage.md`.
+10. `orchestration/source-intake.md`.
+11. `orchestration/upgrade-reconciliation.md`.
 
 ## Templates
 
@@ -206,6 +209,7 @@ The canonical PREOS source corpus and executable methodology remain in the separ
 9. `templates/traceability-matrix.md`.
 10. `templates/release-checklist.md`.
 11. `templates/handoff-template.md`.
+12. `templates/source-intake-record.json`.
 
 ## Preserved original WordPress references
 
@@ -224,6 +228,11 @@ The canonical PREOS source corpus and executable methodology remain in the separ
 13. `references/wordpress-cybersecurity-build-workflow.md`.
 14. `references/workplace-ux-ui-design-and-wireframing-framework.txt`.
 
+## Deterministic helpers and tests
+
+1. `scripts/source_intake.py`.
+2. `tests/test_source_intake.py`.
+
 ## Validation rule
 
-Before merge, compare the branch tree to this manifest and `orchestration/recommendation-coverage.md`. Any missing listed file or missing required recommendation is a stop condition. Verify PREOS routing/integration contracts remain present and verify the original 14 WordPress references still use the same blob SHA as `main`, proving the integration did not mutate them.
+Before merge, compare the branch tree to this manifest and `orchestration/recommendation-coverage.md`. Any missing listed file or missing required recommendation is a stop condition. Verify PREOS routing/integration contracts remain present and verify the original 14 WordPress references still use the same immutable pre-upgrade baseline, proving the integration did not mutate them.
