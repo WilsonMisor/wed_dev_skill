@@ -1,0 +1,2 @@
+Temporary trigger for the already-committed one-shot Phase 4 master-plan closure workflow.
+This file carries no product, governance, or framework semantics and must be deleted after the one-shot run.
