@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """Deterministic, non-executing source intake helper for the Blueprint.
 
-The helper inventories and hashes source material without executing it. Semantic
-judgments such as authority, supersession, conflicts, requirements, architecture
-and stack are accepted only through an explicit governed decisions document; the
-helper validates and applies those decisions instead of guessing from filenames.
+The helper inventories and hashes supplied material, performs safe deterministic
+candidate extraction for requirements plus observed/declared architecture and
+technology stack, and then applies explicit governed decisions. Extraction is
+never authority: approved architecture/stack and source authority remain human
+or otherwise governed decisions.
 """
-
 from __future__ import annotations
 
 import argparse
@@ -21,6 +21,8 @@ import tempfile
 from datetime import datetime, timezone
 from typing import Any
 import zipfile
+
+from source_semantic_extract import merge_fact_objects, semantic_extract
 
 CODE_EXTENSIONS = {
     ".php", ".js", ".jsx", ".ts", ".tsx", ".py", ".java", ".kt", ".kts",
@@ -91,8 +93,6 @@ def is_zip_symlink(info: zipfile.ZipInfo) -> bool:
 
 
 def is_zip_reparse(info: zipfile.ZipInfo) -> bool:
-    # DOS FILE_ATTRIBUTE_REPARSE_POINT. Treat any such entry as unsafe because
-    # extraction semantics are platform-dependent and can escape the staging root.
     return bool((info.external_attr & 0xFFFF) & 0x0400)
 
 
@@ -196,7 +196,6 @@ def _version_family(path_text: str) -> str:
 
 
 def build_version_candidate_groups(records: list[dict]) -> list[dict]:
-    """Detect filename-version families only; never infer authority/supersession."""
     groups: dict[str, list[dict]] = {}
     for r in records:
         family = _version_family(r["path"])
@@ -218,9 +217,7 @@ def build_version_candidate_groups(records: list[dict]) -> list[dict]:
     return out
 
 
-
 def detect_source_hash_drift(previous_records: list[dict], current_records: list[dict]) -> list[dict]:
-    """Detect changed/missing previously-authoritative sources without guessing resolution."""
     previous = {
         str(record.get("path")): record
         for record in previous_records
@@ -233,27 +230,20 @@ def detect_source_hash_drift(previous_records: list[dict], current_records: list
         prior_hash = str(prior.get("sha256") or "")
         if now is None:
             drift.append({
-                "path": source_path,
-                "authority": prior.get("authority"),
-                "state": "MISSING_AUTHORITATIVE_SOURCE",
-                "previous_sha256": prior_hash,
-                "current_sha256": None,
-                "impact_analysis_required": True,
-                "blocking": True,
+                "path": source_path, "authority": prior.get("authority"),
+                "state": "MISSING_AUTHORITATIVE_SOURCE", "previous_sha256": prior_hash,
+                "current_sha256": None, "impact_analysis_required": True, "blocking": True,
             })
             continue
         current_hash = str(now.get("sha256") or "")
         if current_hash != prior_hash:
             drift.append({
-                "path": source_path,
-                "authority": prior.get("authority"),
-                "state": "CHANGED_AUTHORITATIVE_SOURCE",
-                "previous_sha256": prior_hash,
-                "current_sha256": current_hash,
-                "impact_analysis_required": True,
-                "blocking": True,
+                "path": source_path, "authority": prior.get("authority"),
+                "state": "CHANGED_AUTHORITATIVE_SOURCE", "previous_sha256": prior_hash,
+                "current_sha256": current_hash, "impact_analysis_required": True, "blocking": True,
             })
     return drift
+
 
 def assign_ids(records: list[dict]) -> None:
     for idx, record in enumerate(records, 1):
@@ -275,7 +265,6 @@ def _resolve_source_ref(ref: str, lookup: dict[str, dict]) -> dict:
 
 
 def apply_source_decisions(records: list[dict], decisions: list[dict]) -> None:
-    """Apply explicit governed decisions. No filename/timestamp authority inference."""
     lookup = _source_lookup(records)
     explicit_status: set[str] = set()
     for decision in decisions:
@@ -304,8 +293,6 @@ def apply_source_decisions(records: list[dict], decisions: list[dict]) -> None:
         if isinstance(supersedes, str):
             supersedes = [supersedes]
         record["supersedes"] = sorted({_resolve_source_ref(str(x), lookup)["source_id"] for x in supersedes})
-
-    # Build reciprocal superseded_by links only from explicit governed relationships.
     by_id = {r["source_id"]: r for r in records}
     for r in records:
         r["superseded_by"] = []
@@ -331,8 +318,7 @@ def build_conflict_groups(records: list[dict]) -> list[dict]:
             conflicts.append({
                 "conflict_group": group_id,
                 "source_ids": sorted(m["source_id"] for m in members),
-                "status": "NOT_A_CONTENT_CONFLICT_EXACT_DUPLICATES",
-                "blocking": False,
+                "status": "NOT_A_CONTENT_CONFLICT_EXACT_DUPLICATES", "blocking": False,
             })
             continue
         ranks = {m["source_id"]: AUTHORITY_RANK.get(m.get("authority", "UNCLASSIFIED"), 0) for m in members}
@@ -342,23 +328,19 @@ def build_conflict_groups(records: list[dict]) -> list[dict]:
             conflicts.append({
                 "conflict_group": group_id,
                 "source_ids": sorted(m["source_id"] for m in members),
-                "status": "RESOLVED_BY_EXPLICIT_AUTHORITY",
-                "winning_source_id": winners[0],
-                "blocking": False,
+                "status": "RESOLVED_BY_EXPLICIT_AUTHORITY", "winning_source_id": winners[0], "blocking": False,
             })
         else:
             conflicts.append({
                 "conflict_group": group_id,
                 "source_ids": sorted(m["source_id"] for m in members),
-                "status": "SOURCE CONFLICT",
-                "blocking": True,
+                "status": "SOURCE CONFLICT", "blocking": True,
                 "reason": "conflicting content has no unique higher-authority governed source",
             })
     return conflicts
 
 
 def normalize_requirements(requirements: list[dict], records: list[dict]) -> list[dict]:
-    """Derive stable sequential IDs from a stable semantic sort, not input order."""
     lookup = _source_lookup(records)
     normalized: list[dict] = []
     for item in requirements:
@@ -378,6 +360,8 @@ def normalize_requirements(requirements: list[dict], records: list[dict]) -> lis
             "authority": str(item.get("authority") or source.get("authority") or "UNCLASSIFIED"),
             "confidence": str(item.get("confidence") or "UNKNOWN"),
             "conflict_state": str(item.get("conflict_state") or "NONE"),
+            "extraction_method": str(item.get("extraction_method") or "GOVERNED_INPUT"),
+            "requires_governed_review": bool(item.get("requires_governed_review", False)),
         })
     normalized.sort(key=lambda x: (
         x["source_id"], x["source_location"], x["original_wording"], x["normalized_interpretation"]
@@ -385,6 +369,18 @@ def normalize_requirements(requirements: list[dict], records: list[dict]) -> lis
     for idx, item in enumerate(normalized, 1):
         item["requirement_id"] = f"SRCREQ-{idx:04d}"
     return normalized
+
+
+def _merge_requirement_inputs(extracted: list[dict], governed: list[dict]) -> list[dict]:
+    """Merge candidates deterministically; governed duplicates replace extracted metadata."""
+    merged: dict[tuple[str, str], dict] = {}
+    for item in extracted:
+        key = (str(item.get("source_path") or item.get("source_id")), str(item.get("original_wording", "")).casefold())
+        merged[key] = item
+    for item in governed:
+        key = (str(item.get("source_path") or item.get("source_id")), str(item.get("original_wording", "")).casefold())
+        merged[key] = item
+    return list(merged.values())
 
 
 def _object(payload: dict, key: str) -> dict:
@@ -404,22 +400,19 @@ def _list(payload: dict, key: str) -> list:
 def write_summary(path: Path, intake: dict) -> None:
     blocking = [c for c in intake.get("source_conflicts", []) if c.get("blocking")]
     lines = [
-        "# Source Intake Summary",
-        "",
+        "# Source Intake Summary", "",
         f"Generated: {intake['generated_at']}",
         f"Project mode: **{intake['project_mode']}**",
         f"Sources inventoried: **{len(intake['sources'])}**",
+        f"Semantic documents examined: **{len(intake.get('semantic_extraction', {}).get('documents_examined', []))}**",
+        f"Source requirements extracted/merged: **{len(intake['source_requirements'])}**",
         f"Exact duplicate groups: **{len(intake['duplicate_groups'])}**",
         f"Version candidate groups: **{len(intake['version_candidate_groups'])}**",
         f"Blocking source conflicts: **{len(blocking)}**",
-        f"Authoritative source drift items: **{len(intake.get('source_drift', []))}**",
-        "",
-        "## Authority",
-        "",
-        "All sources begin as `UNCLASSIFIED`. A filename, timestamp, or existing implementation does not establish authority. Governed decisions are applied explicitly through `orchestration/source-intake.md`.",
-        "",
-        "## Warnings",
-        "",
+        f"Authoritative source drift items: **{len(intake.get('source_drift', []))}**", "",
+        "## Authority", "",
+        "Automatic semantic extraction produces candidates/evidence only. It never grants source authority and never creates approved architecture or approved technology stack. Human/governed decisions remain authoritative.",
+        "", "## Warnings", "",
     ]
     warnings = intake.get("warnings", [])
     lines += [f"- {w}" for w in warnings] if warnings else ["- None."]
@@ -434,13 +427,8 @@ def write_summary(path: Path, intake: dict) -> None:
         lines += [f"- SOURCE CONFLICT `{c['conflict_group']}` blocks affected downstream work." for c in blocking]
     else:
         lines += ["- No unresolved blocking source conflicts recorded."]
-    lines += [
-        "",
-        "## Next governed step",
-        "",
-        "Resolve source authority/conflicts and complete source requirements before Blueprint discovery. PREOS Project Contract creation occurs only after approved PRD and Project Classification.",
-        "",
-    ]
+    lines += ["", "## Next governed step", "",
+              "Review extracted candidates, resolve source authority/conflicts and complete source requirements before Blueprint discovery. PREOS Project Contract creation occurs only after approved PRD and Project Classification.", ""]
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text("\n".join(lines), encoding="utf-8")
 
@@ -454,7 +442,6 @@ def load_decisions(path: str | None) -> dict:
     return data
 
 
-
 def load_baseline_sources(path: str | None) -> list[dict]:
     if not path:
         return []
@@ -463,8 +450,9 @@ def load_baseline_sources(path: str | None) -> list[dict]:
         raise ValueError("baseline manifest must be a JSON object containing a sources array")
     return data["sources"]
 
+
 def main() -> None:
-    ap = argparse.ArgumentParser(description="Safely inventory project source material without executing it.")
+    ap = argparse.ArgumentParser(description="Safely inventory and semantically extract project source material without executing it.")
     ap.add_argument("source", help="Directory, repository, file, or ZIP archive to inspect")
     ap.add_argument("--project-root", default=".", help="Application repository root (default: current directory)")
     ap.add_argument("--output", help="Output directory (default: <project-root>/.ai-product-delivery/source-intake)")
@@ -473,6 +461,7 @@ def main() -> None:
     ap.add_argument("--project-mode", choices=sorted(PROJECT_MODES), help="Explicit governed mode override; otherwise evidence-only detection is used")
     ap.add_argument("--decisions", help="Optional governed JSON decisions for authority/supersession/conflicts/requirements/architecture/stack")
     ap.add_argument("--baseline-manifest", help="Optional immutable prior source-manifest.json used to detect authoritative source-hash drift")
+    ap.add_argument("--no-semantic-extraction", action="store_true", help="Emergency/debug option: inventory only; production Blueprint workflow must not use this to claim Phase-2 extraction complete")
     args = ap.parse_args()
 
     source = Path(args.source).expanduser().resolve()
@@ -501,16 +490,10 @@ def main() -> None:
         source_kind = "ZIP"
     elif source.is_file():
         records = [{
-            "source_id": "",
-            "path": source.name,
-            "source_type": "FILE",
-            "size": source.stat().st_size,
-            "sha256": sha256_file(source),
-            "authority": "UNCLASSIFIED",
-            "status": "CURRENT_CANDIDATE",
-            "supersedes": [],
-            "superseded_by": [],
-            "conflict_group": None,
+            "source_id": "", "path": source.name, "source_type": "FILE",
+            "size": source.stat().st_size, "sha256": sha256_file(source),
+            "authority": "UNCLASSIFIED", "status": "CURRENT_CANDIDATE",
+            "supersedes": [], "superseded_by": [], "conflict_group": None,
         }]
         warnings = []
         source_kind = "FILE"
@@ -521,7 +504,18 @@ def main() -> None:
     decisions = load_decisions(args.decisions)
     apply_source_decisions(records, _list(decisions, "source_decisions"))
     conflicts = build_conflict_groups(records)
-    requirements = normalize_requirements(_list(decisions, "source_requirements"), records)
+
+    extracted = {
+        "source_requirements": [], "observed_architecture": {}, "declared_architecture": {},
+        "observed_stack": {}, "declared_stack": {}, "warnings": [], "documents_examined": [],
+        "semantic_extraction_version": "DISABLED", "authority_boundary": "NO_EXTRACTION",
+    }
+    if not args.no_semantic_extraction:
+        extracted = semantic_extract(source, records)
+        warnings.extend(extracted.get("warnings", []))
+
+    requirement_inputs = _merge_requirement_inputs(extracted.get("source_requirements", []), _list(decisions, "source_requirements"))
+    requirements = normalize_requirements(requirement_inputs, records)
     project_mode = args.project_mode or decisions.get("project_mode") or detect_mode(records)
     if project_mode not in PROJECT_MODES:
         raise SystemExit(f"invalid governed project mode: {project_mode}")
@@ -529,25 +523,32 @@ def main() -> None:
     baseline_sources = load_baseline_sources(str(baseline_path) if baseline_path else None)
     source_drift = detect_source_hash_drift(baseline_sources, records)
 
+    observed_architecture = merge_fact_objects(extracted.get("observed_architecture", {}), _object(decisions, "observed_architecture"))
+    declared_architecture = merge_fact_objects(extracted.get("declared_architecture", {}), _object(decisions, "declared_architecture"))
+    observed_stack = merge_fact_objects(extracted.get("observed_stack", {}), _object(decisions, "observed_stack"))
+    declared_stack = merge_fact_objects(extracted.get("declared_stack", {}), _object(decisions, "declared_stack"))
+
     intake = {
-        "schema_version": "1.1",
-        "generated_at": utc_now(),
-        "intent": args.intent,
-        "source_kind": source_kind,
-        "source_root": str(source),
-        "project_mode": project_mode,
+        "schema_version": "1.2",
+        "generated_at": utc_now(), "intent": args.intent,
+        "source_kind": source_kind, "source_root": str(source), "project_mode": project_mode,
         "sources": records,
         "duplicate_groups": build_duplicate_groups(records),
         "version_candidate_groups": build_version_candidate_groups(records),
-        "source_conflicts": conflicts,
-        "source_drift": source_drift,
+        "source_conflicts": conflicts, "source_drift": source_drift,
         "source_requirements": requirements,
-        "observed_architecture": _object(decisions, "observed_architecture"),
-        "declared_architecture": _object(decisions, "declared_architecture"),
+        "observed_architecture": observed_architecture,
+        "declared_architecture": declared_architecture,
         "approved_architecture": _object(decisions, "approved_architecture"),
-        "observed_stack": _object(decisions, "observed_stack"),
-        "declared_stack": _object(decisions, "declared_stack"),
+        "observed_stack": observed_stack,
+        "declared_stack": declared_stack,
         "approved_stack": _object(decisions, "approved_stack"),
+        "semantic_extraction": {
+            "version": extracted.get("semantic_extraction_version"),
+            "documents_examined": extracted.get("documents_examined", []),
+            "authority_boundary": extracted.get("authority_boundary"),
+            "automatic_approval": False,
+        },
         "assumptions": _list(decisions, "assumptions"),
         "unknowns": _list(decisions, "unknowns"),
         "role_gaps": _list(decisions, "role_gaps"),
@@ -558,8 +559,7 @@ def main() -> None:
 
     atomic_json(output_root / "SOURCE-INTAKE.json", intake)
     atomic_json(output_root / "source-manifest.json", {
-        "generated_at": intake["generated_at"],
-        "sources": records,
+        "generated_at": intake["generated_at"], "sources": records,
         "duplicate_groups": intake["duplicate_groups"],
         "version_candidate_groups": intake["version_candidate_groups"],
         "source_drift": intake["source_drift"],
@@ -570,13 +570,10 @@ def main() -> None:
     blocking = [c for c in conflicts if c.get("blocking")]
     status = "SOURCE_INTAKE_BLOCKED" if blocking or source_drift else "SOURCE_INTAKE_COMPLETE"
     print(json.dumps({
-        "status": status,
-        "output": str(output_root),
-        "project_mode": intake["project_mode"],
-        "sources": len(records),
-        "source_requirements": len(requirements),
-        "blocking_conflicts": len(blocking),
-        "source_drift": len(source_drift),
+        "status": status, "output": str(output_root), "project_mode": intake["project_mode"],
+        "sources": len(records), "source_requirements": len(requirements),
+        "semantic_documents_examined": len(extracted.get("documents_examined", [])),
+        "blocking_conflicts": len(blocking), "source_drift": len(source_drift),
     }, indent=2))
     if blocking or source_drift:
         raise SystemExit(2)
