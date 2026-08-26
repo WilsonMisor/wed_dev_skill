@@ -26,6 +26,8 @@ The deterministic helper `scripts/source_intake.py` may inventory files, compute
 
 ## Source authority
 
+Every newly inventoried source starts as **`UNCLASSIFIED`** until governed analysis assigns an authority level. `UNCLASSIFIED` is not equivalent to approved, current, authoritative, or safe to use for implementation.
+
 Use this precedence model unless an explicit project rule overrides it:
 
 1. **Explicit human-approved decision** — highest authority until superseded or revoked.
@@ -43,7 +45,7 @@ Record, as applicable:
 
 - project mode: `GREENFIELD`, `BROWNFIELD`, `HYBRID_OR_MIGRATION`, or `UNKNOWN`;
 - source ID, relative/original path, type, size, SHA-256 and ingestion time;
-- authority status;
+- authority status, initially `UNCLASSIFIED` until deliberately resolved;
 - duplicate group;
 - supersedes/superseded-by relationship;
 - source-conflict group;
