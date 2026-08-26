@@ -134,7 +134,7 @@ jobs:
 
           if __name__ == "__main__":
               unittest.main()
-          '''.replace('\n          ', '\n'), encoding='utf-8')
+          ''', encoding='utf-8')
           PY
 
       - name: Prove targeted regression before commit
