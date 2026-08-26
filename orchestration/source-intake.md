@@ -20,13 +20,28 @@ Accepted inputs may include:
 
 Intake is inspection, not execution. Do not run installers, macros, package lifecycle hooks, migrations, application startup, arbitrary shell/PowerShell/Python/PHP/Node scripts, unknown binaries, or project builds merely to understand the package.
 
-For ZIP input, reject path traversal, absolute paths, drive-letter paths, symlink entries, and any extraction target that escapes the staging root. Derived extraction must never mutate the original archive.
+For ZIP input, reject path traversal, absolute paths, drive-letter paths, symlink entries, reparse/junction entries, and any extraction target that escapes the staging root. Derived extraction must never mutate the original archive or overwrite staged content with different bytes.
 
-The deterministic helper `scripts/source_intake.py` may inventory files, compute SHA-256 hashes, detect exact duplicates, classify greenfield/brownfield evidence, and safely stage a ZIP. Semantic authority and requirement extraction remain governed analysis rather than filename heuristics.
+The deterministic helper `scripts/source_intake.py` inventories files, computes SHA-256 hashes, detects exact duplicates and filename-version **candidates**, classifies greenfield/brownfield evidence, and safely stages a ZIP. It never promotes a filename such as `final.docx` into authority and never infers supersession merely because one file looks newer.
+
+## Governed decision input
+
+Semantic judgments are explicit inputs, not filename heuristics. The helper may receive a governed JSON decisions document with:
+
+- `project_mode`;
+- `source_decisions` for authority, status, explicit supersession, conflict group, topic and declared version;
+- `source_requirements` preserving original wording and source location;
+- observed, declared and approved architecture separately;
+- observed, declared and approved technology stack separately;
+- assumptions, unknowns, role gaps and human decisions required.
+
+The helper validates those relationships and derives reproducible intake artifacts. It must reject unknown source references, invalid authority/status values and malformed governed input rather than guessing.
 
 ## Source authority
 
 Every newly inventoried source starts as **`UNCLASSIFIED`** until governed analysis assigns an authority level. `UNCLASSIFIED` is not equivalent to approved, current, authoritative, or safe to use for implementation.
+
+The deterministic authority enums corresponding to this precedence are `HUMAN_APPROVED`, `DECLARED_PRIMARY`, `APPROVED_SUPPORTING`, `IMPLEMENTATION_EVIDENCE`, `DRAFT_REFERENCE_HISTORY`, `UNCLASSIFIED`, and `UNRESOLVED_CONFLICT`.
 
 Use this precedence model unless an explicit project rule overrides it:
 
@@ -46,9 +61,10 @@ Record, as applicable:
 - project mode: `GREENFIELD`, `BROWNFIELD`, `HYBRID_OR_MIGRATION`, or `UNKNOWN`;
 - source ID, relative/original path, type, size, SHA-256 and ingestion time;
 - authority status, initially `UNCLASSIFIED` until deliberately resolved;
-- duplicate group;
-- supersedes/superseded-by relationship;
-- source-conflict group;
+- exact duplicate group;
+- version-candidate group, explicitly non-authoritative;
+- supersedes/superseded-by relationship only when explicitly governed;
+- source-conflict group and whether it remains blocking;
 - missing or stale source status;
 - observed, declared and approved technology-stack facts separately;
 - observed, declared and approved architecture facts separately;
@@ -56,6 +72,12 @@ Record, as applicable:
 - assumptions, unknowns, role gaps, and decisions requiring human authority.
 
 Project-specific derived intake state belongs under `.ai-product-delivery/source-intake/` in the application repository. Suggested artifacts are `SOURCE-INTAKE.json`, a generated `SOURCE-INTAKE.md`, `source-manifest.json`, and `source-conflicts.json`. Reuse an existing canonical project artifact when it already owns the same information instead of creating duplicate truth.
+
+## Duplicate, version and supersession rules
+
+Exact byte duplicates may be grouped deterministically by SHA-256. Filename families such as `requirements-v1.md` and `requirements-final.md` may be reported as **version candidates only**. A candidate group does not establish which file is current.
+
+Supersession is recorded only from an explicit governed decision. When source B explicitly supersedes source A, record the reciprocal `supersedes` / `superseded_by` relationship and mark A superseded unless an explicit status says otherwise.
 
 ## Stable source requirement IDs
 
@@ -69,9 +91,11 @@ When requirements already exist in supplied sources, derive stable IDs such as `
 - confidence;
 - conflict state.
 
-The derived ID does not rewrite the original source.
+For a fixed governed requirement set, derive IDs from a stable semantic sort rather than incoming JSON order, so reordering the decision file does not silently renumber requirements. The derived ID does not rewrite the original source.
 
 ## Source conflicts
+
+If different content is explicitly placed in the same conflict group, the conflict may be resolved only when one source has a unique higher governed authority. Equal-authority or unclassified competing content remains `SOURCE CONFLICT` and blocks affected downstream work. Exact byte duplicates are not a content conflict.
 
 If authoritative sources disagree and authority cannot resolve the disagreement, record `SOURCE CONFLICT`, identify the affected topics/requirements, and stop affected downstream work. Never silently choose a winner.
 
@@ -96,4 +120,4 @@ PREOS project-init compiles the hash/version-bound production-assurance Project 
 
 ## Stop conditions
 
-Stop the affected work for unresolved source conflict, unsafe archive content, missing required source, unbounded authority ambiguity, or a material source change that has not completed impact analysis.
+Stop the affected work for unresolved source conflict, unsafe archive content, missing required source, unbounded authority ambiguity, invalid governed decision input, or a material source change that has not completed impact analysis.
