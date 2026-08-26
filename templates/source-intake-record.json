@@ -1,0 +1,20 @@
+{
+  "schema_version": "1.0",
+  "project_mode": "UNKNOWN",
+  "intent": "",
+  "generated_at": "",
+  "sources": [],
+  "duplicate_groups": [],
+  "source_conflicts": [],
+  "source_requirements": [],
+  "observed_architecture": {},
+  "declared_architecture": {},
+  "approved_architecture": {},
+  "observed_stack": {},
+  "declared_stack": {},
+  "approved_stack": {},
+  "assumptions": [],
+  "unknowns": [],
+  "role_gaps": [],
+  "human_decisions_required": []
+}

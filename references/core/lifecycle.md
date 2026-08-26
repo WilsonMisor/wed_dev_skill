@@ -2,9 +2,11 @@
 
 This is the master state machine for substantial projects. When PREOS production assurance is active, apply `orchestration/preos-routing.md` as an assurance overlay on this lifecycle rather than creating a separate competing delivery lifecycle.
 
+When project truth arrives as a mixed document package, ZIP, existing repository, brownfield codebase, or ambiguous set of historical/current sources, run `orchestration/source-intake.md` before discovery. Do not force a separate intake artifact when approved source authority is already unambiguous.
+
 ## States
 
-1. Intake.
+1. Governed source intake when required: safe inspection, source inventory/hashes, source authority, duplicate/supersession/conflict detection, and source requirement/architecture/stack extraction.
 2. Discovery.
 3. Product definition.
 4. PRD baseline.
@@ -39,8 +41,12 @@ Do not move forward with unresolved hard failures. Rework returns to the earlies
 
 A required PREOS RED, unresolved HUMAN REVIEW, or material UNKNOWN prevents a production pass unless an allowed, documented risk-acceptance path is approved by an accountable human authority.
 
+## AI-session interruption rule
+
+Read `references/core/session-continuity.md` for interrupted AI-assisted implementation. Conversation memory is never authoritative execution state. If a production-relevant implementation session is interrupted, do not continue from chat recollection or gstack context alone. PREOS must reconcile its runtime state under `PREOS_STATE_ROOT` with the Project Contract, task packet, Git, source bindings, approvals, evidence, and actual verification state. Resume only from the first unverified action after `SAFE_TO_RESUME`; stop on `BLOCKED` or `RECOVERY_CONFLICT`.
+
 ## Change rule
 
-A material requirement, architecture, code, configuration, dependency, schema, environment, or operational change after baseline must trigger impact analysis across design, data, API, clients, tests, security, deployment, documentation, PREOS risks/controls, evidence freshness, monitoring, recovery/reconciliation, and affected production gates before implementation continues.
+A material requirement, architecture, code, configuration, dependency, schema, environment, authoritative source, or operational change after baseline must trigger impact analysis across design, data, API, clients, tests, security, deployment, documentation, PREOS risks/controls, evidence freshness, monitoring, recovery/reconciliation, and affected production gates before implementation continues.
 
 Accepted production learning returns through this same controlled-change mechanism rather than silently mutating requirements or architecture.

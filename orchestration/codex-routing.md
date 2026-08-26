@@ -26,6 +26,8 @@ For substantial AI generated changes:
 
 Require an approved AI Task Packet for non trivial work. The packet must identify source requirements, architecture constraints, allowed scope, prohibited scope, acceptance criteria, tests, evidence, reviewer, approver, and rollback or handoff expectations.
 
+If the project began from mixed/uncertain source material, verify Blueprint source intake and source-authority conflicts are resolved before implementation. When PREOS is active, verify the bound Project Contract and relevant source hashes remain current.
+
 ## During implementation
 
 1. Read only the references needed for the packet.
@@ -35,6 +37,13 @@ Require an approved AI Task Packet for non trivial work. The packet must identif
 5. Do not introduce packages, services, tables, endpoints, permissions, environment variables, or architectural layers without a requirement or documented engineering reason.
 6. Update tests and documentation required by the change.
 7. Record deviations and unresolved risks.
+8. Create event-based PREOS checkpoints at the packet's required safe boundaries when production-assurance continuity is active; do not use conversation memory as a checkpoint.
+
+## Session loss and recovery
+
+If Codex, the terminal, the network, or the PC stops during production-relevant work, treat the work as interrupted. Read `references/core/session-continuity.md` and route deterministic recovery through PREOS. gstack context restore may explain prior work but does not authorize resume.
+
+Do not edit further until PREOS returns `SAFE_TO_RESUME`. Resume from the first unverified action. `BLOCKED` requires the recorded prerequisite/approval. `RECOVERY_CONFLICT` requires reconciliation of actual Git/project/evidence state before coding continues.
 
 ## After implementation
 

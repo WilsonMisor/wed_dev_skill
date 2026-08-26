@@ -5,6 +5,7 @@ on:
     branches:
       - "integration/preos-production-assurance"
       - "upgrade/ai-product-delivery-blueprint"
+      - "upgrade/source-intake-continuity"
       - "main"
   pull_request:
     branches:
@@ -28,3 +29,6 @@ jobs:
 
       - name: Validate blueprint manifest, PREOS integration and preservation
         run: python3 scripts/validate_blueprint.py
+
+      - name: Run Blueprint unit tests
+        run: python3 -m unittest discover -s tests -p 'test_*.py'
