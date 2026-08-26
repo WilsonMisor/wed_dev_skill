@@ -1,0 +1,154 @@
+name: Temporary canonical requirement source remediation
+
+on:
+  push:
+    branches:
+      - fix/master-plan-extraction-remediation
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: github.event.head_commit.message == 'Bootstrap canonical source remediation'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: fix/master-plan-extraction-remediation
+          fetch-depth: 0
+
+      - name: Apply exact canonical-source fix and regression test
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          source = Path('scripts/source_intake.py')
+          text = source.read_text(encoding='utf-8')
+
+          old_function = '''def _merge_requirement_inputs(extracted: list[dict], governed: list[dict]) -> list[dict]:
+              """Merge candidates deterministically; governed duplicates replace extracted metadata."""
+              merged: dict[tuple[str, str], dict] = {}
+              for item in extracted:
+                  key = (str(item.get("source_path") or item.get("source_id")), str(item.get("original_wording", "")).casefold())
+                  merged[key] = item
+              for item in governed:
+                  key = (str(item.get("source_path") or item.get("source_id")), str(item.get("original_wording", "")).casefold())
+                  merged[key] = item
+              return list(merged.values())
+          '''
+          new_function = '''def _merge_requirement_inputs(
+              extracted: list[dict], governed: list[dict], records: list[dict]
+          ) -> list[dict]:
+              """Merge candidates by canonical source identity; governed duplicates replace extraction."""
+              lookup = _source_lookup(records)
+              merged: dict[tuple[str, str], dict] = {}
+
+              def key_for(item: dict) -> tuple[str, str]:
+                  ref = item.get("source_id") or item.get("source_path")
+                  if not ref:
+                      raise ValueError("source requirement requires source_id or source_path")
+                  source = _resolve_source_ref(str(ref), lookup)
+                  wording = str(item.get("original_wording") or "").strip()
+                  if not wording:
+                      raise ValueError("source requirement original_wording is required")
+                  return str(source["source_id"]), wording.casefold()
+
+              for item in extracted:
+                  merged[key_for(item)] = item
+              for item in governed:
+                  merged[key_for(item)] = item
+              return list(merged.values())
+          '''
+          if text.count(old_function) != 1:
+              raise SystemExit(f'expected exactly one merge function, found {text.count(old_function)}')
+          text = text.replace(old_function, new_function)
+
+          old_call = '''    requirement_inputs = _merge_requirement_inputs(extracted.get("source_requirements", []), _list(decisions, "source_requirements"))
+          '''
+          new_call = '''    requirement_inputs = _merge_requirement_inputs(
+              extracted.get("source_requirements", []),
+              _list(decisions, "source_requirements"),
+              records,
+          )
+          '''
+          if text.count(old_call) != 1:
+              raise SystemExit(f'expected exactly one merge call, found {text.count(old_call)}')
+          text = text.replace(old_call, new_call)
+          source.write_text(text, encoding='utf-8')
+
+          test = Path('tests/test_requirement_source_canonicalization.py')
+          test.write_text(r'''import json
+          from pathlib import Path
+          import subprocess
+          import sys
+          import tempfile
+          import unittest
+
+          ROOT = Path(__file__).resolve().parents[1]
+          SCRIPT = ROOT / "scripts" / "source_intake.py"
+
+
+          class CanonicalRequirementSourceMergeTests(unittest.TestCase):
+              def test_governed_source_path_replaces_extracted_source_id_candidate(self):
+                  with tempfile.TemporaryDirectory() as td:
+                      root = Path(td)
+                      src = root / "src"
+                      project = root / "project"
+                      src.mkdir()
+                      project.mkdir()
+                      wording = "The service must retain an immutable audit trail."
+                      (src / "requirements.md").write_text(wording + "\n", encoding="utf-8")
+                      decisions = root / "decisions.json"
+                      decisions.write_text(json.dumps({
+                          "source_requirements": [{
+                              "source_path": "requirements.md",
+                              "source_location": "approved requirement 1",
+                              "original_wording": wording,
+                              "normalized_interpretation": "Retain immutable audit records.",
+                              "category": "SECURITY",
+                              "authority": "HUMAN_APPROVED",
+                              "confidence": "HIGH",
+                              "conflict_state": "NONE",
+                              "extraction_method": "GOVERNED_INPUT",
+                              "requires_governed_review": False,
+                          }]
+                      }), encoding="utf-8")
+
+                      proc = subprocess.run(
+                          [sys.executable, str(SCRIPT), str(src), "--project-root", str(project),
+                           "--decisions", str(decisions)],
+                          cwd=ROOT, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                      )
+                      self.assertEqual(proc.returncode, 0, proc.stdout + proc.stderr)
+                      intake = json.loads(
+                          (project / ".ai-product-delivery/source-intake/SOURCE-INTAKE.json").read_text(encoding="utf-8")
+                      )
+                      matches = [r for r in intake["source_requirements"] if r["original_wording"] == wording]
+                      self.assertEqual(len(matches), 1)
+                      self.assertEqual(matches[0]["source_id"], "SRC-0001")
+                      self.assertEqual(matches[0]["extraction_method"], "GOVERNED_INPUT")
+                      self.assertEqual(matches[0]["authority"], "HUMAN_APPROVED")
+
+
+          if __name__ == "__main__":
+              unittest.main()
+          '''.replace('\n          ', '\n'), encoding='utf-8')
+          PY
+
+      - name: Prove targeted regression before commit
+        run: |
+          python3 -m unittest tests.test_requirement_source_canonicalization -v
+          python3 -m unittest discover -s tests -p 'test_*.py'
+          python3 scripts/validate_blueprint.py
+          python3 scripts/validate_source_semantics.py
+
+      - name: Commit proven remediation
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add scripts/source_intake.py tests/test_requirement_source_canonicalization.py
+          git diff --cached --check
+          git commit -m "Fix canonical requirement source merge"
+          git push origin HEAD:fix/master-plan-extraction-remediation
