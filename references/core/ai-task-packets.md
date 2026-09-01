@@ -22,7 +22,8 @@ The integrated system has one implementation work unit: the Blueprint AI Task Pa
 14. Required evidence.
 15. Reviewer.
 16. Approver.
-17. Rollback, migration, or handoff notes.
+17. Virtual-team capability route, selected role IDs, loaded role cards, and role gaps when professional advisory routing is used.
+18. Rollback, migration, or handoff notes.
 
 ## PREOS extension when production assurance is active
 

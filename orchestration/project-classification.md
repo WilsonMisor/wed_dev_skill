@@ -42,6 +42,14 @@ Activate `data` when application state, business records, analytics data, or dur
 
 Activate `infrastructure` for production environments, hosting, networking, CI and CD, secrets, monitoring, backups, or disaster recovery.
 
+Activate `browser-extension` only when the project explicitly includes a browser extension or add-on surface with permission scopes, content scripts, background workers, browser API compatibility, or store review.
+
+Activate `desktop` only when the project ships a native or cross-platform desktop executable with local filesystem, OS permission, installer, updater, signing, or offline-state concerns.
+
+Activate `platform-extension` only when the project extends a host platform through plugin or extension APIs with host compatibility, privilege boundary, upgrade-safety, or marketplace-rule concerns.
+
+Activate `marketplace-distribution` when software is distributed through an app store, extension marketplace, plugin directory, enterprise catalog, or other governed distribution channel.
+
 ## PREOS production-assurance trigger
 
 PREOS is an assurance overlay rather than a delivery profile. Classify it separately by reading `orchestration/preos-routing.md`.

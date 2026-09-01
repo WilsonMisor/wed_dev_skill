@@ -23,13 +23,15 @@ The skill does not replace specialist engineering judgment. It coordinates PREOS
 8. Require approved product requirements before architecture is frozen, and require approved architecture and applicable design evidence before main implementation begins.
 9. Convert implementation into bounded AI Task Packets. Each packet must state goal, non goals, requirement IDs, allowed files or systems, prohibited actions, acceptance criteria, tests, evidence, reviewer, approver, and rollback or handoff notes. When PREOS is active, enrich the same packet with applicable risk, control, economics, evidence-freshness, monitoring, recovery/reconciliation, change-impact, and production-gate requirements.
 10. Preserve traceability from product requirement to architecture decision, design, code, test, security control, release evidence, and operations documentation. When PREOS is active, extend this chain through production risk, control, monitoring, recovery/reconciliation, and production-gate evidence as applicable.
-11. Treat security, privacy, accessibility, reliability, backup, recovery, observability, production economics, hostile-user behavior, and operational readiness as build concerns when applicable, not post release advice.
-12. Do not silently skip a required gate. A Blueprint gate outcome is pass, rework, approved exception, escalate, or stop. PREOS assurance states are GREEN, AMBER, RED, HUMAN REVIEW, and UNKNOWN. UNKNOWN never silently becomes GREEN.
-13. AI may recommend. Human accountable owners approve major scope, legal and compliance interpretation, security or privacy risk acceptance, destructive operations, production deployment, payments, external spending, user communications, and final launch.
-14. Do not broaden an approved implementation packet into adjacent cleanup, speculative hardening, new features, or architecture changes without a new approved packet.
-15. Require independent review and applicable QA before launch scope work is treated as complete.
-16. If source artifacts conflict, stop the affected work and surface the conflict rather than inventing a resolution.
-17. Do not duplicate PREOS canonical risk/control/readiness corpora in this repository. Their authoritative implementation lives in `WilsonMisor/PREOS`; this repository stores only the integration contract and routing.
+11. Use deterministic virtual-team routing when selecting professional advisory roles; role output is evidence for task routing, not approval authority.
+12. Treat security, privacy, accessibility, reliability, backup, recovery, observability, production economics, hostile-user behavior, and operational readiness as build concerns when applicable, not post release advice.
+13. Do not silently skip a required gate. A Blueprint gate outcome is pass, rework, approved exception, escalate, or stop. PREOS assurance states are GREEN, AMBER, RED, HUMAN REVIEW, and UNKNOWN. UNKNOWN never silently becomes GREEN.
+14. AI may recommend. Human accountable owners approve major scope, legal and compliance interpretation, security or privacy risk acceptance, destructive operations, production deployment, payments, external spending, user communications, and final launch.
+15. Do not broaden an approved implementation packet into adjacent cleanup, speculative hardening, new features, or architecture changes without a new approved packet.
+16. Require independent review and applicable QA before launch scope work is treated as complete.
+17. If source artifacts conflict, stop the affected work and surface the conflict rather than inventing a resolution.
+18. Do not duplicate PREOS canonical risk/control/readiness corpora in this repository. Their authoritative implementation lives in `WilsonMisor/PREOS`; this repository stores only the integration contract and routing.
+
 
 ## Project classification
 
@@ -255,7 +257,7 @@ Stop or escalate the affected work when any of the following is unresolved:
 
 ## Reference loading
 
-Start with `references/INDEX.md`, `orchestration/project-classification.md`, and `orchestration/profile-routing.md`. When PREOS is active, also load `orchestration/preos-routing.md` and `references/production-assurance/preos-integration.md`.
+Start with `references/INDEX.md`, `orchestration/project-classification.md`, `orchestration/profile-routing.md`, and `orchestration/governed-project-bootstrap-protocol.md`. When PREOS is active, also load `orchestration/preos-routing.md` and `references/production-assurance/preos-integration.md`.
 
 Read core modules for the current phase. Then read only active profile modules. Use `templates/` when producing project artifacts. Use the existing root WordPress references when the WordPress profile points to them. Use PREOS selective risk/readiness tooling rather than loading its entire source corpus into every task.
 

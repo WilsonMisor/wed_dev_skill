@@ -15,6 +15,7 @@ Development of the upgrade is isolated on `upgrade/ai-product-delivery-blueprint
 3. `references/web/`, `references/wordpress/`, `references/saas/`, `references/mobile/`, `references/api/`, `references/data/`, and `references/infrastructure/` contain selectively loaded profiles.
 4. `orchestration/` controls classification, profile loading, cross platform contracts, approvals, Codex execution, and gstack routing.
 5. `templates/` contains reusable governed artifact formats.
-6. Existing root level WordPress references remain intact for deep WordPress guidance and backward traceability.
+6. `references/virtual-team/` contains deterministic advisory role registry, router, and role cards.
+7. Existing root level WordPress references remain intact for deep WordPress guidance and backward traceability.
 
 Read `references/INDEX.md` for the complete manifest.

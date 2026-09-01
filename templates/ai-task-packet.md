@@ -21,6 +21,14 @@ Project Classification Record:
 
 ## Applicable profiles and references
 
+## Virtual-team routing
+
+Capability route:
+Role IDs:
+Role cards loaded:
+Role gaps:
+
+
 ## PREOS production assurance
 
 Assurance level:

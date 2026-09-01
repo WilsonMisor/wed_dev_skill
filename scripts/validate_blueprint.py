@@ -3,6 +3,7 @@
 from pathlib import Path
 import re
 import subprocess
+import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 INDEX = ROOT / "references" / "INDEX.md"
@@ -281,6 +282,9 @@ def main() -> None:
     validate_skill_identity()
     validate_source_intake_and_continuity()
     validate_recommendation_coverage()
+    result = subprocess.run([sys.executable, str(ROOT / "scripts" / "validate_virtual_team.py")], cwd=ROOT)
+    if result.returncode:
+        fail("virtual-team validation failed")
     validate_legacy_wordpress()
     print("PASS: AI Product Delivery Blueprint + PREOS integration validation complete")
 
