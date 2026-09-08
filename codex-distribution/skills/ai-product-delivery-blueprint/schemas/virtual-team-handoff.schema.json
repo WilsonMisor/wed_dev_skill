@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Virtual Team Handoff",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "handoff_id",
+    "task_packet_id",
+    "from_role_ids",
+    "to_role_ids",
+    "status",
+    "claims",
+    "evidence",
+    "unknowns",
+    "blockers",
+    "next_action"
+  ],
+  "properties": {
+    "handoff_id": {
+      "type": "string"
+    },
+    "task_packet_id": {
+      "type": "string"
+    },
+    "from_role_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "to_role_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "status": {
+      "enum": [
+        "READY",
+        "BLOCKED",
+        "UNKNOWN",
+        "ROLE_GAP",
+        "HUMAN_REVIEW"
+      ]
+    },
+    "claims": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "claim",
+          "source"
+        ],
+        "properties": {
+          "claim": {
+            "type": "string"
+          },
+          "source": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "unknowns": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "blockers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "next_action": {
+      "type": "string"
+    },
+    "human_authority_required": {
+      "type": "boolean",
+      "default": false
+    }
+  }
+}

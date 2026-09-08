@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Virtual Team Capability Router",
+  "type": "object",
+  "required": [
+    "router_id",
+    "version",
+    "role_registry_version",
+    "routes"
+  ],
+  "properties": {
+    "router_id": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string"
+    },
+    "role_registry_version": {
+      "type": "string"
+    },
+    "routes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "capability",
+          "required_role_ids",
+          "routing_basis"
+        ],
+        "properties": {
+          "capability": {
+            "type": "string",
+            "pattern": "^/prod-"
+          },
+          "required_role_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "routing_basis": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

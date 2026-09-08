@@ -1,0 +1,7 @@
+interface:
+  display_name: "AI Product Delivery Blueprint"
+  short_description: "Govern web, WordPress, SaaS, mobile and API delivery"
+  default_prompt: "Use $ai-product-delivery-blueprint to classify this project, load only the applicable delivery profiles, preserve the existing WordPress framework when WordPress is in scope, create or verify required PRD, SRS, SRD, architecture, domain contracts, security, privacy, design, test, traceability, deployment and operations artifacts, route specialist reviews through gstack when available, execute implementation through bounded Codex task packets, enforce human approval gates, and do not advance past unresolved hard failures."
+
+policy:
+  allow_implicit_invocation: true

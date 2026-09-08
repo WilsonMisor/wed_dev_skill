@@ -1,0 +1,28 @@
+{
+  "profile_id": "browser-extension",
+  "name": "Browser Extension",
+  "status": "SEED_REQUIRES_REPOSITORY_INTEGRATION",
+  "description": "Browser extension or add-on; permission scopes, content scripts, background workers, store policy, browser API compatibility and update review apply.",
+  "activation_rule": "Activate only when project classification explicitly matches this delivery surface.",
+  "required_cross_cutting_domains": [
+    "security",
+    "privacy",
+    "compatibility",
+    "release",
+    "support",
+    "supply-chain",
+    "legal-compliance"
+  ],
+  "required_evidence": [
+    "platform constraints identified",
+    "distribution/update path documented",
+    "permissions reviewed",
+    "rollback/removal path documented",
+    "applicable marketplace or platform policy reviewed"
+  ],
+  "stop_conditions": [
+    "unknown distribution authority",
+    "unreviewed privileged permissions",
+    "no upgrade/rollback strategy for material changes"
+  ]
+}

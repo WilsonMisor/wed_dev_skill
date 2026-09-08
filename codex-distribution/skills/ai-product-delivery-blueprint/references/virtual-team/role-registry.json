@@ -1,0 +1,1013 @@
+{
+  "registry_id": "virtual-team-40",
+  "version": "1.0.0",
+  "source_id": "SRC-01",
+  "role_count": 40,
+  "team_count": 9,
+  "principle": "Forty canonical roles are references and specialist perspectives, not forty mandatory large skills.",
+  "teams": [
+    {
+      "id": "product-and-business",
+      "name": "Product and Business",
+      "role_ids": [
+        "VT-R01-product-manager",
+        "VT-R02-business-analyst",
+        "VT-R03-domain-specialist",
+        "VT-R04-product-operations-specialist"
+      ]
+    },
+    {
+      "id": "user-experience",
+      "name": "User Experience",
+      "role_ids": [
+        "VT-R05-ux-researcher",
+        "VT-R06-product-designer",
+        "VT-R07-accessibility-specialist"
+      ]
+    },
+    {
+      "id": "application-engineering",
+      "name": "Application Engineering",
+      "role_ids": [
+        "VT-R08-frontend-engineer",
+        "VT-R09-mobile-engineer",
+        "VT-R10-backend-engineer",
+        "VT-R11-api-engineer",
+        "VT-R12-integration-engineer"
+      ]
+    },
+    {
+      "id": "data",
+      "name": "Data",
+      "role_ids": [
+        "VT-R13-data-architect",
+        "VT-R14-database-engineer",
+        "VT-R15-data-engineer",
+        "VT-R16-analytics-engineer"
+      ]
+    },
+    {
+      "id": "infrastructure-and-operations",
+      "name": "Infrastructure and Operations",
+      "role_ids": [
+        "VT-R17-cloud-architect",
+        "VT-R18-platform-engineer",
+        "VT-R19-devops-engineer",
+        "VT-R20-site-reliability-engineer",
+        "VT-R21-observability-engineer",
+        "VT-R22-performance-engineer",
+        "VT-R23-finops-specialist"
+      ]
+    },
+    {
+      "id": "security-and-trust",
+      "name": "Security and Trust",
+      "role_ids": [
+        "VT-R24-application-security-engineer",
+        "VT-R25-identity-and-access-engineer",
+        "VT-R26-privacy-engineer",
+        "VT-R27-trust-and-safety-engineer",
+        "VT-R28-verification-engineer",
+        "VT-R29-compliance-specialist"
+      ]
+    },
+    {
+      "id": "transaction-and-commerce",
+      "name": "Transaction and Commerce",
+      "role_ids": [
+        "VT-R30-payments-engineer",
+        "VT-R31-ledger-engineer",
+        "VT-R32-trade-assurance-engineer"
+      ]
+    },
+    {
+      "id": "quality",
+      "name": "Quality",
+      "role_ids": [
+        "VT-R33-qa-engineer",
+        "VT-R34-test-automation-engineer",
+        "VT-R35-reliability-test-engineer"
+      ]
+    },
+    {
+      "id": "release-and-support",
+      "name": "Release and Support",
+      "role_ids": [
+        "VT-R36-release-engineer",
+        "VT-R37-technical-writer",
+        "VT-R38-support-engineer",
+        "VT-R39-incident-commander",
+        "VT-R40-internal-tools-engineer"
+      ]
+    }
+  ],
+  "roles": [
+    {
+      "id": "VT-R01-product-manager",
+      "ordinal": 1,
+      "name": "Product Manager",
+      "team_id": "product-and-business",
+      "source_id": "SRC-01",
+      "source_heading": "Role 1. Product Manager",
+      "owns": [
+        "Product problem",
+        "Users",
+        "Use cases",
+        "Requirements",
+        "Prioritisation",
+        "Product outcomes",
+        "Acceptance criteria",
+        "Feature dependencies"
+      ],
+      "runtime_policy": {
+        "authority": "advisory-specialist",
+        "mutation": "task-packet-only",
+        "human_approval": "cannot self-grant"
+      },
+      "status": "CANONICAL"
+    },
+    {
+      "id": "VT-R02-business-analyst",
+      "ordinal": 2,
+      "name": "Business Analyst",
+      "team_id": "product-and-business",
+      "source_id": "SRC-01",
+      "source_heading": "Role 2. Business Analyst",
+      "owns": [
+        "Business processes",
+        "Process rules",
+        "Exceptions",
+        "Business entities",
+        "Workflows",
+        "Business terminology",
+        "Operational requirements"
+      ],
+      "runtime_policy": {
+        "authority": "advisory-specialist",
+        "mutation": "task-packet-only",
+        "human_approval": "cannot self-grant"
+      },
+      "status": "CANONICAL"
+    },
+    {
+      "id": "VT-R03-domain-specialist",
+      "ordinal": 3,
+      "name": "Domain Specialist",
+      "team_id": "product-and-business",
+      "source_id": "SRC-01",
+      "source_heading": "Role 3. Domain Specialist",
+      "owns": [
+        "Industry specific knowledge",
+        "Industry practices",
+        "Domain constraints",
+        "Domain terminology",
+        "Industry risks"
+      ],
+      "runtime_policy": {
+        "authority": "advisory-specialist",
+        "mutation": "task-packet-only",
+        "human_approval": "cannot self-grant"
+      },
+      "status": "CANONICAL"
+    },
+    {
+      "id": "VT-R04-product-operations-specialist",
+      "ordinal": 4,
+      "name": "Product Operations Specialist",
+      "team_id": "product-and-business",
+      "source_id": "SRC-01",
+      "source_heading": "Role 4. Product Operations Specialist",
+      "owns": [
+        "How the product operates after launch",
+        "Administrative workflows",
+        "Escalations",
+        "Manual interventions",
+        "Back office requirements",
+        "Support processes"
+      ],
+      "runtime_policy": {
+        "authority": "advisory-specialist",
+        "mutation": "task-packet-only",
+        "human_approval": "cannot self-grant"
+      },
+      "status": "CANONICAL"
+    },
+    {
+      "id": "VT-R05-ux-researcher",
+      "ordinal": 5,
+      "name": "UX Researcher",
+      "team_id": "user-experience",
+      "source_id": "SRC-01",
+      "source_heading": "Role 5. UX Researcher",
+      "owns": [
+        "User behaviour",
+        "User needs",
+        "User journeys",
+        "Accessibility needs",
+        "Usability assumptions"
+      ],
+      "runtime_policy": {
+        "authority": "advisory-specialist",
+        "mutation": "task-packet-only",
+        "human_approval": "cannot self-grant"
+      },
+      "status": "CANONICAL"
+    },
+    {
+      "id": "VT-R06-product-designer",
+      "ordinal": 6,
+      "name": "Product Designer",
+      "team_id": "user-experience",
+      "source_id": "SRC-01",
+      "source_heading": "Role 6. Product Designer",
+      "owns": [
+        "Interaction design",
+        "Visual hierarchy",
+        "Design systems",
+        "Responsive behaviour",
+        "Component states",
+        "Error states",
+        "Empty states",
+        "Loading states"
+      ],
+      "runtime_policy": {
+        "authority": "advisory-specialist",
+        "mutation": "task-packet-only",
+        "human_approval": "cannot self-grant"
+      },
+      "status": "CANONICAL"
+    },
+    {
+      "id": "VT-R07-accessibility-specialist",
+      "ordinal": 7,
+      "name": "Accessibility Specialist",
+      "team_id": "user-experience",
+      "source_id": "SRC-01",
+      "source_heading": "Role 7. Accessibility Specialist",
+      "owns": [
+        "Keyboard navigation",
+        "Screen reader compatibility",
+        "Contrast",
+        "Semantic structure",
+        "Focus behaviour",
+        "Alternative text",
+        "Accessible forms"
+      ],
+      "runtime_policy": {
+        "authority": "advisory-specialist",
+        "mutation": "task-packet-only",
+        "human_approval": "cannot self-grant"
+      },
+      "status": "CANONICAL"
+    },
+    {
+      "id": "VT-R08-frontend-engineer",
+      "ordinal": 8,
+      "name": "Frontend Engineer",
+      "team_id": "application-engineering",
+      "source_id": "SRC-01",
+      "source_heading": "Role 8. Frontend Engineer",
+      "owns": [
+        "Browser application architecture",
+        "Components",
+        "State management",
+        "Rendering",
+        "Client caching",
+        "API integration",
+        "Client validation",
+        "Frontend security",
+        "Performance"
+      ],
+      "runtime_policy": {
+        "authority": "advisory-specialist",
+        "mutation": "task-packet-only",
+        "human_approval": "cannot self-grant"
+      },
+      "status": "CANONICAL"
+    },
+    {
+      "id": "VT-R09-mobile-engineer",
+      "ordinal": 9,
+      "name": "Mobile Engineer",
+      "team_id": "application-engineering",
+      "source_id": "SRC-01",
+      "source_heading": "Role 9. Mobile Engineer",
+      "owns": [
+        "iOS and Android behaviour",
+        "Mobile networking",
+        "Offline behaviour",
+        "Device storage",
+        "Push notifications",
+        "Deep links",
+        "Background processes",
+        "App lifecycle",
+        "Mobile releases"
+      ],
+      "runtime_policy": {
+        "authority": "advisory-specialist",
+        "mutation": "task-packet-only",
+        "human_approval": "cannot self-grant"
+      },
+      "status": "CANONICAL"
+    },
+    {
+      "id": "VT-R10-backend-engineer",
+      "ordinal": 10,
+      "name": "Backend Engineer",
+      "team_id": "application-engineering",
+      "source_id": "SRC-01",
+      "source_heading": "Role 10. Backend Engineer",
+      "owns": [
+        "Business logic",
+        "Domain services",
+        "Transactions",
+        "State machines",
+        "Background processing",
+        "Application services",
+        "Server side validation"
+      ],
+      "runtime_policy": {
+        "authority": "advisory-specialist",
+        "mutation": "task-packet-only",
+        "human_approval": "cannot self-grant"
+      },
+      "status": "CANONICAL"
+    },
+    {
+      "id": "VT-R11-api-engineer",
+      "ordinal": 11,
+      "name": "API Engineer",
+      "team_id": "application-engineering",
+      "source_id": "SRC-01",
+      "source_heading": "Role 11. API Engineer",
+      "owns": [
+        "API contracts",
+        "REST",
+        "GraphQL where appropriate",
+        "gRPC where appropriate",
+        "Versioning",
+        "Pagination",
+        "Idempotency",
+        "Webhooks",
+        "API compatibility",
+        "The source document correctly describes APIs as contracts, with compatibility, versioning, pagination, and idempotency as production concerns"
+      ],
+      "runtime_policy": {
+        "authority": "advisory-specialist",
+        "mutation": "task-packet-only",
+        "human_approval": "cannot self-grant"
+      },
+      "status": "CANONICAL"
+    },
+    {
+      "id": "VT-R12-integration-engineer",
+      "ordinal": 12,
+      "name": "Integration Engineer",
+      "team_id": "application-engineering",
+      "source_id": "SRC-01",
+      "source_heading": "Role 12. Integration Engineer",
+      "owns": [
+        "Third-party APIs",
+        "Webhooks",
+        "External services",
+        "Retries",
+        "Timeouts",
+        "Circuit breakers",
+        "Provider abstractions",
+        "Fallbacks",
+        "Reconciliation"
+      ],
+      "runtime_policy": {
+        "authority": "advisory-specialist",
+        "mutation": "task-packet-only",
+        "human_approval": "cannot self-grant"
+      },
+      "status": "CANONICAL"
+    },
+    {
+      "id": "VT-R13-data-architect",
+      "ordinal": 13,
+      "name": "Data Architect",
+      "team_id": "data",
+      "source_id": "SRC-01",
+      "source_heading": "Role 13. Data Architect",
+      "owns": [
+        "Conceptual data model",
+        "Logical data model",
+        "Physical data model",
+        "Ownership boundaries",
+        "Relationships",
+        "Retention",
+        "Master data"
+      ],
+      "runtime_policy": {
+        "authority": "advisory-specialist",
+        "mutation": "task-packet-only",
+        "human_approval": "cannot self-grant"
+      },
+      "status": "CANONICAL"
+    },
+    {
+      "id": "VT-R14-database-engineer",
+      "ordinal": 14,
+      "name": "Database Engineer",
+      "team_id": "data",
+      "source_id": "SRC-01",
+      "source_heading": "Role 14. Database Engineer",
+      "owns": [
+        "Schema",
+        "Indexes",
+        "Queries",
+        "Constraints",
+        "Transactions",
+        "Migrations",
+        "Locking",
+        "Replication",
+        "Partitioning",
+        "Database performance"
+      ],
+      "runtime_policy": {
+        "authority": "advisory-specialist",
+        "mutation": "task-packet-only",
+        "human_approval": "cannot self-grant"
+      },
+      "status": "CANONICAL"
+    },
+    {
+      "id": "VT-R15-data-engineer",
+      "ordinal": 15,
+      "name": "Data Engineer",
+      "team_id": "data",
+      "source_id": "SRC-01",
+      "source_heading": "Role 15. Data Engineer",
+      "owns": [
+        "Operational event pipelines",
+        "Analytics pipelines",
+        "ETL",
+        "ELT",
+        "Data warehouse integration",
+        "Data quality"
+      ],
+      "runtime_policy": {
+        "authority": "advisory-specialist",
+        "mutation": "task-packet-only",
+        "human_approval": "cannot self-grant"
+      },
+      "status": "CANONICAL"
+    },
+    {
+      "id": "VT-R16-analytics-engineer",
+      "ordinal": 16,
+      "name": "Analytics Engineer",
+      "team_id": "data",
+      "source_id": "SRC-01",
+      "source_heading": "Role 16. Analytics Engineer",
+      "owns": [
+        "Analytical models",
+        "Dimensions",
+        "Facts",
+        "Metrics",
+        "Semantic definitions",
+        "Reporting consistency",
+        "The operational database remains separate from analytical modelling"
+      ],
+      "runtime_policy": {
+        "authority": "advisory-specialist",
+        "mutation": "task-packet-only",
+        "human_approval": "cannot self-grant"
+      },
+      "status": "CANONICAL"
+    },
+    {
+      "id": "VT-R17-cloud-architect",
+      "ordinal": 17,
+      "name": "Cloud Architect",
+      "team_id": "infrastructure-and-operations",
+      "source_id": "SRC-01",
+      "source_heading": "Role 17. Cloud Architect",
+      "owns": [
+        "Cloud topology",
+        "Networks",
+        "Regions",
+        "Availability zones",
+        "Managed services",
+        "Infrastructure boundaries"
+      ],
+      "runtime_policy": {
+        "authority": "advisory-specialist",
+        "mutation": "task-packet-only",
+        "human_approval": "cannot self-grant"
+      },
+      "status": "CANONICAL"
+    },
+    {
+      "id": "VT-R18-platform-engineer",
+      "ordinal": 18,
+      "name": "Platform Engineer",
+      "team_id": "infrastructure-and-operations",
+      "source_id": "SRC-01",
+      "source_heading": "Role 18. Platform Engineer",
+      "owns": [
+        "Runtime platforms",
+        "Containers",
+        "Service templates",
+        "Developer environments",
+        "Deployment foundations"
+      ],
+      "runtime_policy": {
+        "authority": "advisory-specialist",
+        "mutation": "task-packet-only",
+        "human_approval": "cannot self-grant"
+      },
+      "status": "CANONICAL"
+    },
+    {
+      "id": "VT-R19-devops-engineer",
+      "ordinal": 19,
+      "name": "DevOps Engineer",
+      "team_id": "infrastructure-and-operations",
+      "source_id": "SRC-01",
+      "source_heading": "Role 19. DevOps Engineer",
+      "owns": [
+        "CI/CD",
+        "Build pipelines",
+        "Environment promotion",
+        "Deployment automation",
+        "Infrastructure automation"
+      ],
+      "runtime_policy": {
+        "authority": "advisory-specialist",
+        "mutation": "task-packet-only",
+        "human_approval": "cannot self-grant"
+      },
+      "status": "CANONICAL"
+    },
+    {
+      "id": "VT-R20-site-reliability-engineer",
+      "ordinal": 20,
+      "name": "Site Reliability Engineer",
+      "team_id": "infrastructure-and-operations",
+      "source_id": "SRC-01",
+      "source_heading": "Role 20. Site Reliability Engineer",
+      "owns": [
+        "Availability",
+        "Reliability",
+        "SLOs",
+        "SLIs",
+        "Incident response",
+        "Capacity",
+        "Failure testing",
+        "Recovery"
+      ],
+      "runtime_policy": {
+        "authority": "advisory-specialist",
+        "mutation": "task-packet-only",
+        "human_approval": "cannot self-grant"
+      },
+      "status": "CANONICAL"
+    },
+    {
+      "id": "VT-R21-observability-engineer",
+      "ordinal": 21,
+      "name": "Observability Engineer",
+      "team_id": "infrastructure-and-operations",
+      "source_id": "SRC-01",
+      "source_heading": "Role 21. Observability Engineer",
+      "owns": [
+        "Logs",
+        "Metrics",
+        "Traces",
+        "Dashboards",
+        "Alerts",
+        "Correlation identifiers",
+        "Telemetry standards"
+      ],
+      "runtime_policy": {
+        "authority": "advisory-specialist",
+        "mutation": "task-packet-only",
+        "human_approval": "cannot self-grant"
+      },
+      "status": "CANONICAL"
+    },
+    {
+      "id": "VT-R22-performance-engineer",
+      "ordinal": 22,
+      "name": "Performance Engineer",
+      "team_id": "infrastructure-and-operations",
+      "source_id": "SRC-01",
+      "source_heading": "Role 22. Performance Engineer",
+      "owns": [
+        "Latency",
+        "Throughput",
+        "Load testing",
+        "Bottlenecks",
+        "Resource consumption",
+        "Performance budgets"
+      ],
+      "runtime_policy": {
+        "authority": "advisory-specialist",
+        "mutation": "task-packet-only",
+        "human_approval": "cannot self-grant"
+      },
+      "status": "CANONICAL"
+    },
+    {
+      "id": "VT-R23-finops-specialist",
+      "ordinal": 23,
+      "name": "FinOps Specialist",
+      "team_id": "infrastructure-and-operations",
+      "source_id": "SRC-01",
+      "source_heading": "Role 23. FinOps Specialist",
+      "owns": [
+        "Cloud cost",
+        "Cost attribution",
+        "Resource waste",
+        "Capacity economics",
+        "Scaling economics"
+      ],
+      "runtime_policy": {
+        "authority": "advisory-specialist",
+        "mutation": "task-packet-only",
+        "human_approval": "cannot self-grant"
+      },
+      "status": "CANONICAL"
+    },
+    {
+      "id": "VT-R24-application-security-engineer",
+      "ordinal": 24,
+      "name": "Application Security Engineer",
+      "team_id": "security-and-trust",
+      "source_id": "SRC-01",
+      "source_heading": "Role 24. Application Security Engineer",
+      "owns": [
+        "Threat modelling",
+        "Vulnerability analysis",
+        "Secure coding",
+        "Attack surfaces",
+        "OWASP risks"
+      ],
+      "runtime_policy": {
+        "authority": "advisory-specialist",
+        "mutation": "task-packet-only",
+        "human_approval": "cannot self-grant"
+      },
+      "status": "CANONICAL"
+    },
+    {
+      "id": "VT-R25-identity-and-access-engineer",
+      "ordinal": 25,
+      "name": "Identity and Access Engineer",
+      "team_id": "security-and-trust",
+      "source_id": "SRC-01",
+      "source_heading": "Role 25. Identity and Access Engineer",
+      "owns": [
+        "Authentication",
+        "Sessions",
+        "MFA",
+        "SSO",
+        "RBAC",
+        "ABAC",
+        "Permissions",
+        "Service identities"
+      ],
+      "runtime_policy": {
+        "authority": "advisory-specialist",
+        "mutation": "task-packet-only",
+        "human_approval": "cannot self-grant"
+      },
+      "status": "CANONICAL"
+    },
+    {
+      "id": "VT-R26-privacy-engineer",
+      "ordinal": 26,
+      "name": "Privacy Engineer",
+      "team_id": "security-and-trust",
+      "source_id": "SRC-01",
+      "source_heading": "Role 26. Privacy Engineer",
+      "owns": [
+        "Personal data",
+        "Consent",
+        "Retention",
+        "Deletion",
+        "Data minimisation",
+        "Privacy controls"
+      ],
+      "runtime_policy": {
+        "authority": "advisory-specialist",
+        "mutation": "task-packet-only",
+        "human_approval": "cannot self-grant"
+      },
+      "status": "CANONICAL"
+    },
+    {
+      "id": "VT-R27-trust-and-safety-engineer",
+      "ordinal": 27,
+      "name": "Trust and Safety Engineer",
+      "team_id": "security-and-trust",
+      "source_id": "SRC-01",
+      "source_heading": "Role 27. Trust and Safety Engineer",
+      "owns": [
+        "Fraud",
+        "Abuse",
+        "Fake accounts",
+        "Scams",
+        "Account compromise",
+        "Risk signals",
+        "Platform integrity"
+      ],
+      "runtime_policy": {
+        "authority": "advisory-specialist",
+        "mutation": "task-packet-only",
+        "human_approval": "cannot self-grant"
+      },
+      "status": "CANONICAL"
+    },
+    {
+      "id": "VT-R28-verification-engineer",
+      "ordinal": 28,
+      "name": "Verification Engineer",
+      "team_id": "security-and-trust",
+      "source_id": "SRC-01",
+      "source_heading": "Role 28. Verification Engineer",
+      "owns": [
+        "Identity verification",
+        "Business verification",
+        "Credential verification",
+        "Address verification",
+        "Document verification",
+        "Third-party verification",
+        "Verification evidence"
+      ],
+      "runtime_policy": {
+        "authority": "advisory-specialist",
+        "mutation": "task-packet-only",
+        "human_approval": "cannot self-grant"
+      },
+      "status": "CANONICAL"
+    },
+    {
+      "id": "VT-R29-compliance-specialist",
+      "ordinal": 29,
+      "name": "Compliance Specialist",
+      "team_id": "security-and-trust",
+      "source_id": "SRC-01",
+      "source_heading": "Role 29. Compliance Specialist",
+      "owns": [
+        "Applicable regulations",
+        "Compliance requirements",
+        "Audit requirements",
+        "Control evidence",
+        "This role must explicitly flag where qualified human legal or compliance review is required"
+      ],
+      "runtime_policy": {
+        "authority": "advisory-specialist",
+        "mutation": "task-packet-only",
+        "human_approval": "cannot self-grant"
+      },
+      "status": "CANONICAL"
+    },
+    {
+      "id": "VT-R30-payments-engineer",
+      "ordinal": 30,
+      "name": "Payments Engineer",
+      "team_id": "transaction-and-commerce",
+      "source_id": "SRC-01",
+      "source_heading": "Role 30. Payments Engineer",
+      "owns": [
+        "Payment intents",
+        "Payment providers",
+        "Payment callbacks",
+        "Webhooks",
+        "Refunds",
+        "Payouts",
+        "Reconciliation",
+        "Provider failures"
+      ],
+      "runtime_policy": {
+        "authority": "advisory-specialist",
+        "mutation": "task-packet-only",
+        "human_approval": "cannot self-grant"
+      },
+      "status": "CANONICAL"
+    },
+    {
+      "id": "VT-R31-ledger-engineer",
+      "ordinal": 31,
+      "name": "Ledger Engineer",
+      "team_id": "transaction-and-commerce",
+      "source_id": "SRC-01",
+      "source_heading": "Role 31. Ledger Engineer",
+      "owns": [
+        "Financial ledger",
+        "Balances",
+        "Double entry accounting",
+        "Adjustments",
+        "Reconciliation",
+        "Financial auditability"
+      ],
+      "runtime_policy": {
+        "authority": "advisory-specialist",
+        "mutation": "task-packet-only",
+        "human_approval": "cannot self-grant"
+      },
+      "status": "CANONICAL"
+    },
+    {
+      "id": "VT-R32-trade-assurance-engineer",
+      "ordinal": 32,
+      "name": "Trade Assurance Engineer",
+      "team_id": "transaction-and-commerce",
+      "source_id": "SRC-01",
+      "source_heading": "Role 32. Trade Assurance Engineer",
+      "owns": [
+        "Transaction agreements",
+        "Protected payment workflows",
+        "Fulfilment conditions",
+        "Milestones",
+        "Acceptance",
+        "Funds release",
+        "Claims",
+        "Disputes",
+        "Refunds",
+        "Compensation rules",
+        "Evidence",
+        "Alibaba’s current Trade Assurance model demonstrates the general pattern. Buyer and supplier agree to an order, payment occurs through the platform, funds can be held until receipt and confirmation, and dispute processes can lead to refunds or compensation where terms are not met",
+        "This framework generalises that architecture rather than copying Alibaba’s business rules"
+      ],
+      "runtime_policy": {
+        "authority": "advisory-specialist",
+        "mutation": "task-packet-only",
+        "human_approval": "cannot self-grant"
+      },
+      "status": "CANONICAL"
+    },
+    {
+      "id": "VT-R33-qa-engineer",
+      "ordinal": 33,
+      "name": "QA Engineer",
+      "team_id": "quality",
+      "source_id": "SRC-01",
+      "source_heading": "Role 33. QA Engineer",
+      "owns": [
+        "Functional tests",
+        "Regression tests",
+        "Exploratory testing",
+        "Browser testing",
+        "Device testing"
+      ],
+      "runtime_policy": {
+        "authority": "advisory-specialist",
+        "mutation": "task-packet-only",
+        "human_approval": "cannot self-grant"
+      },
+      "status": "CANONICAL"
+    },
+    {
+      "id": "VT-R34-test-automation-engineer",
+      "ordinal": 34,
+      "name": "Test Automation Engineer",
+      "team_id": "quality",
+      "source_id": "SRC-01",
+      "source_heading": "Role 34. Test Automation Engineer",
+      "owns": [
+        "Automated unit tests",
+        "Integration tests",
+        "Contract tests",
+        "End-to-end tests",
+        "Test environments"
+      ],
+      "runtime_policy": {
+        "authority": "advisory-specialist",
+        "mutation": "task-packet-only",
+        "human_approval": "cannot self-grant"
+      },
+      "status": "CANONICAL"
+    },
+    {
+      "id": "VT-R35-reliability-test-engineer",
+      "ordinal": 35,
+      "name": "Reliability Test Engineer",
+      "team_id": "quality",
+      "source_id": "SRC-01",
+      "source_heading": "Role 35. Reliability Test Engineer",
+      "owns": [
+        "Failure injection",
+        "Dependency failures",
+        "Timeout tests",
+        "Load tests",
+        "Recovery tests"
+      ],
+      "runtime_policy": {
+        "authority": "advisory-specialist",
+        "mutation": "task-packet-only",
+        "human_approval": "cannot self-grant"
+      },
+      "status": "CANONICAL"
+    },
+    {
+      "id": "VT-R36-release-engineer",
+      "ordinal": 36,
+      "name": "Release Engineer",
+      "team_id": "release-and-support",
+      "source_id": "SRC-01",
+      "source_heading": "Role 36. Release Engineer",
+      "owns": [
+        "Versioning",
+        "Release readiness",
+        "Change promotion",
+        "Rollbacks",
+        "Canary deployment"
+      ],
+      "runtime_policy": {
+        "authority": "advisory-specialist",
+        "mutation": "task-packet-only",
+        "human_approval": "cannot self-grant"
+      },
+      "status": "CANONICAL"
+    },
+    {
+      "id": "VT-R37-technical-writer",
+      "ordinal": 37,
+      "name": "Technical Writer",
+      "team_id": "release-and-support",
+      "source_id": "SRC-01",
+      "source_heading": "Role 37. Technical Writer",
+      "owns": [
+        "Architecture documentation",
+        "API documentation",
+        "Runbooks",
+        "User documentation",
+        "Release documentation"
+      ],
+      "runtime_policy": {
+        "authority": "advisory-specialist",
+        "mutation": "task-packet-only",
+        "human_approval": "cannot self-grant"
+      },
+      "status": "CANONICAL"
+    },
+    {
+      "id": "VT-R38-support-engineer",
+      "ordinal": 38,
+      "name": "Support Engineer",
+      "team_id": "release-and-support",
+      "source_id": "SRC-01",
+      "source_heading": "Role 38. Support Engineer",
+      "owns": [
+        "Supportability",
+        "Diagnostic information",
+        "Customer issue reproduction",
+        "Escalation tools"
+      ],
+      "runtime_policy": {
+        "authority": "advisory-specialist",
+        "mutation": "task-packet-only",
+        "human_approval": "cannot self-grant"
+      },
+      "status": "CANONICAL"
+    },
+    {
+      "id": "VT-R39-incident-commander",
+      "ordinal": 39,
+      "name": "Incident Commander",
+      "team_id": "release-and-support",
+      "source_id": "SRC-01",
+      "source_heading": "Role 39. Incident Commander",
+      "owns": [
+        "Major incidents",
+        "Coordination",
+        "Communication",
+        "Containment",
+        "Recovery",
+        "Post incident review"
+      ],
+      "runtime_policy": {
+        "authority": "advisory-specialist",
+        "mutation": "task-packet-only",
+        "human_approval": "cannot self-grant"
+      },
+      "status": "CANONICAL"
+    },
+    {
+      "id": "VT-R40-internal-tools-engineer",
+      "ordinal": 40,
+      "name": "Internal Tools Engineer",
+      "team_id": "release-and-support",
+      "source_id": "SRC-01",
+      "source_heading": "Role 40. Internal Tools Engineer",
+      "owns": [
+        "Administrative tools",
+        "Moderation tools",
+        "Support consoles",
+        "Operational dashboards",
+        "Manual repair workflows"
+      ],
+      "runtime_policy": {
+        "authority": "advisory-specialist",
+        "mutation": "task-packet-only",
+        "human_approval": "cannot self-grant"
+      },
+      "status": "CANONICAL"
+    }
+  ]
+}
