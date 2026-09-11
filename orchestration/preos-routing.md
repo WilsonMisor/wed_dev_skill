@@ -213,3 +213,7 @@ Stop or escalate the affected work when:
 8. production economics or complexity assumptions are materially unsupported;
 9. change impact cannot be bounded safely;
 10. PREOS, gstack, Codex, or project artifacts conflict with the approved Blueprint baseline and no human resolution exists.
+## PAS v2 Model2 Routing
+
+When a Project Contract requests PAS v2 or model2 semantics, Blueprint routes to PREOS references/risks/model2 and references/integration/source4-production-assurance-crosswalk.json. Blueprint keeps legacy-v1 as default unless PREOS returns a human-approved model2 activation. Source 2 readiness gates remain R0-R17 and must not be renumbered as PREOS G0-G11. Source 4 conceptual production specialists route through namespaced gstack companions via PREOS, not through new competing Blueprint commands.
+

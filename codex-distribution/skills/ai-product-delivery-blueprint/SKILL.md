@@ -262,3 +262,7 @@ Start with `references/INDEX.md`, `orchestration/project-classification.md`, `or
 Read core modules for the current phase. Then read only active profile modules. Use `templates/` when producing project artifacts. Use the existing root WordPress references when the WordPress profile points to them. Use PREOS selective risk/readiness tooling rather than loading its entire source corpus into every task.
 
 The goal is complete governance with bounded context, not maximum context loading.
+## PAS v2 PREOS Routing
+
+For PAS v2 work, keep the source intake and task packet in Blueprint, but route risk-corpus lookup, concern-separated assessment, Source 4 production-assurance crosswalks, and G0-G11 evidence authority to PREOS. Do not duplicate the PREOS model2 corpus inside Blueprint and do not treat model2 as active without PREOS_MODEL2_CROSSWALK_APPROVAL.
+
