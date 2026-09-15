@@ -1,7 +1,11 @@
 param(
+    [ValidateSet('install','verify','repair','update','uninstall')][string]$Mode = 'install',
     [string]$PreosPath,
     [string]$GstackPath,
-    [switch]$SkipGstackSetup
+    [string]$SuiteLockPath,
+    [switch]$SkipGstackSetup,
+    [switch]$SkipInstalledSkillCheck,
+    [switch]$AllowUpdate
 )
 
 $ErrorActionPreference = 'Stop'
@@ -9,6 +13,7 @@ $BlueprintRoot = Resolve-Path $PSScriptRoot
 $SuiteRoot = Resolve-Path (Join-Path $BlueprintRoot '..')
 if (-not $PreosPath) { $PreosPath = Join-Path $SuiteRoot 'PREOS' }
 if (-not $GstackPath) { $GstackPath = Join-Path $SuiteRoot 'gstack' }
+if (-not $SuiteLockPath) { $SuiteLockPath = Join-Path $SuiteRoot 'SUITE-LOCK.json' }
 $PreosRoot = Resolve-Path $PreosPath
 $GstackRoot = Resolve-Path $GstackPath
 $CodexHome = if ($env:CODEX_HOME) { $env:CODEX_HOME } else { Join-Path $HOME '.codex' }
@@ -26,6 +31,40 @@ function Invoke-Checked([string]$Label, [scriptblock]$Block) {
     if ($LASTEXITCODE -ne 0) { throw ($Label + ' failed with exit code ' + $LASTEXITCODE) }
 }
 
+function Invoke-SuiteDoctor {
+    $Args = @('-File', (Join-Path $BlueprintRoot 'scripts\suite-doctor.ps1'), '-PreosPath', $PreosRoot, '-GstackPath', $GstackRoot, '-SuiteLockPath', $SuiteLockPath)
+    if ($SkipInstalledSkillCheck) { $Args += '-SkipInstalledSkillCheck' }
+    & powershell @Args
+    if ($LASTEXITCODE -ne 0) { throw 'suite doctor failed' }
+}
+
+if ($Mode -eq 'verify') {
+    Invoke-SuiteDoctor
+    return
+}
+
+if ($Mode -eq 'update' -and -not $AllowUpdate) {
+    throw 'Mode update requires -AllowUpdate so suite drift cannot happen implicitly.'
+}
+
+if ($Mode -eq 'uninstall') {
+    if (-not $AllowUpdate) { throw 'Mode uninstall requires -AllowUpdate before installed files are removed.' }
+    $ResolvedSkillRoot = [System.IO.Path]::GetFullPath($SkillRoot)
+    foreach ($Skill in @('ai-product-delivery-blueprint','preos','preos-risk-model','preos-production-plan','gstack')) {
+        $Path = Join-Path $SkillRoot $Skill
+        $ResolvedTarget = [System.IO.Path]::GetFullPath($Path)
+        if (-not $ResolvedTarget.StartsWith($ResolvedSkillRoot + [System.IO.Path]::DirectorySeparatorChar)) {
+            throw ('Refusing to remove path outside skill root: ' + $ResolvedTarget)
+        }
+        if (Test-Path $ResolvedTarget) { Remove-Item -LiteralPath $ResolvedTarget -Recurse -Force }
+    }
+    if (Test-Path $AgentRoot) {
+        Get-ChildItem -Path $AgentRoot -Filter 'vt_*.toml' -ErrorAction SilentlyContinue | Remove-Item -Force
+    }
+    Write-Output 'Suite uninstall: PASS'
+    return
+}
+
 Require-Command 'git'
 Require-Command 'python'
 Require-Command 'bun'
@@ -39,6 +78,7 @@ Invoke-Checked 'validate Blueprint' { & python (Join-Path $BlueprintRoot 'script
 Invoke-Checked 'validate Blueprint source semantics' { & python (Join-Path $BlueprintRoot 'scripts\validate_source_semantics.py') }
 $env:PYTHONPATH = Join-Path $PreosRoot 'scripts'
 Invoke-Checked 'validate PREOS' { & python (Join-Path $PreosRoot 'scripts\validate-preos.py') }
+Invoke-Checked 'validate PREOS PAS v2 remediation artifacts' { & python (Join-Path $PreosRoot 'scripts\validate-pasv2-remediation-artifacts.py') }
 Invoke-Checked 'validate gstack PREOS integration' { & python (Join-Path $GstackRoot 'scripts\validate-preos-integration.py') }
 Invoke-Checked 'validate gstack Codex contract applicability' { & python (Join-Path $GstackRoot 'scripts\validate-codex-project-contract-applicability.py') }
 Invoke-Checked 'validate three-repo acceptance' { & python (Join-Path $GstackRoot 'scripts\validate-three-repo-acceptance.py') --blueprint $BlueprintRoot --preos $PreosRoot --gstack $GstackRoot }
@@ -61,13 +101,14 @@ foreach ($Skill in $RequiredSkills) {
     $Path = Join-Path $SkillRoot $Skill
     if (-not (Test-Path (Join-Path $Path 'SKILL.md'))) { throw ('Installed skill missing SKILL.md: ' + $Path) }
 }
-$AgentCount = (Get-ChildItem -Path $AgentRoot -Filter 'vt_*.toml').Count
+$AgentCount = (Get-ChildItem -Path $AgentRoot -Filter 'vt_*.toml' -ErrorAction SilentlyContinue).Count
 if ($AgentCount -lt 9) { throw 'Virtual Team agent metadata is incomplete' }
 
+Invoke-SuiteDoctor
 $BlueprintHead = (& git -C $BlueprintRoot rev-parse --short HEAD).Trim()
 $PreosHead = (& git -C $PreosRoot rev-parse --short HEAD).Trim()
 $GstackHead = (& git -C $GstackRoot rev-parse --short HEAD).Trim()
-Write-Output 'Suite install health: PASS'
+Write-Output ('Suite ' + $Mode + ' health: PASS')
 Write-Output ('Blueprint ' + $BlueprintHead)
 Write-Output ('PREOS ' + $PreosHead)
 Write-Output ('gstack ' + $GstackHead)
