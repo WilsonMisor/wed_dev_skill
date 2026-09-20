@@ -25,7 +25,7 @@ class PASV2InstallerTests(unittest.TestCase):
         self.assertTrue(ps1.is_file())
         self.assertTrue(sh.is_file())
         combined = ps1.read_text(encoding='utf-8') + sh.read_text(encoding='utf-8')
-        for token in ['validate-preos.py', 'validate-preos-integration.py', 'validate-three-repo-acceptance.py', '--host codex --prefix', 'install-codex', 'suite-doctor', 'install', 'verify', 'repair', 'update', 'uninstall', 'SUITE-LOCK.json']:
+        for token in ['validate-preos.py', 'validate-preos-integration.py', 'validate-three-repo-acceptance.py', '--host codex --prefix', 'install-codex', 'suite-doctor', 'install', 'verify', 'repair', 'update', 'uninstall', 'SUITE-LOCK.json', 'git clone', 'fetch --all --tags', 'repository is dirty', 'gstack-preos-handoff', 'preos-production-implement']:
             self.assertIn(token, combined)
 
     def test_suite_doctor_scripts_are_bounded_and_lock_aware(self):
@@ -34,7 +34,7 @@ class PASV2InstallerTests(unittest.TestCase):
         self.assertTrue(ps1.is_file())
         self.assertTrue(sh.is_file())
         combined = ps1.read_text(encoding='utf-8') + sh.read_text(encoding='utf-8')
-        for token in ['SUITE-LOCK.json', 'validate-pasv2-remediation-artifacts.py', 'SkipInstalledSkillCheck', 'skip-installed-skill-check', 'validate-three-repo-acceptance.py']:
+        for token in ['SUITE-LOCK.json', 'validate-pasv2-remediation-artifacts.py', 'SkipInstalledSkillCheck', 'skip-installed-skill-check', 'validate-three-repo-acceptance.py', 'owned_skill_ids', 'suite_version', 'preos_commit', 'gstack_commit']:
             self.assertIn(token, combined)
 
 if __name__ == '__main__':

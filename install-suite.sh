@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+﻿#!/usr/bin/env bash
 set -euo pipefail
 BLUEPRINT_ROOT=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 SUITE_ROOT=$(cd "$BLUEPRINT_ROOT/.." && pwd)
@@ -13,7 +13,6 @@ MODE=install
 SKIP_GSTACK_SETUP=0
 SKIP_INSTALLED=0
 ALLOW_UPDATE=0
-
 while [ "$#" -gt 0 ]; do
   case "$1" in
     --mode) MODE="$2"; shift 2 ;;
@@ -26,30 +25,66 @@ while [ "$#" -gt 0 ]; do
     *) echo "Unknown argument: $1" >&2; exit 2 ;;
   esac
 done
-
-case "$MODE" in install|verify|repair|update|uninstall) ;; *) echo "Invalid --mode: $MODE" >&2; exit 2 ;; esac
+case "$MODE" in install|verify|repair|update|uninstall) ;; *) exit 2 ;; esac
+OWNED_SKILLS=(
+  ai-product-delivery-blueprint preos preos-risk-model preos-architecture-economics
+  preos-production-plan preos-production-implement preos-production-learn preos-project-init
+  preos-handoff gstack gstack-review gstack-qa gstack-qa-only gstack-cso
+  gstack-benchmark gstack-canary gstack-ship gstack-investigate gstack-design-review
+  gstack-devex-review gstack-health gstack-spec gstack-scrape gstack-document-generate
+  gstack-document-release gstack-context-save gstack-context-restore gstack-preos-handoff
+)
 require_cmd() { command -v "$1" >/dev/null 2>&1 || { echo "Missing required command: $1" >&2; exit 2; }; }
 run_checked() { label="$1"; shift; printf '==> %s\n' "$label"; "$@"; }
+lock_commit() {
+  [ -f "$SUITE_LOCK" ] || return 0
+  python - "$SUITE_LOCK" "$1" <<'PY'
+import json, sys
+lock=json.loads(open(sys.argv[1], encoding='utf-8').read())
+name=sys.argv[2]
+for item in lock.get('components', []):
+    if item.get('path') == name and item.get('commit'):
+        print(item['commit']); raise SystemExit(0)
+print(lock.get({'PREOS':'preos_commit','wed_dev_skill':'blueprint_commit','gstack':'gstack_commit'}.get(name,''),'') or '')
+PY
+}
+repo_dirty() { [ -n "$(git -C "$1" status --porcelain=v1)" ]; }
+ensure_repo() {
+  name="$1"; path="$2"; url="$3"; component="$4"
+  if [ ! -e "$path" ]; then
+    case "$MODE" in install|repair|update) mkdir -p "$(dirname "$path")"; run_checked "clone $name" git clone "$url" "$path" ;; *) echo "$name repository missing: $path" >&2; exit 2 ;; esac
+  fi
+  [ -d "$path/.git" ] || { echo "$name repository missing .git: $path" >&2; exit 2; }
+  expected="$(lock_commit "$component")"
+  if [ "$MODE" = update ] || [ "$MODE" = repair ]; then
+    [ "$ALLOW_UPDATE" -eq 1 ] || { echo "Mode $MODE requires --allow-update" >&2; exit 2; }
+    ! repo_dirty "$path" || { echo "$name repository is dirty; refusing controlled update" >&2; exit 2; }
+    run_checked "fetch $name" git -C "$path" fetch --all --tags
+    [ -z "$expected" ] || run_checked "checkout locked $name" git -C "$path" checkout "$expected"
+  fi
+  if [ -n "$expected" ] && [ "$MODE" != install ]; then
+    actual="$(git -C "$path" rev-parse HEAD)"
+    [ "$actual" = "$expected" ] || { echo "$name lock drift: expected $expected got $actual" >&2; exit 2; }
+  fi
+}
 run_doctor() {
-  args=("--preos" "$PREOS_ROOT" "--gstack" "$GSTACK_ROOT" "--suite-lock" "$SUITE_LOCK")
-  [ "$SKIP_INSTALLED" -eq 1 ] && args+=("--skip-installed-skill-check")
+  args=(--preos "$PREOS_ROOT" --gstack "$GSTACK_ROOT" --suite-lock "$SUITE_LOCK")
+  [ "$SKIP_INSTALLED" -eq 1 ] && args+=(--skip-installed-skill-check)
   "$BLUEPRINT_ROOT/scripts/suite-doctor.sh" "${args[@]}"
 }
-
-if [ "$MODE" = verify ]; then
-  run_doctor
-  exit 0
-fi
+if [ "$MODE" = verify ]; then run_doctor; exit 0; fi
 if [ "$MODE" = update ] && [ "$ALLOW_UPDATE" -ne 1 ]; then
   echo 'Mode update requires --allow-update so suite drift cannot happen implicitly.' >&2
   exit 2
 fi
 if [ "$MODE" = uninstall ]; then
   [ "$ALLOW_UPDATE" -eq 1 ] || { echo 'Mode uninstall requires --allow-update before installed files are removed.' >&2; exit 2; }
-  for skill in ai-product-delivery-blueprint preos preos-risk-model preos-production-plan gstack; do
+  mkdir -p "$SKILL_ROOT"
+  root_real="$(cd "$SKILL_ROOT" && pwd)"
+  for skill in "${OWNED_SKILLS[@]}"; do
     target="$SKILL_ROOT/$skill"
-    case "$(cd "$(dirname "$target")" && pwd)/$(basename "$target")" in
-      "$(cd "$SKILL_ROOT" && pwd)"/*) [ -e "$target" ] && rm -rf "$target" ;;
+    case "$(cd "$(dirname "$target")" 2>/dev/null && pwd)/$(basename "$target")" in
+      "$root_real"/*) [ -e "$target" ] && rm -rf "$target" ;;
       *) echo "Refusing to remove path outside skill root: $target" >&2; exit 2 ;;
     esac
   done
@@ -57,17 +92,11 @@ if [ "$MODE" = uninstall ]; then
   printf 'Suite uninstall: PASS\n'
   exit 0
 fi
-
 require_cmd git
 require_cmd python
 require_cmd bun
-[ -d "$BLUEPRINT_ROOT/.git" ] || { echo 'Blueprint repository missing .git' >&2; exit 2; }
-[ -d "$PREOS_ROOT/.git" ] || { echo 'PREOS repository missing .git' >&2; exit 2; }
-[ -d "$GSTACK_ROOT/.git" ] || { echo 'gstack repository missing .git' >&2; exit 2; }
-
-run_checked 'verify Blueprint repository' git -C "$BLUEPRINT_ROOT" rev-parse HEAD >/dev/null
-run_checked 'verify PREOS repository' git -C "$PREOS_ROOT" rev-parse HEAD >/dev/null
-run_checked 'verify gstack repository' git -C "$GSTACK_ROOT" rev-parse HEAD >/dev/null
+ensure_repo PREOS "$PREOS_ROOT" https://github.com/WilsonMisor/PREOS.git PREOS
+ensure_repo gstack "$GSTACK_ROOT" https://github.com/WilsonMisor/gstack.git gstack
 run_checked 'validate Blueprint' python "$BLUEPRINT_ROOT/scripts/validate_blueprint.py"
 run_checked 'validate Blueprint source semantics' python "$BLUEPRINT_ROOT/scripts/validate_source_semantics.py"
 PYTHONPATH="$PREOS_ROOT/scripts" run_checked 'validate PREOS' python "$PREOS_ROOT/scripts/validate-preos.py"
@@ -81,15 +110,5 @@ if [ "$SKIP_GSTACK_SETUP" -eq 0 ]; then
   [ -x "$GSTACK_ROOT/setup" ] || { echo 'gstack setup script is missing or not executable' >&2; exit 2; }
   run_checked 'install gstack for Codex with namespaced prefix' "$GSTACK_ROOT/setup" --host codex --prefix
 fi
-for skill in ai-product-delivery-blueprint preos preos-risk-model preos-production-plan gstack; do
-  [ -f "$SKILL_ROOT/$skill/SKILL.md" ] || { echo "Installed skill missing SKILL.md: $SKILL_ROOT/$skill" >&2; exit 3; }
-done
-agent_count=$(find "$AGENT_ROOT" -maxdepth 1 -name 'vt_*.toml' -type f 2>/dev/null | wc -l)
-[ "$agent_count" -ge 9 ] || { echo 'Virtual Team agent metadata is incomplete' >&2; exit 3; }
 run_doctor
 printf 'Suite %s health: PASS\n' "$MODE"
-printf 'Blueprint %s\n' "$(git -C "$BLUEPRINT_ROOT" rev-parse --short HEAD)"
-printf 'PREOS %s\n' "$(git -C "$PREOS_ROOT" rev-parse --short HEAD)"
-printf 'gstack %s\n' "$(git -C "$GSTACK_ROOT" rev-parse --short HEAD)"
-printf 'Skills: %s\n' "$SKILL_ROOT"
-printf 'Agents: %s\n' "$AGENT_ROOT"
