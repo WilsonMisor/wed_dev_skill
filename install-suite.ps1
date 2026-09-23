@@ -1,4 +1,5 @@
-﻿param(
+param(
+# SUITE-LOCK owned_skill_count must remain 63 from CODEX-DISTRIBUTION.json manifests.
     [ValidateSet('install','verify','repair','update','uninstall')][string]$Mode = 'install',
     [string]$PreosPath,
     [string]$GstackPath,
@@ -14,17 +15,8 @@ if (-not $PreosPath) { $PreosPath = Join-Path $SuiteRoot 'PREOS' }
 if (-not $GstackPath) { $GstackPath = Join-Path $SuiteRoot 'gstack' }
 if (-not $SuiteLockPath) { $SuiteLockPath = Join-Path $SuiteRoot 'SUITE-LOCK.json' }
 $CodexHome = if ($env:CODEX_HOME) { $env:CODEX_HOME } else { Join-Path $HOME '.codex' }
-$AgentsHome = if ($env:AGENTS_HOME) { $env:AGENTS_HOME } else { Join-Path $HOME '.agents' }
-$SkillRoot = if ($env:CODEX_SKILLS_HOME) { $env:CODEX_SKILLS_HOME } else { Join-Path $AgentsHome 'skills' }
+$SkillRoot = if ($env:CODEX_SKILL_ROOT) { $env:CODEX_SKILL_ROOT } elseif ($env:CODEX_SKILLS_HOME) { $env:CODEX_SKILLS_HOME } else { Join-Path $CodexHome 'skills' }
 $AgentRoot = Join-Path $CodexHome 'agents'
-$OwnedSkills = @(
-'ai-product-delivery-blueprint','preos','preos-risk-model','preos-architecture-economics',
-'preos-production-plan','preos-production-implement','preos-production-learn','preos-project-init',
-'preos-handoff','gstack','gstack-review','gstack-qa','gstack-qa-only','gstack-cso',
-'gstack-benchmark','gstack-canary','gstack-ship','gstack-investigate','gstack-design-review',
-'gstack-devex-review','gstack-health','gstack-spec','gstack-scrape','gstack-document-generate',
-'gstack-document-release','gstack-context-save','gstack-context-restore','gstack-preos-handoff'
-)
 function Require-Command([string]$Name) {
     if (-not (Get-Command $Name -ErrorAction SilentlyContinue)) { throw ('Missing required command: ' + $Name) }
 }
@@ -33,10 +25,33 @@ function Invoke-Checked([string]$Label, [scriptblock]$Block) {
     & $Block
     if ($LASTEXITCODE -ne 0) { throw ($Label + ' failed with exit code ' + $LASTEXITCODE) }
 }
+function Get-ManifestSkills([string]$RepoRoot, [bool]$PrefixGstack = $false) {
+    $ManifestPath = Join-Path $RepoRoot 'CODEX-DISTRIBUTION.json'
+    if (-not (Test-Path $ManifestPath)) { throw ('Missing distribution manifest: ' + $ManifestPath) }
+    $Manifest = Get-Content -LiteralPath $ManifestPath -Raw | ConvertFrom-Json
+    $Names = @()
+    foreach ($Skill in @($Manifest.skills)) {
+        $Name = [string]$Skill.name
+        if (-not $Name) { throw ('Malformed skill entry in ' + $ManifestPath) }
+        if ($PrefixGstack -and -not $Name.StartsWith('gstack')) { $Name = 'gstack-' + $Name }
+        $Names += $Name
+    }
+    return $Names
+}
+function Get-SuiteOwnedSkills {
+    $Names = @()
+    $Names += Get-ManifestSkills $BlueprintRoot $false
+    $Names += Get-ManifestSkills $PreosPath $false
+    $Names += Get-ManifestSkills $GstackPath $true
+    $Unique = @($Names | Sort-Object -Unique)
+    if ($Names.Count -ne 63 -or $Unique.Count -ne 63) { throw ('Expected 63 unique suite-owned skills, derived ' + $Names.Count) }
+    return $Names
+}
+$OwnedSkills = @(Get-SuiteOwnedSkills)
 function Get-LockCommit([string]$ComponentPath) {
     if (-not (Test-Path $SuiteLockPath)) { return $null }
     $Lock = Get-Content -LiteralPath $SuiteLockPath -Raw | ConvertFrom-Json
-    foreach ($Component in $Lock.components) {
+    foreach ($Component in @($Lock.components)) {
         if ($Component.path -eq $ComponentPath -and $Component.commit) { return $Component.commit }
     }
     if ($ComponentPath -eq 'PREOS' -and $Lock.preos_commit) { return $Lock.preos_commit }
@@ -69,6 +84,9 @@ function Ensure-Repo([string]$Name, [string]$PathText, [string]$Url, [string]$Co
     }
 }
 function Invoke-SuiteDoctor {
+    $env:CODEX_HOME = $CodexHome
+    $env:CODEX_SKILL_ROOT = $SkillRoot
+    $env:CODEX_SKILLS_HOME = $SkillRoot
     $Args = @('-File', (Join-Path $BlueprintRoot 'scripts\suite-doctor.ps1'), '-PreosPath', $PreosPath, '-GstackPath', $GstackPath, '-SuiteLockPath', $SuiteLockPath)
     if ($SkipInstalledSkillCheck) { $Args += '-SkipInstalledSkillCheck' }
     & powershell @Args
@@ -83,17 +101,26 @@ if ($Mode -eq 'update' -and -not $AllowUpdate) {
 }
 if ($Mode -eq 'uninstall') {
     if (-not $AllowUpdate) { throw 'Mode uninstall requires -AllowUpdate before installed files are removed.' }
+    New-Item -ItemType Directory -Force -Path $SkillRoot | Out-Null
     $ResolvedSkillRoot = [System.IO.Path]::GetFullPath($SkillRoot)
+    $RootPrefix = $ResolvedSkillRoot.TrimEnd([System.IO.Path]::DirectorySeparatorChar, [System.IO.Path]::AltDirectorySeparatorChar) + [System.IO.Path]::DirectorySeparatorChar
     foreach ($Skill in $OwnedSkills) {
         $Target = Join-Path $SkillRoot $Skill
         $ResolvedTarget = [System.IO.Path]::GetFullPath($Target)
-        if (-not $ResolvedTarget.StartsWith($ResolvedSkillRoot + [System.IO.Path]::DirectorySeparatorChar)) {
+        if (-not $ResolvedTarget.StartsWith($RootPrefix, [System.StringComparison]::OrdinalIgnoreCase)) {
             throw ('Refusing to remove path outside skill root: ' + $ResolvedTarget)
         }
         if (Test-Path $ResolvedTarget) { Remove-Item -LiteralPath $ResolvedTarget -Recurse -Force }
     }
     if (Test-Path $AgentRoot) {
-        Get-ChildItem -Path $AgentRoot -Filter 'vt_*.toml' -ErrorAction SilentlyContinue | Remove-Item -Force
+        $Manifest = Get-Content -LiteralPath (Join-Path $BlueprintRoot 'CODEX-DISTRIBUTION.json') -Raw | ConvertFrom-Json
+        foreach ($Agent in @($Manifest.agents)) {
+            $Name = Split-Path ([string]$Agent.source_path) -Leaf
+            if ($Name.StartsWith('vt_') -and $Name.EndsWith('.toml')) {
+                $Target = Join-Path $AgentRoot $Name
+                if (Test-Path $Target) { Remove-Item -LiteralPath $Target -Force }
+            }
+        }
     }
     Write-Output 'Suite uninstall: PASS'
     return
@@ -101,6 +128,9 @@ if ($Mode -eq 'uninstall') {
 Require-Command 'git'
 Require-Command 'python'
 Require-Command 'bun'
+$env:CODEX_HOME = $CodexHome
+$env:CODEX_SKILL_ROOT = $SkillRoot
+$env:CODEX_SKILLS_HOME = $SkillRoot
 Ensure-Repo 'PREOS' $PreosPath 'https://github.com/WilsonMisor/PREOS.git' 'PREOS'
 Ensure-Repo 'gstack' $GstackPath 'https://github.com/WilsonMisor/gstack.git' 'gstack'
 $PreosRoot = Resolve-Path $PreosPath

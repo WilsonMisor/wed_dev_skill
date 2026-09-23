@@ -1,4 +1,4 @@
-﻿param(
+param(
     [string]$PreosPath,
     [string]$GstackPath,
     [string]$SuiteLockPath,
@@ -14,27 +14,57 @@ if (-not $SuiteLockPath) { $SuiteLockPath = Join-Path $SuiteRoot 'SUITE-LOCK.jso
 $PreosRoot = Resolve-Path $PreosPath
 $GstackRoot = Resolve-Path $GstackPath
 $CodexHome = if ($env:CODEX_HOME) { $env:CODEX_HOME } else { Join-Path $HOME '.codex' }
-$AgentsHome = if ($env:AGENTS_HOME) { $env:AGENTS_HOME } else { Join-Path $HOME '.agents' }
-$SkillRoot = if ($env:CODEX_SKILLS_HOME) { $env:CODEX_SKILLS_HOME } else { Join-Path $AgentsHome 'skills' }
+$SkillRoot = if ($env:CODEX_SKILL_ROOT) { $env:CODEX_SKILL_ROOT } elseif ($env:CODEX_SKILLS_HOME) { $env:CODEX_SKILLS_HOME } else { Join-Path $CodexHome 'skills' }
 function Invoke-Checked([string]$Label, [scriptblock]$Block) {
     Write-Output ('==> ' + $Label)
     & $Block
     if ($LASTEXITCODE -ne 0) { throw ($Label + ' failed with exit code ' + $LASTEXITCODE) }
 }
 function Get-Head([string]$Repo) { return (& git -C $Repo rev-parse HEAD).Trim() }
+function Get-ManifestSkills([string]$RepoRoot, [bool]$PrefixGstack = $false) {
+    $ManifestPath = Join-Path $RepoRoot 'CODEX-DISTRIBUTION.json'
+    if (-not (Test-Path $ManifestPath)) { throw ('Missing distribution manifest: ' + $ManifestPath) }
+    $Manifest = Get-Content -LiteralPath $ManifestPath -Raw | ConvertFrom-Json
+    $Names = @()
+    foreach ($Skill in @($Manifest.skills)) {
+        $Name = [string]$Skill.name
+        if (-not $Name) { throw ('Malformed skill entry in ' + $ManifestPath) }
+        if ($PrefixGstack -and -not $Name.StartsWith('gstack')) { $Name = 'gstack-' + $Name }
+        $Names += $Name
+    }
+    return $Names
+}
+function Get-SuiteOwnedSkills {
+    $Names = @()
+    $Names += Get-ManifestSkills $BlueprintRoot $false
+    $Names += Get-ManifestSkills $PreosRoot $false
+    $Names += Get-ManifestSkills $GstackRoot $true
+    $Unique = @($Names | Sort-Object -Unique)
+    if ($Names.Count -ne 63 -or $Unique.Count -ne 63) { throw ('Expected 63 unique suite-owned skills, derived ' + $Names.Count) }
+    return $Names
+}
 if (-not (Test-Path $SuiteLockPath)) { throw ('Suite lock missing: ' + $SuiteLockPath) }
 $Lock = Get-Content -LiteralPath $SuiteLockPath -Raw | ConvertFrom-Json
 $RequiredLockFields = @(
 'suite_version','preos_version','preos_commit','blueprint_version','blueprint_commit',
 'gstack_version','gstack_commit','integration_contract_version','risk_catalogue_version',
 'risk_schema_version','readiness_framework_mapping_version','gate_schema_version',
-'virtual_team_contract_version','tested_codex_host_profile','os_runtime_profile'
+'virtual_team_contract_version','tested_codex_host_profile','os_runtime_profile',
+'selected_skill_root','owned_skill_source','owned_skill_count','owned_skill_ids'
 )
 foreach ($Field in $RequiredLockFields) {
     if (-not $Lock.PSObject.Properties[$Field] -or -not $Lock.$Field) { throw ('Suite lock missing ' + $Field) }
 }
-foreach ($Component in $Lock.components) {
-    $RepoPath = Join-Path $SuiteRoot $Component.path
+$ExpectedSkills = @(Get-SuiteOwnedSkills)
+$LockedSkills = @($Lock.owned_skill_ids)
+if ($Lock.owned_skill_count -ne $ExpectedSkills.Count) { throw ('Suite lock owned_skill_count mismatch: ' + $Lock.owned_skill_count + ' != ' + $ExpectedSkills.Count) }
+if (($LockedSkills -join "`n") -ne ($ExpectedSkills -join "`n")) { throw 'Suite lock owned_skill_ids do not match manifest-derived inventory' }
+if ($Lock.selected_skill_root -ne 'CODEX_HOME/skills') { throw 'Suite lock selected_skill_root must be CODEX_HOME/skills' }
+foreach ($Component in @($Lock.components)) {
+    if ($Component.path -eq 'PREOS') { $RepoPath = $PreosRoot }
+    elseif ($Component.path -eq 'wed_dev_skill') { $RepoPath = $BlueprintRoot }
+    elseif ($Component.path -eq 'gstack') { $RepoPath = $GstackRoot }
+    else { $RepoPath = Join-Path $SuiteRoot $Component.path }
     if (-not (Test-Path $RepoPath)) { throw ('Suite lock component path missing: ' + $Component.path) }
     $Actual = Get-Head $RepoPath
     if ($Component.commit -and $Actual -ne $Component.commit) {
@@ -55,15 +85,16 @@ if (-not $SkipGstackValidation) {
     Write-Output 'gstack bounded validators: SKIPPED by caller'
 }
 if (-not $SkipInstalledSkillCheck) {
-    $RequiredSkills = @($Lock.owned_skill_ids)
-    if (-not $RequiredSkills -or $RequiredSkills.Count -eq 0) { $RequiredSkills = @('ai-product-delivery-blueprint','preos','gstack') }
-    foreach ($Skill in $RequiredSkills) {
+    foreach ($Skill in $ExpectedSkills) {
         $Path = Join-Path $SkillRoot $Skill
         if (-not (Test-Path (Join-Path $Path 'SKILL.md'))) { throw ('Installed skill missing SKILL.md: ' + $Path) }
     }
+    $Manifest = Get-Content -LiteralPath (Join-Path $BlueprintRoot 'CODEX-DISTRIBUTION.json') -Raw | ConvertFrom-Json
     $AgentRoot = Join-Path $CodexHome 'agents'
-    $AgentCount = (Get-ChildItem -Path $AgentRoot -Filter 'vt_*.toml' -ErrorAction SilentlyContinue).Count
-    if ($AgentCount -lt 9) { throw 'Virtual Team agent metadata is incomplete' }
+    foreach ($Agent in @($Manifest.agents)) {
+        $Name = Split-Path ([string]$Agent.source_path) -Leaf
+        if (-not (Test-Path (Join-Path $AgentRoot $Name))) { throw ('Virtual Team agent metadata missing: ' + (Join-Path $AgentRoot $Name)) }
+    }
     Write-Output ('Installed skills: PASS ' + $SkillRoot)
 } else {
     Write-Output 'Installed skills: SKIPPED by caller'

@@ -1,4 +1,5 @@
-﻿#!/usr/bin/env bash
+#!/usr/bin/env bash
+# SUITE-LOCK owned_skill_count must remain 63 from CODEX-DISTRIBUTION.json manifests.
 set -euo pipefail
 BLUEPRINT_ROOT=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 SUITE_ROOT=$(cd "$BLUEPRINT_ROOT/.." && pwd)
@@ -6,8 +7,7 @@ PREOS_ROOT="${PREOS_REPO:-$SUITE_ROOT/PREOS}"
 GSTACK_ROOT="${GSTACK_REPO:-$SUITE_ROOT/gstack}"
 SUITE_LOCK="$SUITE_ROOT/SUITE-LOCK.json"
 CODEX_HOME="${CODEX_HOME:-$HOME/.codex}"
-AGENTS_HOME="${AGENTS_HOME:-$HOME/.agents}"
-SKILL_ROOT="${CODEX_SKILLS_HOME:-$AGENTS_HOME/skills}"
+SKILL_ROOT="${CODEX_SKILL_ROOT:-${CODEX_SKILLS_HOME:-$CODEX_HOME/skills}}"
 AGENT_ROOT="$CODEX_HOME/agents"
 MODE=install
 SKIP_GSTACK_SETUP=0
@@ -26,16 +26,36 @@ while [ "$#" -gt 0 ]; do
   esac
 done
 case "$MODE" in install|verify|repair|update|uninstall) ;; *) exit 2 ;; esac
-OWNED_SKILLS=(
-  ai-product-delivery-blueprint preos preos-risk-model preos-architecture-economics
-  preos-production-plan preos-production-implement preos-production-learn preos-project-init
-  preos-handoff gstack gstack-review gstack-qa gstack-qa-only gstack-cso
-  gstack-benchmark gstack-canary gstack-ship gstack-investigate gstack-design-review
-  gstack-devex-review gstack-health gstack-spec gstack-scrape gstack-document-generate
-  gstack-document-release gstack-context-save gstack-context-restore gstack-preos-handoff
-)
 require_cmd() { command -v "$1" >/dev/null 2>&1 || { echo "Missing required command: $1" >&2; exit 2; }; }
 run_checked() { label="$1"; shift; printf '==> %s\n' "$label"; "$@"; }
+suite_owned_skills() {
+  python - "$BLUEPRINT_ROOT" "$PREOS_ROOT" "$GSTACK_ROOT" <<'PY'
+import json
+import pathlib
+import sys
+roots = [(pathlib.Path(sys.argv[1]), False), (pathlib.Path(sys.argv[2]), False), (pathlib.Path(sys.argv[3]), True)]
+names = []
+for root, prefix_gstack in roots:
+    manifest = root / "CODEX-DISTRIBUTION.json"
+    if not manifest.is_file():
+        raise SystemExit(f"Missing distribution manifest: {manifest}")
+    data = json.loads(manifest.read_text(encoding="utf-8"))
+    for skill in data.get("skills", []):
+        name = skill.get("name")
+        if not name:
+            raise SystemExit(f"Malformed skill entry in {manifest}")
+        if prefix_gstack and not name.startswith("gstack"):
+            name = "gstack-" + name
+        names.append(name)
+if len(names) != len(set(names)):
+    raise SystemExit("Duplicate suite skill names after manifest derivation")
+for name in names:
+    print(name)
+PY
+}
+require_cmd python
+mapfile -t OWNED_SKILLS < <(suite_owned_skills)
+[ "${#OWNED_SKILLS[@]}" -eq 63 ] || { echo "Expected 63 suite-owned skills, derived ${#OWNED_SKILLS[@]}" >&2; exit 2; }
 lock_commit() {
   [ -f "$SUITE_LOCK" ] || return 0
   python - "$SUITE_LOCK" "$1" <<'PY'
@@ -70,7 +90,7 @@ ensure_repo() {
 run_doctor() {
   args=(--preos "$PREOS_ROOT" --gstack "$GSTACK_ROOT" --suite-lock "$SUITE_LOCK")
   [ "$SKIP_INSTALLED" -eq 1 ] && args+=(--skip-installed-skill-check)
-  "$BLUEPRINT_ROOT/scripts/suite-doctor.sh" "${args[@]}"
+  CODEX_HOME="$CODEX_HOME" CODEX_SKILL_ROOT="$SKILL_ROOT" CODEX_SKILLS_HOME="$SKILL_ROOT" "$BLUEPRINT_ROOT/scripts/suite-doctor.sh" "${args[@]}"
 }
 if [ "$MODE" = verify ]; then run_doctor; exit 0; fi
 if [ "$MODE" = update ] && [ "$ALLOW_UPDATE" -ne 1 ]; then
@@ -80,21 +100,37 @@ fi
 if [ "$MODE" = uninstall ]; then
   [ "$ALLOW_UPDATE" -eq 1 ] || { echo 'Mode uninstall requires --allow-update before installed files are removed.' >&2; exit 2; }
   mkdir -p "$SKILL_ROOT"
-  root_real="$(cd "$SKILL_ROOT" && pwd)"
+  root_real="$(cd "$SKILL_ROOT" && pwd -P)"
   for skill in "${OWNED_SKILLS[@]}"; do
     target="$SKILL_ROOT/$skill"
-    case "$(cd "$(dirname "$target")" 2>/dev/null && pwd)/$(basename "$target")" in
+    target_abs="$root_real/$skill"
+    case "$target_abs" in
       "$root_real"/*) [ -e "$target" ] && rm -rf "$target" ;;
       *) echo "Refusing to remove path outside skill root: $target" >&2; exit 2 ;;
     esac
   done
-  [ -d "$AGENT_ROOT" ] && find "$AGENT_ROOT" -maxdepth 1 -name 'vt_*.toml' -type f -delete
+  if [ -d "$AGENT_ROOT" ]; then
+    python - "$BLUEPRINT_ROOT/CODEX-DISTRIBUTION.json" "$AGENT_ROOT" <<'PY'
+import json, pathlib, sys
+manifest = json.loads(pathlib.Path(sys.argv[1]).read_text(encoding='utf-8'))
+agent_root = pathlib.Path(sys.argv[2])
+for agent in manifest.get('agents', []):
+    source = pathlib.PurePosixPath(agent.get('source_path', ''))
+    name = source.name
+    if name.startswith('vt_') and name.endswith('.toml'):
+        path = agent_root / name
+        if path.is_file():
+            path.unlink()
+PY
+  fi
   printf 'Suite uninstall: PASS\n'
   exit 0
 fi
 require_cmd git
-require_cmd python
 require_cmd bun
+export CODEX_HOME
+export CODEX_SKILL_ROOT="$SKILL_ROOT"
+export CODEX_SKILLS_HOME="$SKILL_ROOT"
 ensure_repo PREOS "$PREOS_ROOT" https://github.com/WilsonMisor/PREOS.git PREOS
 ensure_repo gstack "$GSTACK_ROOT" https://github.com/WilsonMisor/gstack.git gstack
 run_checked 'validate Blueprint' python "$BLUEPRINT_ROOT/scripts/validate_blueprint.py"

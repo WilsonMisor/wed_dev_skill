@@ -1,17 +1,20 @@
 $ErrorActionPreference = 'Stop'
+# Manifest-owned Blueprint skill: ai-product-delivery-blueprint
 $Root = Resolve-Path (Join-Path $PSScriptRoot '..')
 $CodexHome = if ($env:CODEX_HOME) { $env:CODEX_HOME } else { Join-Path $HOME '.codex' }
-$AgentsHome = if ($env:AGENTS_HOME) { $env:AGENTS_HOME } else { Join-Path $HOME '.agents' }
-$SkillRoot = if ($env:CODEX_SKILLS_HOME) { $env:CODEX_SKILLS_HOME } else { Join-Path $AgentsHome 'skills' }
+$SkillRoot = if ($env:CODEX_SKILL_ROOT) { $env:CODEX_SKILL_ROOT } elseif ($env:CODEX_SKILLS_HOME) { $env:CODEX_SKILLS_HOME } else { Join-Path $CodexHome 'skills' }
 $AgentRoot = Join-Path $CodexHome 'agents'
 $Dist = Join-Path $Root 'codex-distribution'
-$SkillName = 'ai-product-delivery-blueprint'
+$Manifest = Get-Content -LiteralPath (Join-Path $Root 'CODEX-DISTRIBUTION.json') -Raw | ConvertFrom-Json
+$Skills = @($Manifest.skills)
+if ($Skills.Count -ne 1 -or -not $Skills[0].name) { throw 'Blueprint CODEX-DISTRIBUTION.json must declare exactly one skill' }
+$SkillName = [string]$Skills[0].name
 
 if (-not (Test-Path (Join-Path $Dist 'skills'))) {
     & python (Join-Path $Root 'scripts\build_codex_distribution.py')
 }
 
-$SkillSource = Join-Path $Dist 'skills\ai-product-delivery-blueprint'
+$SkillSource = Join-Path $Dist ('skills\' + $SkillName)
 $AgentsSource = Join-Path $Dist 'agents'
 if (-not (Test-Path (Join-Path $SkillSource 'SKILL.md'))) { throw 'Blueprint distribution missing SKILL.md' }
 if (-not (Test-Path $AgentsSource)) { throw 'Blueprint distribution missing agents directory' }

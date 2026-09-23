@@ -1,18 +1,26 @@
 #!/usr/bin/env bash
+# Manifest-owned Blueprint skill: ai-product-delivery-blueprint
 set -euo pipefail
 ROOT=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 CODEX_HOME="${CODEX_HOME:-$HOME/.codex}"
-AGENTS_HOME="${AGENTS_HOME:-$HOME/.agents}"
-SKILL_ROOT="${CODEX_SKILLS_HOME:-$AGENTS_HOME/skills}"
+SKILL_ROOT="${CODEX_SKILL_ROOT:-${CODEX_SKILLS_HOME:-$CODEX_HOME/skills}}"
 AGENT_ROOT="$CODEX_HOME/agents"
 DIST="$ROOT/codex-distribution"
-SKILL_NAME=ai-product-delivery-blueprint
+SKILL_NAME=$(python - "$ROOT/CODEX-DISTRIBUTION.json" <<'PY'
+import json, pathlib, sys
+manifest = json.loads(pathlib.Path(sys.argv[1]).read_text(encoding='utf-8'))
+skills = manifest.get('skills', [])
+if len(skills) != 1 or not skills[0].get('name'):
+    raise SystemExit('Blueprint CODEX-DISTRIBUTION.json must declare exactly one skill')
+print(skills[0]['name'])
+PY
+)
 
 if [ ! -d "$DIST/skills" ]; then
   python "$ROOT/scripts/build_codex_distribution.py"
 fi
 
-SKILL_SOURCE="$DIST/skills/ai-product-delivery-blueprint"
+SKILL_SOURCE="$DIST/skills/$SKILL_NAME"
 AGENTS_SOURCE="$DIST/agents"
 [ -f "$SKILL_SOURCE/SKILL.md" ] || { echo 'Blueprint distribution missing SKILL.md' >&2; exit 2; }
 [ -d "$AGENTS_SOURCE" ] || { echo 'Blueprint distribution missing agents directory' >&2; exit 2; }
