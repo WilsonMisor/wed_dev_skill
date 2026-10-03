@@ -4,6 +4,7 @@ from pathlib import Path
 import re
 import subprocess
 import sys
+import tempfile
 
 ROOT = Path(__file__).resolve().parents[1]
 INDEX = ROOT / "references" / "INDEX.md"
@@ -23,7 +24,9 @@ SESSION_CONTINUITY = ROOT / "references" / "core" / "session-continuity.md"
 SOURCE_INTAKE_SCRIPT = ROOT / "scripts" / "source_intake.py"
 SOURCE_INTAKE_TEMPLATE = ROOT / "templates" / "source-intake-record.json"
 UPGRADE_RECONCILIATION = ROOT / "orchestration" / "upgrade-reconciliation.md"
-
+PASV2_AGENTS = ROOT / "scripts" / "pasv2_agents.py"
+PASV2_INVOCATIONS = ROOT / "scripts" / "evaluate_pasv2_invocations.py"
+PASV2_ADVANCED_DOC = ROOT / "docs" / "pasv2-suite-advanced.md"
 LEGACY_BASE_COMMIT = "aee7f8f7ba8e9e6d4af8dc681892e51bef411a7b"
 LEGACY_SKILL_BLOB = "74698dfa2c6fb631af5c1399cefaaaee9f0548c2"
 
@@ -277,14 +280,75 @@ def validate_legacy_wordpress() -> None:
     print("PASS: original WordPress references and legacy skill text are preserved against immutable pre-upgrade baseline")
 
 
+def validate_pasv2_docs() -> None:
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    doc = PASV2_ADVANCED_DOC.read_text(encoding="utf-8") if PASV2_ADVANCED_DOC.is_file() else ""
+    readme_tokens = [
+        "Integrated Suite Quick Start",
+        "Install the suite",
+        "$ai-product-delivery-blueprint",
+        "Let Blueprint classify",
+        "Approve only genuine human gates",
+    ]
+    for token in readme_tokens:
+        if token not in readme:
+            fail(f"README missing PAS v2 quick-start anchor: {token}")
+    doc_tokens = [
+        "PREOS Only",
+        "PREOS Stage",
+        "gstack Router",
+        "gstack Specialist",
+        "Task Packet",
+        "Recovery",
+        "Risk Model",
+        "Gate Evaluation",
+        "Suite Diagnostics",
+        "Install, Update, Repair, Uninstall",
+        "Rollback",
+        "Physical Separation vs Logical Suite",
+    ]
+    for token in doc_tokens:
+        if token not in doc:
+            fail(f"advanced PAS v2 doc missing section: {token}")
+    print("PASS: PAS v2 quick start and advanced suite documentation are present")
+
+def validate_pasv2_behavioral_tools() -> None:
+    for path in [PASV2_AGENTS, PASV2_INVOCATIONS]:
+        if not path.is_file():
+            fail(f"PAS v2 behavioral tool missing: {path.relative_to(ROOT)}")
+    invocation = subprocess.run([sys.executable, str(PASV2_INVOCATIONS), "--validate"], cwd=ROOT)
+    if invocation.returncode:
+        fail("PAS v2 invocation evaluation failed")
+    with tempfile.TemporaryDirectory(prefix="blueprint-agents-") as td:
+        repo = Path(td)
+        (repo / "AGENTS.md").write_text("# Existing\n\nPreserve me.\n", encoding="utf-8")
+        upsert = subprocess.run([sys.executable, str(PASV2_AGENTS), "--repo", str(repo)], cwd=ROOT)
+        if upsert.returncode:
+            fail("PAS v2 AGENTS updater failed")
+        check = subprocess.run([sys.executable, str(PASV2_AGENTS), "--repo", str(repo), "--check"], cwd=ROOT)
+        if check.returncode:
+            fail("PAS v2 AGENTS check failed after upsert")
+        text = (repo / "AGENTS.md").read_text(encoding="utf-8")
+        if "Preserve me." not in text or text.count("BEGIN MANAGED PASV2 BLUEPRINT ROUTING") != 1:
+            fail("PAS v2 AGENTS updater did not preserve user content with one managed block")
+        remove = subprocess.run([sys.executable, str(PASV2_AGENTS), "--repo", str(repo), "--remove"], cwd=ROOT)
+        if remove.returncode:
+            fail("PAS v2 AGENTS remove failed")
+        text = (repo / "AGENTS.md").read_text(encoding="utf-8")
+        if "Preserve me." not in text or "PAS / Blueprint Routing" in text:
+            fail("PAS v2 AGENTS remove touched unrelated content")
+    print("PASS: PAS v2 AGENTS updater and invocation evaluator execute against repository behavior")
+
 def main() -> None:
     validate_manifest()
     validate_skill_identity()
     validate_source_intake_and_continuity()
     validate_recommendation_coverage()
+    validate_pasv2_docs()
     result = subprocess.run([sys.executable, str(ROOT / "scripts" / "validate_virtual_team.py")], cwd=ROOT)
     if result.returncode:
         fail("virtual-team validation failed")
+    validate_pasv2_behavioral_tools()
     validate_legacy_wordpress()
     print("PASS: AI Product Delivery Blueprint + PREOS integration validation complete")
 

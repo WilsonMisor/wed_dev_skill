@@ -90,9 +90,22 @@ ensure_repo() {
 run_doctor() {
   args=(--preos "$PREOS_ROOT" --gstack "$GSTACK_ROOT" --suite-lock "$SUITE_LOCK")
   [ "$SKIP_INSTALLED" -eq 1 ] && args+=(--skip-installed-skill-check)
-  CODEX_HOME="$CODEX_HOME" CODEX_SKILL_ROOT="$SKILL_ROOT" CODEX_SKILLS_HOME="$SKILL_ROOT" "$BLUEPRINT_ROOT/scripts/suite-doctor.sh" "${args[@]}"
+  CODEX_HOME="$CODEX_HOME" CODEX_SKILL_ROOT="$SKILL_ROOT" CODEX_SKILLS_HOME="$SKILL_ROOT" bash "$BLUEPRINT_ROOT/scripts/suite-doctor.sh" "${args[@]}"
 }
 if [ "$MODE" = verify ]; then run_doctor; exit 0; fi
+blueprint_self_update() {
+  expected="$(lock_commit wed_dev_skill)"
+  if [ "$MODE" = update ] || [ "$MODE" = repair ]; then
+    [ "$ALLOW_UPDATE" -eq 1 ] || { echo "Mode $MODE requires --allow-update" >&2; exit 2; }
+    ! repo_dirty "$BLUEPRINT_ROOT" || { echo "Blueprint repository is dirty; refusing controlled self-update" >&2; exit 2; }
+    run_checked "fetch Blueprint" git -C "$BLUEPRINT_ROOT" fetch --all --tags
+    [ -z "$expected" ] || run_checked "checkout locked Blueprint" git -C "$BLUEPRINT_ROOT" checkout "$expected"
+  fi
+  if [ -n "$expected" ] && [ "$MODE" != install ]; then
+    actual="$(git -C "$BLUEPRINT_ROOT" rev-parse HEAD)"
+    [ "$actual" = "$expected" ] || { echo "Blueprint lock drift: expected $expected got $actual" >&2; exit 2; }
+  fi
+}
 if [ "$MODE" = update ] && [ "$ALLOW_UPDATE" -ne 1 ]; then
   echo 'Mode update requires --allow-update so suite drift cannot happen implicitly.' >&2
   exit 2
@@ -131,6 +144,7 @@ require_cmd bun
 export CODEX_HOME
 export CODEX_SKILL_ROOT="$SKILL_ROOT"
 export CODEX_SKILLS_HOME="$SKILL_ROOT"
+blueprint_self_update
 ensure_repo PREOS "$PREOS_ROOT" https://github.com/WilsonMisor/PREOS.git PREOS
 ensure_repo gstack "$GSTACK_ROOT" https://github.com/WilsonMisor/gstack.git gstack
 run_checked 'validate Blueprint' python "$BLUEPRINT_ROOT/scripts/validate_blueprint.py"
@@ -140,11 +154,11 @@ PYTHONPATH="$PREOS_ROOT/scripts" run_checked 'validate PREOS PAS v2 remediation 
 run_checked 'validate gstack PREOS integration' python "$GSTACK_ROOT/scripts/validate-preos-integration.py"
 run_checked 'validate gstack Codex contract applicability' python "$GSTACK_ROOT/scripts/validate-codex-project-contract-applicability.py"
 run_checked 'validate three-repo acceptance' python "$GSTACK_ROOT/scripts/validate-three-repo-acceptance.py" --blueprint "$BLUEPRINT_ROOT" --preos "$PREOS_ROOT" --gstack "$GSTACK_ROOT"
-run_checked 'install Blueprint for Codex' "$BLUEPRINT_ROOT/scripts/install-codex.sh"
-run_checked 'install PREOS for Codex' "$PREOS_ROOT/scripts/install-codex.sh"
+run_checked 'install Blueprint for Codex' bash "$BLUEPRINT_ROOT/scripts/install-codex.sh"
+run_checked 'install PREOS for Codex' bash "$PREOS_ROOT/scripts/install-codex.sh"
 if [ "$SKIP_GSTACK_SETUP" -eq 0 ]; then
-  [ -x "$GSTACK_ROOT/setup" ] || { echo 'gstack setup script is missing or not executable' >&2; exit 2; }
-  run_checked 'install gstack for Codex with namespaced prefix' "$GSTACK_ROOT/setup" --host codex --prefix
+  [ -f "$GSTACK_ROOT/setup" ] || { echo 'gstack setup script is missing' >&2; exit 2; }
+  run_checked 'install gstack for Codex with namespaced prefix' bash "$GSTACK_ROOT/setup" --host codex --prefix
 fi
 run_doctor
 printf 'Suite %s health: PASS\n' "$MODE"

@@ -7,6 +7,7 @@ This manifest is the completeness guard for the upgraded skill. The branch must 
 1. `SKILL.md`.
 2. `README.md`.
 3. `agents/openai.yaml`.
+4. `docs/pasv2-suite-advanced.md`.
 
 ## Core profile
 

@@ -83,6 +83,19 @@ function Ensure-Repo([string]$Name, [string]$PathText, [string]$Url, [string]$Co
         if ($Actual -ne $Expected -and $Mode -ne 'install') { throw ($Name + ' lock drift: expected ' + $Expected + ', got ' + $Actual) }
     }
 }
+function Ensure-BlueprintSelf {
+    $Expected = Get-LockCommit 'wed_dev_skill'
+    if ($Mode -eq 'update' -or $Mode -eq 'repair') {
+        if (-not $AllowUpdate) { throw ('Mode ' + $Mode + ' requires -AllowUpdate') }
+        if (Test-Dirty $BlueprintRoot) { throw 'Blueprint repository is dirty; refusing controlled self-update' }
+        Invoke-Checked 'fetch Blueprint' { & git -C $BlueprintRoot fetch --all --tags }
+        if ($Expected) { Invoke-Checked 'checkout locked Blueprint' { & git -C $BlueprintRoot checkout $Expected } }
+    }
+    if ($Expected -and $Mode -ne 'install') {
+        $Actual = (& git -C $BlueprintRoot rev-parse HEAD).Trim()
+        if ($Actual -ne $Expected) { throw ('Blueprint lock drift: expected ' + $Expected + ', got ' + $Actual) }
+    }
+}
 function Invoke-SuiteDoctor {
     $env:CODEX_HOME = $CodexHome
     $env:CODEX_SKILL_ROOT = $SkillRoot
@@ -131,6 +144,7 @@ Require-Command 'bun'
 $env:CODEX_HOME = $CodexHome
 $env:CODEX_SKILL_ROOT = $SkillRoot
 $env:CODEX_SKILLS_HOME = $SkillRoot
+Ensure-BlueprintSelf
 Ensure-Repo 'PREOS' $PreosPath 'https://github.com/WilsonMisor/PREOS.git' 'PREOS'
 Ensure-Repo 'gstack' $GstackPath 'https://github.com/WilsonMisor/gstack.git' 'gstack'
 $PreosRoot = Resolve-Path $PreosPath

@@ -28,6 +28,7 @@ SKILL_ITEMS = [
     "references",
     "schemas",
     "scripts",
+    "docs",
     "templates",
     "README.md",
 ]
