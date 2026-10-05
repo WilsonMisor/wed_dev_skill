@@ -48,7 +48,16 @@ function Get-SuiteOwnedSkills {
     if ($Names.Count -ne 63 -or $Unique.Count -ne 63) { throw ('Expected 63 unique suite-owned skills, derived ' + $Names.Count) }
     return $Names
 }
-$OwnedSkills = @(Get-SuiteOwnedSkills)
+function Get-OwnedSkillInventory {
+    if (Test-Path $SuiteLockPath) {
+        $Lock = Get-Content -LiteralPath $SuiteLockPath -Raw | ConvertFrom-Json
+        $Names = @($Lock.owned_skill_ids | ForEach-Object { [string]$_ })
+        $Unique = @($Names | Sort-Object -Unique)
+        if ($Names.Count -eq 63 -and $Unique.Count -eq 63) { return $Names }
+        throw ('Suite lock owned_skill_ids is not the complete 63-skill inventory')
+    }
+    return Get-SuiteOwnedSkills
+}
 function Get-LockCommit([string]$ComponentPath) {
     if (-not (Test-Path $SuiteLockPath)) { return $null }
     $Lock = Get-Content -LiteralPath $SuiteLockPath -Raw | ConvertFrom-Json
@@ -149,6 +158,7 @@ if ($Mode -eq 'uninstall') {
     New-Item -ItemType Directory -Force -Path $SkillRoot | Out-Null
     $ResolvedSkillRoot = [System.IO.Path]::GetFullPath($SkillRoot)
     $RootPrefix = $ResolvedSkillRoot.TrimEnd([System.IO.Path]::DirectorySeparatorChar, [System.IO.Path]::AltDirectorySeparatorChar) + [System.IO.Path]::DirectorySeparatorChar
+    $OwnedSkills = @(Get-OwnedSkillInventory)
     foreach ($Skill in $OwnedSkills) {
         $Target = Join-Path $SkillRoot $Skill
         $ResolvedTarget = [System.IO.Path]::GetFullPath($Target)
@@ -181,6 +191,7 @@ Ensure-Repo 'PREOS' $PreosPath 'https://github.com/WilsonMisor/PREOS.git' 'PREOS
 Ensure-Repo 'gstack' $GstackPath 'https://github.com/WilsonMisor/gstack.git' 'gstack'
 $PreosRoot = Resolve-Path $PreosPath
 $GstackRoot = Resolve-Path $GstackPath
+$OwnedSkills = @(Get-SuiteOwnedSkills)
 foreach ($Repo in @($BlueprintRoot, $PreosRoot, $GstackRoot)) {
     if (-not (Test-Path (Join-Path $Repo '.git'))) { throw ('Repository missing .git: ' + $Repo) }
     Invoke-Checked ('verify git repository ' + $Repo) { & git -C $Repo rev-parse HEAD | Out-Null }

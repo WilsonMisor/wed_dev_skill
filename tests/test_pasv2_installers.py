@@ -47,9 +47,11 @@ class PASV2InstallerTests(unittest.TestCase):
         self.assertTrue(ps1.is_file())
         self.assertTrue(sh.is_file())
         combined = ps1.read_text(encoding='utf-8') + sh.read_text(encoding='utf-8')
-        for token in ['validate-preos.py', 'validate-preos-integration.py', 'validate-three-repo-acceptance.py', 'Install-GstackCodexSkills', 'install_gstack_codex_skills', 'materialize gstack Codex distribution', 'install-codex', 'suite-doctor', 'install', 'verify', 'repair', 'update', 'uninstall', 'SUITE-LOCK.json', 'git clone', 'fetch --all --tags', 'repository is dirty', 'Blueprint repository is dirty; refusing controlled self-update', 'Ensure-BlueprintSelf', 'blueprint_self_update', 'CODEX_HOME/skills', 'CODEX-DISTRIBUTION.json', 'owned_skill_count', '63']:
+        for token in ['validate-preos.py', 'validate-preos-integration.py', 'validate-three-repo-acceptance.py', 'Install-GstackCodexSkills', 'install_gstack_codex_skills', 'materialize gstack Codex distribution', 'Get-OwnedSkillInventory', 'owned_skill_inventory', 'owned_skill_ids', 'install-codex', 'suite-doctor', 'install', 'verify', 'repair', 'update', 'uninstall', 'SUITE-LOCK.json', 'git clone', 'fetch --all --tags', 'repository is dirty', 'Blueprint repository is dirty; refusing controlled self-update', 'Ensure-BlueprintSelf', 'blueprint_self_update', 'CODEX_HOME/skills', 'CODEX-DISTRIBUTION.json', 'owned_skill_count', '63']:
             self.assertIn(token, combined)
         self.assertNotIn('--host codex --prefix', combined)
+        self.assertLess(ps1.read_text(encoding='utf-8').index("Ensure-Repo 'gstack'"), ps1.read_text(encoding='utf-8').index('$OwnedSkills = @(Get-SuiteOwnedSkills)'))
+        self.assertLess(sh.read_text(encoding='utf-8').index('ensure_repo gstack'), sh.read_text(encoding='utf-8').index('mapfile -t OWNED_SKILLS < <(suite_owned_skills)'))
 
 
     def test_posix_installer_invokes_non_executable_shell_scripts_with_bash_and_installs_gstack_natively(self):

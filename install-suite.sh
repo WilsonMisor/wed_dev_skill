@@ -54,8 +54,22 @@ for name in names:
 PY
 }
 require_cmd python
-mapfile -t OWNED_SKILLS < <(suite_owned_skills)
-[ "${#OWNED_SKILLS[@]}" -eq 63 ] || { echo "Expected 63 suite-owned skills, derived ${#OWNED_SKILLS[@]}" >&2; exit 2; }
+owned_skill_inventory() {
+  if [ -f "$SUITE_LOCK" ]; then
+    python - "$SUITE_LOCK" <<'PY'
+import json
+import sys
+lock = json.loads(open(sys.argv[1], encoding='utf-8').read())
+names = [str(name) for name in lock.get('owned_skill_ids', [])]
+if len(names) != 63 or len(set(names)) != 63:
+    raise SystemExit('Suite lock owned_skill_ids is not the complete 63-skill inventory')
+for name in names:
+    print(name)
+PY
+    return
+  fi
+  suite_owned_skills
+}
 lock_commit() {
   [ -f "$SUITE_LOCK" ] || return 0
   python - "$SUITE_LOCK" "$1" <<'PY'
@@ -150,6 +164,8 @@ fi
 if [ "$MODE" = uninstall ]; then
   [ "$ALLOW_UPDATE" -eq 1 ] || { echo 'Mode uninstall requires --allow-update before installed files are removed.' >&2; exit 2; }
   mkdir -p "$SKILL_ROOT"
+  mapfile -t OWNED_SKILLS < <(owned_skill_inventory)
+  [ "${#OWNED_SKILLS[@]}" -eq 63 ] || { echo "Expected 63 suite-owned skills, derived ${#OWNED_SKILLS[@]}" >&2; exit 2; }
   root_real="$(cd "$SKILL_ROOT" && pwd -P)"
   for skill in "${OWNED_SKILLS[@]}"; do
     target="$SKILL_ROOT/$skill"
@@ -184,6 +200,8 @@ export CODEX_SKILLS_HOME="$SKILL_ROOT"
 blueprint_self_update
 ensure_repo PREOS "$PREOS_ROOT" https://github.com/WilsonMisor/PREOS.git PREOS
 ensure_repo gstack "$GSTACK_ROOT" https://github.com/WilsonMisor/gstack.git gstack
+mapfile -t OWNED_SKILLS < <(suite_owned_skills)
+[ "${#OWNED_SKILLS[@]}" -eq 63 ] || { echo "Expected 63 suite-owned skills, derived ${#OWNED_SKILLS[@]}" >&2; exit 2; }
 run_checked 'validate Blueprint' python "$BLUEPRINT_ROOT/scripts/validate_blueprint.py"
 run_checked 'validate Blueprint source semantics' python "$BLUEPRINT_ROOT/scripts/validate_source_semantics.py"
 PYTHONPATH="$PREOS_ROOT/scripts" run_checked 'validate PREOS' python "$PREOS_ROOT/scripts/validate-preos.py"
