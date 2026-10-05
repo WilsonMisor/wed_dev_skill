@@ -53,4 +53,6 @@ commit=$(git -C "$ROOT" rev-parse --short HEAD)
 printf 'Installed Blueprint skill under %s\n' "$SKILL_ROOT"
 printf 'Installed Blueprint agents under %s\n' "$AGENT_ROOT"
 printf 'Blueprint commit %s\n' "$commit"
-[ -d "$BACKUP_ROOT" ] && printf 'Previous governed targets backed up under %s\n' "$BACKUP_ROOT"
+if [ -d "$BACKUP_ROOT" ]; then
+  printf 'Previous governed targets backed up under %s\n' "$BACKUP_ROOT"
+fi
