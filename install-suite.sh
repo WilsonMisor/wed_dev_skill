@@ -106,6 +106,43 @@ blueprint_self_update() {
     [ "$actual" = "$expected" ] || { echo "Blueprint lock drift: expected $expected got $actual" >&2; exit 2; }
   fi
 }
+install_gstack_codex_skills() {
+  run_checked 'materialize gstack Codex distribution' python "$GSTACK_ROOT/scripts/build_codex_distribution.py"
+  python - "$GSTACK_ROOT" "$SKILL_ROOT" "$CODEX_HOME" <<'PY'
+import json
+import pathlib
+import re
+import shutil
+import sys
+from datetime import datetime, timezone
+root = pathlib.Path(sys.argv[1])
+skill_root = pathlib.Path(sys.argv[2])
+codex_home = pathlib.Path(sys.argv[3])
+manifest = json.loads((root / 'CODEX-DISTRIBUTION.json').read_text(encoding='utf-8'))
+skill_root.mkdir(parents=True, exist_ok=True)
+backup_base = codex_home / 'framework-install-backups'
+for skill in manifest.get('skills', []):
+    source_name = skill.get('name')
+    if not source_name:
+        raise SystemExit('Malformed gstack skill entry')
+    target_name = source_name if source_name.startswith('gstack') else 'gstack-' + source_name
+    source = root / 'codex-distribution' / 'skills' / source_name
+    if not (source / 'SKILL.md').is_file():
+        raise SystemExit(f'gstack distribution missing skill: {source_name}')
+    target = skill_root / target_name
+    if target.exists():
+        stamp = datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')
+        backup = backup_base / f'suite-gstack-{stamp}'
+        backup.mkdir(parents=True, exist_ok=True)
+        shutil.move(str(target), str(backup / target.name))
+    shutil.copytree(source, target)
+    skill_file = target / 'SKILL.md'
+    text = skill_file.read_text(encoding='utf-8-sig')
+    text = re.sub(r'(?m)^name:\s*.+$', f'name: {target_name}', text, count=1)
+    skill_file.write_text(text, encoding='utf-8')
+print('Installed gstack Codex skills with namespaced prefix from CODEX-DISTRIBUTION.json')
+PY
+}
 if [ "$MODE" = update ] && [ "$ALLOW_UPDATE" -ne 1 ]; then
   echo 'Mode update requires --allow-update so suite drift cannot happen implicitly.' >&2
   exit 2
@@ -157,8 +194,7 @@ run_checked 'validate three-repo acceptance' python "$GSTACK_ROOT/scripts/valida
 run_checked 'install Blueprint for Codex' bash "$BLUEPRINT_ROOT/scripts/install-codex.sh"
 run_checked 'install PREOS for Codex' bash "$PREOS_ROOT/scripts/install-codex.sh"
 if [ "$SKIP_GSTACK_SETUP" -eq 0 ]; then
-  [ -f "$GSTACK_ROOT/setup" ] || { echo 'gstack setup script is missing' >&2; exit 2; }
-  run_checked 'install gstack for Codex with namespaced prefix' bash "$GSTACK_ROOT/setup" --host codex --prefix
+  install_gstack_codex_skills
 fi
 run_doctor
 printf 'Suite %s health: PASS\n' "$MODE"

@@ -47,16 +47,20 @@ class PASV2InstallerTests(unittest.TestCase):
         self.assertTrue(ps1.is_file())
         self.assertTrue(sh.is_file())
         combined = ps1.read_text(encoding='utf-8') + sh.read_text(encoding='utf-8')
-        for token in ['validate-preos.py', 'validate-preos-integration.py', 'validate-three-repo-acceptance.py', '--host codex --prefix', 'install-codex', 'suite-doctor', 'install', 'verify', 'repair', 'update', 'uninstall', 'SUITE-LOCK.json', 'git clone', 'fetch --all --tags', 'repository is dirty', 'Blueprint repository is dirty; refusing controlled self-update', 'Ensure-BlueprintSelf', 'blueprint_self_update', 'CODEX_HOME/skills', 'CODEX-DISTRIBUTION.json', 'owned_skill_count', '63']:
+        for token in ['validate-preos.py', 'validate-preos-integration.py', 'validate-three-repo-acceptance.py', 'Install-GstackCodexSkills', 'install_gstack_codex_skills', 'materialize gstack Codex distribution', 'install-codex', 'suite-doctor', 'install', 'verify', 'repair', 'update', 'uninstall', 'SUITE-LOCK.json', 'git clone', 'fetch --all --tags', 'repository is dirty', 'Blueprint repository is dirty; refusing controlled self-update', 'Ensure-BlueprintSelf', 'blueprint_self_update', 'CODEX_HOME/skills', 'CODEX-DISTRIBUTION.json', 'owned_skill_count', '63']:
             self.assertIn(token, combined)
+        self.assertNotIn('--host codex --prefix', combined)
 
 
-    def test_posix_installer_invokes_non_executable_shell_scripts_with_bash(self):
+    def test_posix_installer_invokes_non_executable_shell_scripts_with_bash_and_installs_gstack_natively(self):
         sh = (ROOT / 'install-suite.sh').read_text(encoding='utf-8')
         self.assertIn('bash "$BLUEPRINT_ROOT/scripts/suite-doctor.sh"', sh)
         self.assertIn('bash "$BLUEPRINT_ROOT/scripts/install-codex.sh"', sh)
         self.assertIn('bash "$PREOS_ROOT/scripts/install-codex.sh"', sh)
-        self.assertIn('bash "$GSTACK_ROOT/setup" --host codex --prefix', sh)
+        self.assertIn('install_gstack_codex_skills', sh)
+        self.assertIn('gstack-', sh)
+        self.assertIn('CODEX-DISTRIBUTION.json', sh)
+        self.assertNotIn('bash "$GSTACK_ROOT/setup"', sh)
         self.assertNotIn("run_checked 'install Blueprint for Codex' \"$BLUEPRINT_ROOT/scripts/install-codex.sh\"", sh)
 
     def test_suite_doctor_scripts_are_bounded_and_lock_aware(self):

@@ -17,6 +17,7 @@ if (-not $SuiteLockPath) { $SuiteLockPath = Join-Path $SuiteRoot 'SUITE-LOCK.jso
 $CodexHome = if ($env:CODEX_HOME) { $env:CODEX_HOME } else { Join-Path $HOME '.codex' }
 $SkillRoot = if ($env:CODEX_SKILL_ROOT) { $env:CODEX_SKILL_ROOT } elseif ($env:CODEX_SKILLS_HOME) { $env:CODEX_SKILLS_HOME } else { Join-Path $CodexHome 'skills' }
 $AgentRoot = Join-Path $CodexHome 'agents'
+
 function Require-Command([string]$Name) {
     if (-not (Get-Command $Name -ErrorAction SilentlyContinue)) { throw ('Missing required command: ' + $Name) }
 }
@@ -96,6 +97,36 @@ function Ensure-BlueprintSelf {
         if ($Actual -ne $Expected) { throw ('Blueprint lock drift: expected ' + $Expected + ', got ' + $Actual) }
     }
 }
+function Backup-SuitePath([string]$Path, [string]$Label) {
+    if (Test-Path $Path) {
+        $BackupRoot = Join-Path $CodexHome ('framework-install-backups\suite-' + $Label + '-' + (Get-Date -Format 'yyyyMMddTHHmmssZ'))
+        New-Item -ItemType Directory -Force -Path $BackupRoot | Out-Null
+        Move-Item -LiteralPath $Path -Destination (Join-Path $BackupRoot (Split-Path $Path -Leaf))
+    }
+}
+function Set-SkillFrontmatterName([string]$SkillPath, [string]$Name) {
+    $SkillFile = Join-Path $SkillPath 'SKILL.md'
+    if (-not (Test-Path $SkillFile)) { throw ('Installed gstack skill missing SKILL.md: ' + $Name) }
+    $SkillText = Get-Content -LiteralPath $SkillFile -Raw
+    $Updated = [regex]::Replace($SkillText, '(?m)^name:\s*.+$', ('name: ' + $Name), 1)
+    [System.IO.File]::WriteAllText((Resolve-Path $SkillFile).Path, $Updated, [System.Text.UTF8Encoding]::new($false))
+}
+function Install-GstackCodexSkills {
+    Invoke-Checked 'materialize gstack Codex distribution' { & python (Join-Path $GstackRoot 'scripts\build_codex_distribution.py') }
+    $ManifestPath = Join-Path $GstackRoot 'CODEX-DISTRIBUTION.json'
+    $Manifest = Get-Content -LiteralPath $ManifestPath -Raw | ConvertFrom-Json
+    foreach ($Skill in @($Manifest.skills)) {
+        $SourceName = [string]$Skill.name
+        $TargetName = if ($SourceName.StartsWith('gstack')) { $SourceName } else { 'gstack-' + $SourceName }
+        $Source = Join-Path $GstackRoot ('codex-distribution\skills\' + $SourceName)
+        if (-not (Test-Path (Join-Path $Source 'SKILL.md'))) { throw ('gstack distribution missing skill: ' + $SourceName) }
+        $Target = Join-Path $SkillRoot $TargetName
+        Backup-SuitePath $Target 'gstack'
+        Copy-Item -Recurse -Force $Source $Target
+        Set-SkillFrontmatterName $Target $TargetName
+    }
+    Write-Output 'Installed gstack Codex skills with namespaced prefix from CODEX-DISTRIBUTION.json'
+}
 function Invoke-SuiteDoctor {
     $env:CODEX_HOME = $CodexHome
     $env:CODEX_SKILL_ROOT = $SkillRoot
@@ -105,6 +136,7 @@ function Invoke-SuiteDoctor {
     & powershell @Args
     if ($LASTEXITCODE -ne 0) { throw 'suite doctor failed' }
 }
+
 if ($Mode -eq 'verify') {
     Invoke-SuiteDoctor
     return
@@ -164,10 +196,7 @@ Invoke-Checked 'validate three-repo acceptance' { & python (Join-Path $GstackRoo
 Invoke-Checked 'install Blueprint for Codex' { & (Join-Path $BlueprintRoot 'scripts\install-codex.ps1') }
 Invoke-Checked 'install PREOS for Codex' { & (Join-Path $PreosRoot 'scripts\install-codex.ps1') }
 if (-not $SkipGstackSetup) {
-    $Setup = Join-Path $GstackRoot 'setup'
-    if (-not (Test-Path $Setup)) { throw 'gstack setup script is missing' }
-    Require-Command 'bash'
-    Invoke-Checked 'install gstack for Codex with namespaced prefix' { & bash $Setup --host codex --prefix }
+    Install-GstackCodexSkills
 }
 Invoke-SuiteDoctor
 Write-Output ('Suite ' + $Mode + ' health: PASS')
