@@ -41,6 +41,7 @@ class PASV2InstallerTests(unittest.TestCase):
         self.assertIn('Move-Item', ps1_text)
         self.assertIn('mv ', sh_text)
         self.assertIn('if [ -d "$BACKUP_ROOT" ]; then', sh_text)
+        self.assertIn("tr -d '\\r'", sh_text)
         self.assertNotIn('[ -d "$BACKUP_ROOT" ] && printf', sh_text)
 
     def test_suite_installer_routes_all_three_repositories(self):

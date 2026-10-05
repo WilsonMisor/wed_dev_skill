@@ -6,7 +6,7 @@ CODEX_HOME="${CODEX_HOME:-$HOME/.codex}"
 SKILL_ROOT="${CODEX_SKILL_ROOT:-${CODEX_SKILLS_HOME:-$CODEX_HOME/skills}}"
 AGENT_ROOT="$CODEX_HOME/agents"
 DIST="$ROOT/codex-distribution"
-SKILL_NAME=$(python - "$ROOT/CODEX-DISTRIBUTION.json" <<'PY'
+SKILL_NAME=$(python - "$ROOT/CODEX-DISTRIBUTION.json" <<'PY' | tr -d '\r'
 import json, pathlib, sys
 manifest = json.loads(pathlib.Path(sys.argv[1]).read_text(encoding='utf-8'))
 skills = manifest.get('skills', [])

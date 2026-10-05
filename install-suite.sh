@@ -29,7 +29,7 @@ case "$MODE" in install|verify|repair|update|uninstall) ;; *) exit 2 ;; esac
 require_cmd() { command -v "$1" >/dev/null 2>&1 || { echo "Missing required command: $1" >&2; exit 2; }; }
 run_checked() { label="$1"; shift; printf '==> %s\n' "$label"; "$@"; }
 suite_owned_skills() {
-  python - "$BLUEPRINT_ROOT" "$PREOS_ROOT" "$GSTACK_ROOT" <<'PY'
+  python - "$BLUEPRINT_ROOT" "$PREOS_ROOT" "$GSTACK_ROOT" <<'PY' | tr -d '\r'
 import json
 import pathlib
 import sys
@@ -56,7 +56,7 @@ PY
 require_cmd python
 owned_skill_inventory() {
   if [ -f "$SUITE_LOCK" ]; then
-    python - "$SUITE_LOCK" <<'PY'
+    python - "$SUITE_LOCK" <<'PY' | tr -d '\r'
 import json
 import sys
 lock = json.loads(open(sys.argv[1], encoding='utf-8').read())
@@ -72,7 +72,7 @@ PY
 }
 lock_commit() {
   [ -f "$SUITE_LOCK" ] || return 0
-  python - "$SUITE_LOCK" "$1" <<'PY'
+  python - "$SUITE_LOCK" "$1" <<'PY' | tr -d '\r'
 import json, sys
 lock=json.loads(open(sys.argv[1], encoding='utf-8').read())
 name=sys.argv[2]
