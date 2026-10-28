@@ -1,0 +1,53 @@
+{
+  "schema_version": "pasv2-routing-v1",
+  "default_route": "clarify-scope",
+  "routes": [
+    {
+      "id": "documentation",
+      "match_any": ["\\b(fix|correct|change|edit)\\b.*\\b(readme|documentation)\\b.*\\b(typo|spelling)\\b", "\\b(fix|correct)\\b.*\\b(typo|spelling)\\b.*\\breadme\\b"],
+      "exclude_any": ["\\b(deploy|billing|payment|auth|code|implement)\\b"],
+      "route": "minimal-codex", "kind": "low-risk-minimal", "preos_required": false,
+      "metadata": {"path": "orchestration/codex-routing.md", "heading": "Before implementation"},
+      "rationale": "A bounded documentation correction needs no catalogue load or specialist escalation."
+    },
+    {
+      "id": "new-product",
+      "match_any": ["\\b(build|create|start)\\b.*\\b(saas|app|product)\\b"],
+      "route": "ai-product-delivery-blueprint", "kind": "blueprint-governed-start", "preos_required": true,
+      "metadata": {"path": "orchestration/preos-routing.md", "heading": "Responsibility model"},
+      "rationale": "Substantial product work starts with Blueprint classification and approved baselines."
+    },
+    {
+      "id": "production-assurance",
+      "match_any": ["\\b(review|assess|check)\\b.*\\bproduction risk\\b", "\\brisk on this branch\\b"],
+      "route": "preos-risk-model", "kind": "preos-assurance", "preos_required": true,
+      "metadata": {"path": "orchestration/preos-routing.md", "heading": "Risk Pass A: product and classification", "route_token": "preos-risk-model"},
+      "rationale": "Production risk review uses PREOS evidence and control selection."
+    },
+    {
+      "id": "security",
+      "match_any": ["\\b(run|perform|do)\\b.*\\bsecurity audit\\b", "\\b(make|check|audit|assess)\\b.*\\b(app|application|system|branch)\\b.*\\b(secure|security|vulnerabilit)"],
+      "exclude_any": ["\\b(explain|define|document|readme|typo|spelling)\\b"],
+      "route": "gstack-cso", "kind": "governed-gstack-specialist", "preos_required": true, "gstack_route": "gstack-cso",
+      "requires_production_context": true, "context_fallback": "preos-risk-model",
+      "metadata": {"path": "orchestration/gstack-routing.md", "route_token": "gstack-cso"},
+      "rationale": "A requested security review uses the named specialist within the PREOS project boundary."
+    },
+    {
+      "id": "staging-qa",
+      "match_any": ["\\b(qa|test|check)\\b.*\\bstaging\\b.*\\b(url|https?)\\b"],
+      "exclude_any": ["\\b(explain|define|document|readme|typo)\\b"],
+      "route": "gstack-qa", "kind": "gstack-qa", "preos_required": false, "gstack_route": "gstack-qa",
+      "metadata": {"path": "orchestration/gstack-routing.md", "route_token": "gstack-qa"},
+      "rationale": "Direct narrow staging QA is allowed; its findings do not authorize release."
+    },
+    {
+      "id": "task-packet",
+      "match_any": ["\\b(implement|execute)\\b.*\\btask packet\\b"],
+      "route": "blueprint-preos-codex-task-packet", "kind": "bounded-implementation", "preos_required": true, "gstack_route": "gstack-review",
+      "requires_approved_packet": true,
+      "metadata": {"path": "orchestration/codex-routing.md", "heading": "Before implementation"},
+      "rationale": "Select the packet workflow; inspect durable scoped approval before implementation."
+    }
+  ]
+}

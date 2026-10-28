@@ -11,15 +11,16 @@ BEGIN = "<!-- BEGIN MANAGED PASV2 BLUEPRINT ROUTING -->"
 END = "<!-- END MANAGED PASV2 BLUEPRINT ROUTING -->"
 
 ROUTING_RULES = [
-    "Blueprint owns project lifecycle classification, approved baselines, profile routing, and change control.",
-    "Substantial production-relevant work routes through PREOS for risk, economics, evolution, evidence, and gate evaluation.",
-    "gstack is specialist review and QA evidence only; it cannot approve risk, change the Blueprint baseline, or authorize release.",
-    "Codex implements only the approved AI Task Packet scope and must stop on unbounded scope, stale source truth, or conflicting instructions.",
-    "UNKNOWN, RED, unresolved HUMAN REVIEW, stale evidence, or missing authority fails closed for the affected production path.",
-    "Accountable humans, not AI roles, accept consequential risk, waive material controls, and authorize production release.",
-    "Project truth belongs in the application repository under `.ai-product-delivery/`; PREOS runtime state belongs under `PREOS_STATE_ROOT`.",
-    "Do not deploy or mutate production data unless `PRODUCTION_RELEASE_AUTHORITY` is explicitly and durably approved.",
+    "Substantial product work routes to Blueprint for lifecycle classification, approved baselines, profile routing, and change control.",
+    "Production assurance routes through PREOS for risk, economics, evolution, evidence, and gate evaluation.",
+    "gstack provides specialist execution, review, and QA evidence; specialist results do not grant risk acceptance or release authority.",
+    "Implementation uses approved AI Task Packets and stays within their approved scope and current source bindings.",
+    "Blueprint/PREOS gates cannot be bypassed; UNKNOWN, RED, unresolved HUMAN REVIEW, stale evidence, or missing authority blocks the affected production path.",
+    "Direct specialist invocation is allowed for narrow tasks; it does not waive applicable Blueprint/PREOS gates.",
+    "Conversation memory is not authoritative project state. Read the application repository's `.ai-product-delivery/` artifacts and PREOS_STATE_ROOT recovery state.",
+    "Irreversible operations require appropriate accountable human authority; production release requires durable PRODUCTION_RELEASE_AUTHORITY.",
 ]
+OWNED_NEWLINE = "<!-- PASV2 owns the newline immediately after its end marker. -->"
 
 
 def managed_block() -> str:
@@ -31,32 +32,40 @@ def managed_block() -> str:
         "",
     ]
     lines.extend(f"{idx}. {rule}" for idx, rule in enumerate(ROUTING_RULES, start=1))
-    lines.extend(["", END])
-    return "\n".join(lines)
+    lines.extend(["", OWNED_NEWLINE, END])
+    return "\n".join(lines) + "\n"
 
 
 def _find_block(text: str) -> tuple[int, int] | None:
-    start = text.find(BEGIN)
-    if start == -1:
+    starts, ends = text.count(BEGIN), text.count(END)
+    if starts == ends == 0:
         return None
+    if starts != 1 or ends != 1:
+        raise ValueError("AGENTS.md must contain exactly one complete managed block or no markers")
+    start = text.find(BEGIN)
     end = text.find(END, start)
     if end == -1:
         raise ValueError("AGENTS.md contains PAS routing block start marker without end marker")
-    return start, end + len(END)
+    stop = end + len(END)
+    if OWNED_NEWLINE in text[start:end]:
+        if text[stop:stop+2] == "\r\n":
+            stop += 2
+        elif text[stop:stop+1] == "\n":
+            stop += 1
+    return start, stop
 
 
 def upsert_text(text: str) -> tuple[str, bool]:
-    block = managed_block()
+    newline = "\r\n" if "\r\n" in text else "\n"
+    block = managed_block().replace("\n", newline)
     found = _find_block(text)
     if found:
         start, end = found
-        prefix = text[:start].rstrip()
-        suffix = text[end:].lstrip("\r\n")
-        pieces = [piece for piece in (prefix, block, suffix.rstrip()) if piece]
-        updated = "\n\n".join(pieces) + "\n"
+        updated = text[:start] + block + text[end:]
     else:
-        base = text.rstrip()
-        updated = (base + "\n\n" if base else "") + block + "\n"
+        # Prepend so a missing trailing newline in user content is never edited.
+        offset = 1 if text.startswith("\ufeff") else 0
+        updated = text[:offset] + block + text[offset:]
     return updated, updated != text
 
 
@@ -65,11 +74,7 @@ def remove_text(text: str) -> tuple[str, bool]:
     if not found:
         return text, False
     start, end = found
-    prefix = text[:start].rstrip()
-    suffix = text[end:].lstrip("\r\n").rstrip()
-    updated = "\n\n".join(piece for piece in (prefix, suffix) if piece)
-    if updated:
-        updated += "\n"
+    updated = text[:start] + text[end:]
     return updated, updated != text
 
 
@@ -79,12 +84,12 @@ def block_count(text: str) -> int:
 
 def apply_agents(repo: Path, *, remove: bool = False, dry_run: bool = False) -> dict:
     path = repo / "AGENTS.md"
-    original = path.read_text(encoding="utf-8") if path.exists() else ""
+    original = path.read_bytes().decode("utf-8") if path.exists() else ""
     updated, changed = remove_text(original) if remove else upsert_text(original)
     if block_count(updated) > 1:
         raise ValueError("managed PAS routing block would be duplicated")
     if changed and not dry_run:
-        path.write_text(updated, encoding="utf-8")
+        path.write_bytes(updated.encode("utf-8"))
     return {
         "path": str(path),
         "changed": changed,
@@ -97,7 +102,7 @@ def apply_agents(repo: Path, *, remove: bool = False, dry_run: bool = False) -> 
 
 def diff_agents(repo: Path, *, remove: bool = False) -> str:
     path = repo / "AGENTS.md"
-    original = path.read_text(encoding="utf-8") if path.exists() else ""
+    original = path.read_bytes().decode("utf-8") if path.exists() else ""
     updated, _changed = remove_text(original) if remove else upsert_text(original)
     return "".join(
         difflib.unified_diff(
@@ -111,9 +116,11 @@ def diff_agents(repo: Path, *, remove: bool = False) -> str:
 
 def check_agents(repo: Path) -> dict:
     path = repo / "AGENTS.md"
-    text = path.read_text(encoding="utf-8") if path.exists() else ""
+    text = path.read_bytes().decode("utf-8") if path.exists() else ""
     count = block_count(text)
-    rules_present = all(rule in text for rule in ROUTING_RULES)
+    found = _find_block(text)
+    block = text[slice(*found)] if found else ""
+    rules_present = all(rule in block for rule in ROUTING_RULES)
     return {
         "path": str(path),
         "exists": path.exists(),

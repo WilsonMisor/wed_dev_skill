@@ -1,135 +1,116 @@
 #!/usr/bin/env python3
-"""Evaluate PAS v2 representative invocation routing against Blueprint metadata."""
-from __future__ import annotations
+"""Route invocations using the versioned metadata shipped to Codex.
 
+Routing chooses a workflow. It never grants task, exception or release authority.
+"""
+from __future__ import annotations
 import argparse
+import hashlib
 import json
 import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-
-GSTACK_ROUTES = ROOT / "orchestration" / "gstack-routing.md"
-PREOS_ROUTES = ROOT / "orchestration" / "preos-routing.md"
-CODEX_ROUTES = ROOT / "orchestration" / "codex-routing.md"
+ROUTES = ROOT / 'orchestration/pasv2-invocation-routes.json'
 
 
-def _contains_route(route: str) -> bool:
-    corpus = "\n".join(path.read_text(encoding="utf-8") for path in [GSTACK_ROUTES, PREOS_ROUTES, CODEX_ROUTES] if path.is_file())
-    return route in corpus
+def load_routes(path=ROUTES, root=ROOT):
+    raw = Path(path).read_bytes()
+    data = json.loads(raw)
+    if data.get('schema_version') != 'pasv2-routing-v1':
+        raise ValueError('unsupported invocation routing contract')
+    identities = set()
+    for row in data['routes']:
+        if row['id'] in identities or not row.get('match_any'):
+            raise ValueError('duplicate or unmatchable route')
+        identities.add(row['id'])
+        metadata = row['metadata']
+        target = (Path(root)/metadata['path']).resolve()
+        if not target.is_relative_to(Path(root).resolve()) or not target.is_file():
+            raise ValueError('route metadata artifact is unavailable')
+        content = target.read_text(encoding='utf-8')
+        if metadata.get('heading') and not re.search(r'^#{1,6} '+re.escape(metadata['heading'])+r'\s*$',content,re.M):
+            raise ValueError('route metadata heading does not resolve')
+        if metadata.get('route_token') and not re.search(r'(?<![\w-])'+re.escape(metadata['route_token'])+r'(?![\w-])',content):
+            raise ValueError('specialist route is unavailable in the routing contract')
+        for pattern in row['match_any'] + row.get('exclude_any',[]):
+            re.compile(pattern)
+    return data, hashlib.sha256(raw).hexdigest()
 
 
-def evaluate_invocation(prompt: str, *, approved_packet: bool = False, production_context: bool = True) -> dict:
-    text = prompt.lower()
-    route = {
-        "prompt": prompt,
-        "selected_route": "direct",
-        "route_kind": "direct",
-        "authority": "no production authority granted",
-        "preos_required": False,
-        "gstack_route": None,
-        "bounded": True,
-        "rationale": "No production-relevant delivery route matched.",
-    }
-
-    if re.search(r"\bbuild\b.*\bsaas\b|\bnew saas app\b", text):
-        route.update(
-            selected_route="ai-product-delivery-blueprint",
-            route_kind="blueprint-governed-start",
-            preos_required=True,
-            rationale="New SaaS work starts with Blueprint classification and Project Contract creation before implementation.",
-        )
-    elif "production risk" in text or "risk on this branch" in text:
-        route.update(
-            selected_route="preos-risk-model",
-            route_kind="preos-assurance",
-            preos_required=True,
-            rationale="Branch production-risk review is a PREOS risk/evidence/gate pass.",
-        )
-    elif "security audit" in text or "threat" in text or "vulnerability" in text or "secure" in text:
-        selected = "gstack-cso" if production_context else "preos-risk-model"
-        route.update(
-            selected_route=selected,
-            route_kind="governed-gstack-specialist" if production_context else "preos-assurance",
-            preos_required=True,
-            gstack_route="gstack-cso" if production_context else None,
-            rationale="Security audit routes through governed PREOS context to the gstack CSO specialist when project context is available.",
-        )
-    elif "qa" in text and ("staging" in text or "url" in text):
-        route.update(
-            selected_route="gstack-qa",
-            route_kind="gstack-qa",
-            preos_required=False,
-            gstack_route="gstack-qa",
-            rationale="Staging URL QA is a gstack browser QA route; findings return as evidence and do not approve release.",
-        )
-    elif approved_packet or ("approved" in text and "billing" in text and "packet" in text):
-        route.update(
-            selected_route="blueprint-preos-codex-task-packet",
-            route_kind="approved-implementation",
-            preos_required=True,
-            gstack_route="gstack-review",
-            rationale="Approved billing implementation remains bounded to the AI Task Packet with PREOS controls and post-implementation review.",
-        )
-    elif "readme" in text and ("typo" in text or "fix" in text or "spelling" in text):
-        route.update(
-            selected_route="minimal-codex",
-            route_kind="low-risk-minimal",
-            preos_required=False,
-            gstack_route=None,
-            rationale="A trivial documentation typo should not trigger full PREOS or expensive specialist review.",
-        )
-    return route
+def evaluate_invocation(prompt, *, approved_packet=False, production_context=True, routes_path=ROUTES, root=ROOT):
+    # This compatibility flag is inert. Neither a caller boolean nor the word
+    # approved supplies a durable authority artifact.
+    data, digest = load_routes(routes_path, root)
+    text = prompt.casefold()
+    result = {'prompt':prompt,'selected_route':data['default_route'],'route_kind':'scope-unclassified',
+              'authority':'no production authority granted','preos_required':False,
+              'gstack_route':None,'bounded':False,'implementation_authorized':False,
+              'prerequisites':['Classify scope before taking consequential action.'],
+              'rationale':'No unambiguous executable intent matched the routing contract.',
+              'routing_version':data['schema_version'],'routing_sha256':digest,'matched_rule':None}
+    for row in data['routes']:
+        if not any(re.search(p,text) for p in row['match_any']):
+            continue
+        if any(re.search(p,text) for p in row.get('exclude_any',[])):
+            continue
+        selected = row['route']
+        specialist = row.get('gstack_route')
+        prerequisites = []
+        if row.get('requires_production_context') and not production_context:
+            selected = row['context_fallback']
+            specialist = None
+            prerequisites.append('Bind the Project Contract before specialist execution.')
+        if row.get('requires_approved_packet'):
+            prerequisites.append('Load the approved AI Task Packet and verify its current source hashes and durable scoped human approval through PREOS before implementation.')
+        result.update(selected_route=selected,route_kind=row['kind'],preos_required=row['preos_required'],
+                      gstack_route=specialist,bounded=True,rationale=row['rationale'],
+                      prerequisites=prerequisites,matched_rule=row['id'])
+        return result
+    return result
 
 
 REPRESENTATIVE_CASES = [
-    ("Build a new SaaS app.", "ai-product-delivery-blueprint"),
-    ("Review production risk on this branch.", "preos-risk-model"),
-    ("Run security audit.", "gstack-cso"),
-    ("QA this staging URL.", "gstack-qa"),
-    ("Implement the approved billing task packet.", "blueprint-preos-codex-task-packet"),
-    ("Fix README typo.", "minimal-codex"),
+    ('Build a new SaaS app.','ai-product-delivery-blueprint'),
+    ('Review production risk on this branch.','preos-risk-model'),
+    ('Run security audit.','gstack-cso'),
+    ('QA this staging URL.','gstack-qa'),
+    ('Implement the approved billing task packet.','blueprint-preos-codex-task-packet'),
+    ('Fix README typo.','minimal-codex'),
 ]
 
 
-def validate() -> dict:
-    missing_routes = [route for route in ["preos-risk-model", "gstack-cso", "gstack-qa", "gstack-review"] if not _contains_route(route)]
-    if missing_routes:
-        raise SystemExit("missing route metadata: " + ", ".join(missing_routes))
+def validate():
     results = []
-    failures = []
     for prompt, expected in REPRESENTATIVE_CASES:
-        observed = evaluate_invocation(prompt, approved_packet="billing task packet" in prompt.lower())
-        results.append({"prompt": prompt, "expected": expected, "observed": observed["selected_route"], "route": observed})
-        if observed["selected_route"] != expected:
-            failures.append(f"{prompt!r}: expected {expected}, got {observed['selected_route']}")
-    implicit = evaluate_invocation("Can you make this app secure before launch?")
-    if implicit["selected_route"] != "gstack-cso" or not implicit["preos_required"]:
-        failures.append("implicit security invocation did not route through governed gstack CSO path")
-    typo = evaluate_invocation("Please fix the spelling typo in README")
-    if typo["preos_required"] or typo["gstack_route"]:
-        failures.append("low-risk README typo triggered unnecessary PREOS/gstack route")
-    if failures:
-        raise SystemExit("\n".join(failures))
-    return {"case_count": len(REPRESENTATIVE_CASES), "implicit_checks": 2, "results": results}
+        observed = evaluate_invocation(prompt)
+        if observed['selected_route'] != expected:
+            raise ValueError(f'{prompt}: expected {expected}, got {observed["selected_route"]}')
+        results.append({'prompt':prompt,'expected':expected,'observed':observed['selected_route'],'route':observed})
+    cases = [('Can you make this app secure before launch?','gstack-cso'),
+             ('Please fix the spelling typo in README','minimal-codex'),
+             ('Explain vulnerability terminology.','clarify-scope'),
+             ('Document QA staging URL usage.','clarify-scope')]
+    for prompt, expected in cases:
+        if evaluate_invocation(prompt)['selected_route'] != expected:
+            raise ValueError('implicit invocation discrimination failed: '+prompt)
+    return {'case_count':len(results),'implicit_checks':len(cases),'results':results}
 
 
-def main() -> int:
-    parser = argparse.ArgumentParser()
-    parser.add_argument("prompt", nargs="*")
-    parser.add_argument("--approved-packet", action="store_true")
-    parser.add_argument("--no-production-context", action="store_true")
-    parser.add_argument("--validate", action="store_true")
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('prompt',nargs='*')
+    parser.add_argument('--no-production-context',action='store_true')
+    parser.add_argument('--validate',action='store_true')
     args = parser.parse_args()
     if args.validate:
-        print(json.dumps(validate(), indent=2))
-        return 0
-    prompt = " ".join(args.prompt).strip()
-    if not prompt:
-        raise SystemExit("prompt is required unless --validate is used")
-    print(json.dumps(evaluate_invocation(prompt, approved_packet=args.approved_packet, production_context=not args.no_production_context), indent=2))
-    return 0
+        result = validate()
+    else:
+        if not args.prompt:
+            parser.error('a prompt is required unless --validate is used')
+        result = evaluate_invocation(' '.join(args.prompt),production_context=not args.no_production_context)
+    print(json.dumps(result,indent=2))
 
 
-if __name__ == "__main__":
-    raise SystemExit(main())
+if __name__ == '__main__':
+    main()

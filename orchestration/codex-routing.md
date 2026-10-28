@@ -2,6 +2,17 @@
 
 Codex is the primary implementation engine under this blueprint.
 
+## Invocation routing contract
+
+Use `pasv2-invocation-routes.json` as the versioned routing metadata. Run
+`python scripts/evaluate_pasv2_invocations.py "<request>"` to compute the route,
+and `--validate` to evaluate the six representative prompts. The evaluator reads
+this metadata and resolves its governance references on every call. An unknown
+scope returns `clarify-scope`; selecting the task-packet route requires checking
+the durable approval and source bindings before implementation. Prompt text and
+caller flags never supply authority. Narrow specialist work may use a direct
+route while retaining applicable gates.
+
 ## Responsibility boundary
 
 The application repository is the execution surface for product code and project specific artifacts. The AI Product Delivery Blueprint remains the governance source, and gstack remains a specialist tool or skill installation when used.
