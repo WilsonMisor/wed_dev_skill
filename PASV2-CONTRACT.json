@@ -1,0 +1,16 @@
+{
+  "schema_version": "pasv2-component-contract-v1",
+  "compatibility_version": "pasv2-implementation-first-v1",
+  "component": "blueprint",
+  "interfaces": [
+    "scripts/classify_pasv2_project.py::classify_project",
+    "scripts/evaluate_pasv2_invocations.py::evaluate_invocation",
+    "scripts/pasv2_acceptance.py::evaluate_high_assurance",
+    "scripts/pasv2_agents.py::apply_agents"
+  ],
+  "authority_boundary": {
+    "PREOS_MODEL2_CROSSWALK_APPROVAL": "OPEN",
+    "GSTACK_WINDOWS_BROAD_SUITE_BACKLOG_DISPOSITION": "OPEN",
+    "PRODUCTION_RELEASE_AUTHORITY": "OPEN"
+  }
+}
