@@ -116,7 +116,16 @@ function Backup-SuitePath([string]$Path, [string]$Label) {
         if (-not $ResolvedTarget.StartsWith($AllowedPrefix, [System.StringComparison]::OrdinalIgnoreCase)) { throw 'Backup target escapes suite skill root' }
         $BackupRoot = Join-Path $CodexHome ('framework-install-backups\suite-' + $Label + '-' + (Get-Date -Format 'yyyyMMddTHHmmssZ'))
         New-Item -ItemType Directory -Force -Path $BackupRoot | Out-Null
-        Move-Item -LiteralPath $Path -Destination (Join-Path $BackupRoot (Split-Path $Path -Leaf))
+        $BackupTarget = Join-Path $BackupRoot (Split-Path $Path -Leaf)
+        try {
+            Move-Item -LiteralPath $Path -Destination $BackupTarget -ErrorAction Stop
+        } catch [System.IO.IOException] {
+            # Windows editors and shells can hold a directory handle without
+            # locking its files. Preserve a complete backup before updating it.
+            if (Test-Path $BackupTarget) { throw }
+            Copy-Item -LiteralPath $Path -Destination $BackupTarget -Recurse -Force -ErrorAction Stop
+            Write-Output ('Retained open installation directory; copied backup to ' + $BackupTarget)
+        }
     }
 }
 function Set-SkillFrontmatterName([string]$SkillPath, [string]$Name) {
@@ -137,7 +146,13 @@ function Install-GstackCodexSkills {
         if (-not (Test-Path (Join-Path $Source 'SKILL.md'))) { throw ('gstack distribution missing skill: ' + $SourceName) }
         $Target = Join-Path $SkillRoot $TargetName
         Backup-SuitePath $Target 'gstack'
-        Copy-Item -Recurse -Force $Source $Target
+        if (Test-Path $Target) {
+            Get-ChildItem -LiteralPath $Source -Force | ForEach-Object {
+                Copy-Item -LiteralPath $_.FullName -Destination $Target -Recurse -Force -ErrorAction Stop
+            }
+        } else {
+            Copy-Item -Recurse -Force $Source $Target
+        }
         Set-SkillFrontmatterName $Target $TargetName
     }
     Write-Output 'Installed gstack Codex skills with namespaced prefix from CODEX-DISTRIBUTION.json'
