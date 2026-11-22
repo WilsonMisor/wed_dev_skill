@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SUITE-LOCK owned_skill_count must remain 63 from CODEX-DISTRIBUTION.json manifests.
+# Suite ownership is derived from CODEX-DISTRIBUTION.json manifests and the pinned lock.
 set -euo pipefail
 BLUEPRINT_ROOT=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 SUITE_ROOT=$(cd "$BLUEPRINT_ROOT/.." && pwd)
@@ -61,8 +61,8 @@ import json
 import sys
 lock = json.loads(open(sys.argv[1], encoding='utf-8').read())
 names = [str(name) for name in lock.get('owned_skill_ids', [])]
-if len(names) != 63 or len(set(names)) != 63:
-    raise SystemExit('Suite lock owned_skill_ids is not the complete 63-skill inventory')
+if not names or len(set(names)) != len(names) or lock.get('owned_skill_count') != len(names):
+    raise SystemExit('Suite lock inventory is empty, duplicated or inconsistent')
 for name in names:
     print(name)
 PY
@@ -85,18 +85,20 @@ PY
 repo_dirty() { [ -n "$(git -C "$1" status --porcelain=v1)" ]; }
 ensure_repo() {
   name="$1"; path="$2"; url="$3"; component="$4"
+  created=0
   if [ ! -e "$path" ]; then
-    case "$MODE" in install|repair|update) mkdir -p "$(dirname "$path")"; run_checked "clone $name" git clone "$url" "$path" ;; *) echo "$name repository missing: $path" >&2; exit 2 ;; esac
+    case "$MODE" in install|repair|update) mkdir -p "$(dirname "$path")"; run_checked "clone $name" git clone "$url" "$path"; created=1 ;; *) echo "$name repository missing: $path" >&2; exit 2 ;; esac
   fi
-  [ -d "$path/.git" ] || { echo "$name repository missing .git: $path" >&2; exit 2; }
+  [ -e "$path/.git" ] || { echo "$name repository missing .git: $path" >&2; exit 2; }
   expected="$(lock_commit "$component")"
+  if [ "$created" -eq 1 ] && [ -n "$expected" ]; then run_checked "checkout newly cloned locked $name" git -C "$path" checkout --detach "$expected"; fi
   if [ "$MODE" = update ] || [ "$MODE" = repair ]; then
     [ "$ALLOW_UPDATE" -eq 1 ] || { echo "Mode $MODE requires --allow-update" >&2; exit 2; }
     ! repo_dirty "$path" || { echo "$name repository is dirty; refusing controlled update" >&2; exit 2; }
     run_checked "fetch $name" git -C "$path" fetch --all --tags
     [ -z "$expected" ] || run_checked "checkout locked $name" git -C "$path" checkout "$expected"
   fi
-  if [ -n "$expected" ] && [ "$MODE" != install ]; then
+  if [ -n "$expected" ]; then
     actual="$(git -C "$path" rev-parse HEAD)"
     [ "$actual" = "$expected" ] || { echo "$name lock drift: expected $expected got $actual" >&2; exit 2; }
   fi
@@ -115,7 +117,7 @@ blueprint_self_update() {
     run_checked "fetch Blueprint" git -C "$BLUEPRINT_ROOT" fetch --all --tags
     [ -z "$expected" ] || run_checked "checkout locked Blueprint" git -C "$BLUEPRINT_ROOT" checkout "$expected"
   fi
-  if [ -n "$expected" ] && [ "$MODE" != install ]; then
+  if [ -n "$expected" ]; then
     actual="$(git -C "$BLUEPRINT_ROOT" rev-parse HEAD)"
     [ "$actual" = "$expected" ] || { echo "Blueprint lock drift: expected $expected got $actual" >&2; exit 2; }
   fi
@@ -165,7 +167,7 @@ if [ "$MODE" = uninstall ]; then
   [ "$ALLOW_UPDATE" -eq 1 ] || { echo 'Mode uninstall requires --allow-update before installed files are removed.' >&2; exit 2; }
   mkdir -p "$SKILL_ROOT"
   mapfile -t OWNED_SKILLS < <(owned_skill_inventory)
-  [ "${#OWNED_SKILLS[@]}" -eq 63 ] || { echo "Expected 63 suite-owned skills, derived ${#OWNED_SKILLS[@]}" >&2; exit 2; }
+  [ "${#OWNED_SKILLS[@]}" -gt 0 ] || { echo "Expected a nonempty suite inventory, derived ${#OWNED_SKILLS[@]}" >&2; exit 2; }
   root_real="$(cd "$SKILL_ROOT" && pwd -P)"
   for skill in "${OWNED_SKILLS[@]}"; do
     target="$SKILL_ROOT/$skill"
@@ -201,7 +203,7 @@ blueprint_self_update
 ensure_repo PREOS "$PREOS_ROOT" https://github.com/WilsonMisor/PREOS.git PREOS
 ensure_repo gstack "$GSTACK_ROOT" https://github.com/WilsonMisor/gstack.git gstack
 mapfile -t OWNED_SKILLS < <(suite_owned_skills)
-[ "${#OWNED_SKILLS[@]}" -eq 63 ] || { echo "Expected 63 suite-owned skills, derived ${#OWNED_SKILLS[@]}" >&2; exit 2; }
+[ "${#OWNED_SKILLS[@]}" -gt 0 ] || { echo "Expected a nonempty suite inventory, derived ${#OWNED_SKILLS[@]}" >&2; exit 2; }
 run_checked 'validate Blueprint' python "$BLUEPRINT_ROOT/scripts/validate_blueprint.py"
 run_checked 'validate Blueprint source semantics' python "$BLUEPRINT_ROOT/scripts/validate_source_semantics.py"
 PYTHONPATH="$PREOS_ROOT/scripts" run_checked 'validate PREOS' python "$PREOS_ROOT/scripts/validate-preos.py"
@@ -215,4 +217,5 @@ if [ "$SKIP_GSTACK_SETUP" -eq 0 ]; then
   install_gstack_codex_skills
 fi
 run_doctor
+python "$BLUEPRINT_ROOT/scripts/verify_installed_suite.py" --preos "$PREOS_ROOT" --gstack "$GSTACK_ROOT" --codex-home "$CODEX_HOME" --skill-root "$SKILL_ROOT" --write-receipt
 printf 'Suite %s health: PASS\n' "$MODE"

@@ -1,5 +1,5 @@
 param(
-# SUITE-LOCK owned_skill_count must remain 63 from CODEX-DISTRIBUTION.json manifests.
+# Suite ownership is derived from CODEX-DISTRIBUTION.json manifests and the pinned lock.
     [ValidateSet('install','verify','repair','update','uninstall')][string]$Mode = 'install',
     [string]$PreosPath,
     [string]$GstackPath,
@@ -45,7 +45,7 @@ function Get-SuiteOwnedSkills {
     $Names += Get-ManifestSkills $PreosPath $false
     $Names += Get-ManifestSkills $GstackPath $true
     $Unique = @($Names | Sort-Object -Unique)
-    if ($Names.Count -ne 63 -or $Unique.Count -ne 63) { throw ('Expected 63 unique suite-owned skills, derived ' + $Names.Count) }
+    if ($Names.Count -eq 0 -or $Unique.Count -ne $Names.Count) { throw ('Suite skill inventory is empty or contains duplicate names: ' + $Names.Count) }
     return $Names
 }
 function Get-OwnedSkillInventory {
@@ -53,8 +53,8 @@ function Get-OwnedSkillInventory {
         $Lock = Get-Content -LiteralPath $SuiteLockPath -Raw | ConvertFrom-Json
         $Names = @($Lock.owned_skill_ids | ForEach-Object { [string]$_ })
         $Unique = @($Names | Sort-Object -Unique)
-        if ($Names.Count -eq 63 -and $Unique.Count -eq 63) { return $Names }
-        throw ('Suite lock owned_skill_ids is not the complete 63-skill inventory')
+        if ($Names.Count -gt 0 -and $Unique.Count -eq $Names.Count -and $Lock.owned_skill_count -eq $Names.Count) { return $Names }
+        throw ('Suite lock owned_skill_ids is empty, duplicated or inconsistent with owned_skill_count')
     }
     return Get-SuiteOwnedSkills
 }
@@ -74,14 +74,17 @@ function Test-Dirty([string]$Repo) {
     return -not [string]::IsNullOrWhiteSpace(($Dirty -join ''))
 }
 function Ensure-Repo([string]$Name, [string]$PathText, [string]$Url, [string]$ComponentPath) {
+    $Created = $false
     if (-not (Test-Path $PathText)) {
         if ($Mode -notin @('install','repair','update')) { throw ($Name + ' repository missing: ' + $PathText) }
         $Parent = Split-Path -Parent $PathText
         if (-not (Test-Path $Parent)) { New-Item -ItemType Directory -Path $Parent | Out-Null }
         Invoke-Checked ('clone ' + $Name) { & git clone $Url $PathText }
+        $Created = $true
     }
     if (-not (Test-Path (Join-Path $PathText '.git'))) { throw ($Name + ' repository missing .git: ' + $PathText) }
     $Expected = Get-LockCommit $ComponentPath
+    if ($Created -and $Expected) { Invoke-Checked ('checkout newly cloned locked ' + $Name) { & git -C $PathText checkout --detach $Expected } }
     if ($Mode -eq 'update' -or $Mode -eq 'repair') {
         if (-not $AllowUpdate) { throw ('Mode ' + $Mode + ' requires -AllowUpdate') }
         if (Test-Dirty $PathText) { throw ($Name + ' repository is dirty; refusing controlled update') }
@@ -90,7 +93,7 @@ function Ensure-Repo([string]$Name, [string]$PathText, [string]$Url, [string]$Co
     }
     if ($Expected) {
         $Actual = (& git -C $PathText rev-parse HEAD).Trim()
-        if ($Actual -ne $Expected -and $Mode -ne 'install') { throw ($Name + ' lock drift: expected ' + $Expected + ', got ' + $Actual) }
+        if ($Actual -ne $Expected) { throw ($Name + ' lock drift: expected ' + $Expected + ', got ' + $Actual) }
     }
 }
 function Ensure-BlueprintSelf {
@@ -101,13 +104,16 @@ function Ensure-BlueprintSelf {
         Invoke-Checked 'fetch Blueprint' { & git -C $BlueprintRoot fetch --all --tags }
         if ($Expected) { Invoke-Checked 'checkout locked Blueprint' { & git -C $BlueprintRoot checkout $Expected } }
     }
-    if ($Expected -and $Mode -ne 'install') {
+    if ($Expected) {
         $Actual = (& git -C $BlueprintRoot rev-parse HEAD).Trim()
         if ($Actual -ne $Expected) { throw ('Blueprint lock drift: expected ' + $Expected + ', got ' + $Actual) }
     }
 }
 function Backup-SuitePath([string]$Path, [string]$Label) {
     if (Test-Path $Path) {
+        $ResolvedTarget = [System.IO.Path]::GetFullPath($Path)
+        $AllowedPrefix = [System.IO.Path]::GetFullPath($SkillRoot).TrimEnd('\','/') + [System.IO.Path]::DirectorySeparatorChar
+        if (-not $ResolvedTarget.StartsWith($AllowedPrefix, [System.StringComparison]::OrdinalIgnoreCase)) { throw 'Backup target escapes suite skill root' }
         $BackupRoot = Join-Path $CodexHome ('framework-install-backups\suite-' + $Label + '-' + (Get-Date -Format 'yyyyMMddTHHmmssZ'))
         New-Item -ItemType Directory -Force -Path $BackupRoot | Out-Null
         Move-Item -LiteralPath $Path -Destination (Join-Path $BackupRoot (Split-Path $Path -Leaf))
@@ -116,8 +122,8 @@ function Backup-SuitePath([string]$Path, [string]$Label) {
 function Set-SkillFrontmatterName([string]$SkillPath, [string]$Name) {
     $SkillFile = Join-Path $SkillPath 'SKILL.md'
     if (-not (Test-Path $SkillFile)) { throw ('Installed gstack skill missing SKILL.md: ' + $Name) }
-    $SkillText = Get-Content -LiteralPath $SkillFile -Raw
-    $Updated = [regex]::Replace($SkillText, '(?m)^name:\s*.+$', ('name: ' + $Name), 1)
+    $SkillText = Get-Content -LiteralPath $SkillFile -Raw -Encoding UTF8
+    $Updated = [regex]::new('(?m)^name:[^\r\n]+').Replace($SkillText, ('name: ' + $Name), 1)
     [System.IO.File]::WriteAllText((Resolve-Path $SkillFile).Path, $Updated, [System.Text.UTF8Encoding]::new($false))
 }
 function Install-GstackCodexSkills {
@@ -210,4 +216,5 @@ if (-not $SkipGstackSetup) {
     Install-GstackCodexSkills
 }
 Invoke-SuiteDoctor
+Invoke-Checked 'write verified suite installation receipt' { & python (Join-Path $BlueprintRoot 'scripts\verify_installed_suite.py') --preos $PreosRoot --gstack $GstackRoot --codex-home $CodexHome --skill-root $SkillRoot --write-receipt }
 Write-Output ('Suite ' + $Mode + ' health: PASS')

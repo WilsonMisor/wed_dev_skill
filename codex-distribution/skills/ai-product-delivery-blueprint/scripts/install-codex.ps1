@@ -25,6 +25,14 @@ $BackupRoot = Join-Path $CodexHome ('framework-install-backups\blueprint-' + (Ge
 
 function Backup-ExistingPath([string]$Path) {
     if (Test-Path $Path) {
+        $ResolvedTarget = [System.IO.Path]::GetFullPath($Path)
+        $AllowedRoots = @($SkillRoot, $AgentRoot)
+        $Inside = $false
+        foreach ($AllowedRoot in $AllowedRoots) {
+            $Prefix = [System.IO.Path]::GetFullPath($AllowedRoot).TrimEnd('\','/') + [System.IO.Path]::DirectorySeparatorChar
+            if ($ResolvedTarget.StartsWith($Prefix, [System.StringComparison]::OrdinalIgnoreCase)) { $Inside = $true }
+        }
+        if (-not $Inside) { throw 'Backup target escapes governed installation roots' }
         New-Item -ItemType Directory -Force -Path $BackupRoot | Out-Null
         $Name = Split-Path $Path -Leaf
         Move-Item -LiteralPath $Path -Destination (Join-Path $BackupRoot $Name)

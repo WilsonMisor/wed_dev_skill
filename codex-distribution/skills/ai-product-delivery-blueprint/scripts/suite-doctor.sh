@@ -60,8 +60,8 @@ def manifest_skills(root: pathlib.Path, prefix_gstack: bool = False) -> list[str
         names.append(name)
     return names
 expected = manifest_skills(blueprint_root) + manifest_skills(preos_root) + manifest_skills(gstack_root, True)
-if len(expected) != 63 or len(set(expected)) != 63:
-    raise SystemExit(f'Manifest-derived suite inventory must contain 63 unique skills, got {len(expected)}')
+if not expected or len(set(expected)) != len(expected):
+    raise SystemExit(f'Manifest-derived suite inventory must contain unique skills, got {len(expected)}')
 if lock.get('owned_skill_count') != len(expected):
     raise SystemExit(f"Suite lock owned_skill_count mismatch: {lock.get('owned_skill_count')} != {len(expected)}")
 if lock.get('owned_skill_ids') != expected:
@@ -101,5 +101,8 @@ if [ "$SKIP_INSTALLED" -eq 0 ]; then
   printf 'Installed skills: PASS %s\n' "$SKILL_ROOT"
 else
   printf 'Installed skills: SKIPPED by caller\n'
+fi
+if [ "$SKIP_INSTALLED" -eq 0 ]; then
+  python "$BLUEPRINT_ROOT/scripts/verify_installed_suite.py" --preos "$PREOS_ROOT" --gstack "$GSTACK_ROOT" --codex-home "$CODEX_HOME" --skill-root "$SKILL_ROOT"
 fi
 printf 'Suite doctor: PASS\n'

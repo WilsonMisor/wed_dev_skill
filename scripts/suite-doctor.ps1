@@ -40,7 +40,7 @@ function Get-SuiteOwnedSkills {
     $Names += Get-ManifestSkills $PreosRoot $false
     $Names += Get-ManifestSkills $GstackRoot $true
     $Unique = @($Names | Sort-Object -Unique)
-    if ($Names.Count -ne 63 -or $Unique.Count -ne 63) { throw ('Expected 63 unique suite-owned skills, derived ' + $Names.Count) }
+    if ($Names.Count -eq 0 -or $Unique.Count -ne $Names.Count) { throw ('Suite skill inventory is empty or contains duplicate names: ' + $Names.Count) }
     return $Names
 }
 if (-not (Test-Path $SuiteLockPath)) { throw ('Suite lock missing: ' + $SuiteLockPath) }
@@ -95,6 +95,7 @@ if (-not $SkipInstalledSkillCheck) {
         $Name = Split-Path ([string]$Agent.source_path) -Leaf
         if (-not (Test-Path (Join-Path $AgentRoot $Name))) { throw ('Virtual Team agent metadata missing: ' + (Join-Path $AgentRoot $Name)) }
     }
+    Invoke-Checked 'verify installed suite file hashes' { & python (Join-Path $BlueprintRoot 'scripts\verify_installed_suite.py') --preos $PreosRoot --gstack $GstackRoot --codex-home $CodexHome --skill-root $SkillRoot }
     Write-Output ('Installed skills: PASS ' + $SkillRoot)
 } else {
     Write-Output 'Installed skills: SKIPPED by caller'
