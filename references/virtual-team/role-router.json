@@ -1,0 +1,369 @@
+{
+  "router_id": "virtual-team-capability-router",
+  "version": "1.0.0",
+  "role_registry_version": "1.0.0",
+  "authority_boundary": "Blueprint determines which capabilities apply. This router only maps approved capability IDs to canonical role IDs. It must not invent capabilities or roles.",
+  "inputs_required": [
+    "approved_capability_ids",
+    "task_packet_id",
+    "lifecycle_state",
+    "active_profiles"
+  ],
+  "rules": [
+    "Unknown capability => UNKNOWN_CAPABILITY and BLOCKED.",
+    "Any unresolved specialist reference => ROLE_GAP.",
+    "Duplicate roles are deduplicated by canonical role ID.",
+    "/prod-full-review is an orchestration capability and receives the union of roles from the specific review capabilities selected by Blueprint; it must not automatically activate all forty roles."
+  ],
+  "routes": [
+    {
+      "capability": "/prod-intake",
+      "required_role_ids": [
+        "VT-R01-product-manager",
+        "VT-R02-business-analyst",
+        "VT-R03-domain-specialist"
+      ],
+      "routing_basis": "SOURCE_SPECIALISTS",
+      "purpose": [
+        "Understand what is being built before architecture begins"
+      ],
+      "outputs": [
+        "Product context",
+        "Actors",
+        "Workflows",
+        "Functional requirements",
+        "Nonfunctional requirements",
+        "Constraints",
+        "Criticality classification",
+        "Unknowns"
+      ]
+    },
+    {
+      "capability": "/prod-team",
+      "required_role_ids": [
+        "VT-R01-product-manager",
+        "VT-R02-business-analyst"
+      ],
+      "routing_basis": "DERIVED_MINIMUM_ORCHESTRATION",
+      "purpose": [
+        "Determine which professional disciplines are required for this particular application",
+        "It creates a responsibility matrix",
+        "A simple brochure website might activate ten perspectives",
+        "A payment marketplace might activate thirty or more",
+        "The system must therefore avoid unnecessary complexity while preventing missing disciplines"
+      ],
+      "outputs": []
+    },
+    {
+      "capability": "/prod-domain",
+      "required_role_ids": [
+        "VT-R03-domain-specialist"
+      ],
+      "routing_basis": "DERIVED_MINIMUM_ORCHESTRATION",
+      "purpose": [
+        "Identify domain specific risks and requirements",
+        "Examples:",
+        "Healthcare",
+        "Finance",
+        "Marketplace",
+        "Government",
+        "Education",
+        "AI",
+        "Consumer application",
+        "Enterprise SaaS",
+        "The output identifies which additional capability packs must be loaded"
+      ],
+      "outputs": []
+    },
+    {
+      "capability": "/prod-architecture",
+      "required_role_ids": [
+        "VT-R10-backend-engineer",
+        "VT-R11-api-engineer",
+        "VT-R13-data-architect",
+        "VT-R17-cloud-architect",
+        "VT-R18-platform-engineer"
+      ],
+      "routing_basis": "SOURCE_SPECIALISTS",
+      "purpose": [
+        "Design the complete application architecture"
+      ],
+      "outputs": [
+        "System context",
+        "Containers",
+        "Components",
+        "Services",
+        "Data flows",
+        "Trust boundaries",
+        "External dependencies",
+        "Network paths",
+        "Failure paths",
+        "State boundaries"
+      ]
+    },
+    {
+      "capability": "/prod-data",
+      "required_role_ids": [
+        "VT-R13-data-architect",
+        "VT-R14-database-engineer",
+        "VT-R15-data-engineer"
+      ],
+      "routing_basis": "SOURCE_SPECIALISTS",
+      "purpose": [
+        "Design operational and analytical data architecture"
+      ],
+      "outputs": []
+    },
+    {
+      "capability": "/prod-api",
+      "required_role_ids": [
+        "VT-R10-backend-engineer",
+        "VT-R11-api-engineer",
+        "VT-R12-integration-engineer"
+      ],
+      "routing_basis": "SOURCE_SPECIALISTS",
+      "purpose": [
+        "Design application interfaces and service contracts"
+      ],
+      "outputs": []
+    },
+    {
+      "capability": "/prod-frontend",
+      "required_role_ids": [
+        "VT-R06-product-designer",
+        "VT-R07-accessibility-specialist",
+        "VT-R08-frontend-engineer"
+      ],
+      "routing_basis": "SOURCE_SPECIALISTS",
+      "purpose": [
+        "Audit and design production web frontend behaviour"
+      ],
+      "outputs": []
+    },
+    {
+      "capability": "/prod-mobile",
+      "required_role_ids": [
+        "VT-R09-mobile-engineer",
+        "VT-R10-backend-engineer",
+        "VT-R24-application-security-engineer"
+      ],
+      "routing_basis": "SOURCE_SPECIALISTS",
+      "purpose": [
+        "Audit and design mobile production behaviour"
+      ],
+      "outputs": []
+    },
+    {
+      "capability": "/prod-identity",
+      "required_role_ids": [
+        "VT-R24-application-security-engineer",
+        "VT-R25-identity-and-access-engineer",
+        "VT-R27-trust-and-safety-engineer"
+      ],
+      "routing_basis": "SOURCE_SPECIALISTS",
+      "purpose": [
+        "Design authentication, authorization, user verification, sessions, permissions, recovery, and identity lifecycle"
+      ],
+      "outputs": []
+    },
+    {
+      "capability": "/prod-trust",
+      "required_role_ids": [
+        "VT-R27-trust-and-safety-engineer",
+        "VT-R28-verification-engineer",
+        "VT-R30-payments-engineer"
+      ],
+      "routing_basis": "SOURCE_SPECIALISTS",
+      "purpose": [
+        "Design trust, verification, reputation, evidence, and abuse controls"
+      ],
+      "outputs": []
+    },
+    {
+      "capability": "/prod-assurance",
+      "required_role_ids": [
+        "VT-R27-trust-and-safety-engineer",
+        "VT-R30-payments-engineer",
+        "VT-R31-ledger-engineer",
+        "VT-R32-trade-assurance-engineer"
+      ],
+      "routing_basis": "SOURCE_SPECIALISTS",
+      "purpose": [
+        "Design protected transactions"
+      ],
+      "outputs": []
+    },
+    {
+      "capability": "/prod-security",
+      "required_role_ids": [
+        "VT-R24-application-security-engineer",
+        "VT-R25-identity-and-access-engineer",
+        "VT-R26-privacy-engineer"
+      ],
+      "routing_basis": "SOURCE_SPECIALISTS",
+      "purpose": [
+        "Threat model and secure the whole architecture",
+        "This complements gstack’s /cso, rather than replacing it"
+      ],
+      "outputs": []
+    },
+    {
+      "capability": "/prod-platform",
+      "required_role_ids": [
+        "VT-R17-cloud-architect",
+        "VT-R18-platform-engineer",
+        "VT-R19-devops-engineer"
+      ],
+      "routing_basis": "SOURCE_SPECIALISTS",
+      "purpose": [
+        "Design hosting, networking, runtime infrastructure, environments, cloud resources, secrets, and infrastructure automation"
+      ],
+      "outputs": []
+    },
+    {
+      "capability": "/prod-cicd",
+      "required_role_ids": [
+        "VT-R19-devops-engineer",
+        "VT-R33-qa-engineer",
+        "VT-R36-release-engineer"
+      ],
+      "routing_basis": "SOURCE_SPECIALISTS",
+      "purpose": [
+        "Design build, test, security, deployment, rollback, and environment promotion pipelines"
+      ],
+      "outputs": []
+    },
+    {
+      "capability": "/prod-async",
+      "required_role_ids": [
+        "VT-R10-backend-engineer",
+        "VT-R12-integration-engineer",
+        "VT-R18-platform-engineer",
+        "VT-R20-site-reliability-engineer"
+      ],
+      "routing_basis": "SOURCE_SPECIALISTS",
+      "purpose": [
+        "Design queues, events, workers, scheduling, retries, dead letter queues, idempotency, and asynchronous workflows",
+        "The attached material establishes message queues as a mechanism for buffering work, absorbing traffic spikes, decoupling services, and enabling asynchronous processing"
+      ],
+      "outputs": []
+    },
+    {
+      "capability": "/prod-cache",
+      "required_role_ids": [
+        "VT-R10-backend-engineer",
+        "VT-R14-database-engineer",
+        "VT-R22-performance-engineer"
+      ],
+      "routing_basis": "SOURCE_SPECIALISTS",
+      "purpose": [
+        "Determine whether, where, and how caching should occur"
+      ],
+      "outputs": []
+    },
+    {
+      "capability": "/prod-scale",
+      "required_role_ids": [
+        "VT-R14-database-engineer",
+        "VT-R17-cloud-architect",
+        "VT-R20-site-reliability-engineer",
+        "VT-R22-performance-engineer"
+      ],
+      "routing_basis": "SOURCE_SPECIALISTS",
+      "purpose": [
+        "Capacity planning and scaling strategy"
+      ],
+      "outputs": []
+    },
+    {
+      "capability": "/prod-observe",
+      "required_role_ids": [
+        "VT-R20-site-reliability-engineer",
+        "VT-R21-observability-engineer",
+        "VT-R38-support-engineer"
+      ],
+      "routing_basis": "SOURCE_SPECIALISTS",
+      "purpose": [
+        "Build production visibility"
+      ],
+      "outputs": []
+    },
+    {
+      "capability": "/prod-resilience",
+      "required_role_ids": [
+        "VT-R14-database-engineer",
+        "VT-R17-cloud-architect",
+        "VT-R18-platform-engineer",
+        "VT-R20-site-reliability-engineer",
+        "VT-R39-incident-commander"
+      ],
+      "routing_basis": "SOURCE_SPECIALISTS",
+      "purpose": [
+        "Design failure tolerance, backup, recovery, and disaster recovery"
+      ],
+      "outputs": []
+    },
+    {
+      "capability": "/prod-performance",
+      "required_role_ids": [
+        "VT-R08-frontend-engineer",
+        "VT-R10-backend-engineer",
+        "VT-R14-database-engineer",
+        "VT-R22-performance-engineer"
+      ],
+      "routing_basis": "SOURCE_SPECIALISTS",
+      "purpose": [
+        "Measure and improve performance throughout the system"
+      ],
+      "outputs": []
+    },
+    {
+      "capability": "/prod-cost",
+      "required_role_ids": [
+        "VT-R01-product-manager",
+        "VT-R17-cloud-architect",
+        "VT-R23-finops-specialist"
+      ],
+      "routing_basis": "SOURCE_SPECIALISTS",
+      "purpose": [
+        "Analyse infrastructure economics"
+      ],
+      "outputs": []
+    },
+    {
+      "capability": "/prod-release",
+      "required_role_ids": [
+        "VT-R20-site-reliability-engineer",
+        "VT-R24-application-security-engineer",
+        "VT-R33-qa-engineer",
+        "VT-R36-release-engineer"
+      ],
+      "routing_basis": "SOURCE_SPECIALISTS",
+      "purpose": [
+        "Determine whether a system is production ready"
+      ],
+      "outputs": []
+    },
+    {
+      "capability": "/prod-incident",
+      "required_role_ids": [
+        "VT-R20-site-reliability-engineer",
+        "VT-R21-observability-engineer",
+        "VT-R38-support-engineer",
+        "VT-R39-incident-commander"
+      ],
+      "routing_basis": "SOURCE_SPECIALISTS",
+      "purpose": [
+        "Investigate and manage production incidents"
+      ],
+      "outputs": []
+    },
+    {
+      "capability": "/prod-full-review",
+      "required_role_ids": [],
+      "routing_basis": "SOURCE_SPECIALISTS",
+      "purpose": [],
+      "outputs": []
+    }
+  ]
+}

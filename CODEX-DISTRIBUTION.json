@@ -1,0 +1,50 @@
+{
+  "schema_version": "1.0",
+  "repository": "WilsonMisor/wed_dev_skill",
+  "component": "ai-product-delivery-blueprint",
+  "skills": [
+    {
+      "name": "ai-product-delivery-blueprint",
+      "source_path": "codex-distribution/skills/ai-product-delivery-blueprint",
+      "implicit_invocation": true
+    }
+  ],
+  "agents": [
+    {
+      "name": "vt_application_engineering",
+      "source_path": "codex-distribution/agents/vt_application_engineering.toml"
+    },
+    {
+      "name": "vt_data",
+      "source_path": "codex-distribution/agents/vt_data.toml"
+    },
+    {
+      "name": "vt_infrastructure_and_operations",
+      "source_path": "codex-distribution/agents/vt_infrastructure_and_operations.toml"
+    },
+    {
+      "name": "vt_product_and_business",
+      "source_path": "codex-distribution/agents/vt_product_and_business.toml"
+    },
+    {
+      "name": "vt_quality",
+      "source_path": "codex-distribution/agents/vt_quality.toml"
+    },
+    {
+      "name": "vt_release_and_support",
+      "source_path": "codex-distribution/agents/vt_release_and_support.toml"
+    },
+    {
+      "name": "vt_security_and_trust",
+      "source_path": "codex-distribution/agents/vt_security_and_trust.toml"
+    },
+    {
+      "name": "vt_transaction_and_commerce",
+      "source_path": "codex-distribution/agents/vt_transaction_and_commerce.toml"
+    },
+    {
+      "name": "vt_user_experience",
+      "source_path": "codex-distribution/agents/vt_user_experience.toml"
+    }
+  ]
+}

@@ -132,3 +132,7 @@ gstack runtime state remains gstack-owned. Do not place PREOS authoritative stat
 ## Production decision rule
 
 PREOS can produce assurance status but cannot authorize production by itself. Final deployment remains subject to the Blueprint release gate and accountable human approval. A gstack ship/deploy command is execution after authorization, not the authorization itself.
+## Production Assurance Suite v2 Routing
+
+Blueprint treats PAS v2 as PREOS-owned production-assurance reference material. Blueprint may reference Source 1 risk IDs, Source 4 role/context/test crosswalks, and PAS v2 evidence IDs inside AI Task Packets, but it must not duplicate the 4,337-risk corpus or activate model2. RiskDefinition, RiskAssessment, RiskEconomics, RiskEvolution, RiskEvidence, and RiskAcceptance remain separate PREOS concerns. PREOS_MODEL2_CROSSWALK_APPROVAL remains a qualified-human gate.
+

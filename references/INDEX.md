@@ -7,6 +7,7 @@ This manifest is the completeness guard for the upgraded skill. The branch must 
 1. `SKILL.md`.
 2. `README.md`.
 3. `agents/openai.yaml`.
+4. `docs/pasv2-suite-advanced.md`.
 
 ## Core profile
 
@@ -195,6 +196,58 @@ The canonical PREOS source corpus and executable methodology remain in the separ
 9. `orchestration/recommendation-coverage.md`.
 10. `orchestration/source-intake.md`.
 11. `orchestration/upgrade-reconciliation.md`.
+
+## Virtual team
+
+1. `references/virtual-team/role-registry.json`.
+2. `references/virtual-team/role-router.json`.
+3. `schemas/virtual-team-role-registry.schema.json`.
+4. `schemas/virtual-team-role-router.schema.json`.
+5. `schemas/virtual-team-handoff.schema.json`.
+6. `scripts/select_virtual_team.py`.
+
+### Role cards
+
+1. `references/virtual-team/role-cards/VT-R01-product-manager.md`.
+2. `references/virtual-team/role-cards/VT-R02-business-analyst.md`.
+3. `references/virtual-team/role-cards/VT-R03-domain-specialist.md`.
+4. `references/virtual-team/role-cards/VT-R04-product-operations-specialist.md`.
+5. `references/virtual-team/role-cards/VT-R05-ux-researcher.md`.
+6. `references/virtual-team/role-cards/VT-R06-product-designer.md`.
+7. `references/virtual-team/role-cards/VT-R07-accessibility-specialist.md`.
+8. `references/virtual-team/role-cards/VT-R08-frontend-engineer.md`.
+9. `references/virtual-team/role-cards/VT-R09-mobile-engineer.md`.
+10. `references/virtual-team/role-cards/VT-R10-backend-engineer.md`.
+11. `references/virtual-team/role-cards/VT-R11-api-engineer.md`.
+12. `references/virtual-team/role-cards/VT-R12-integration-engineer.md`.
+13. `references/virtual-team/role-cards/VT-R13-data-architect.md`.
+14. `references/virtual-team/role-cards/VT-R14-database-engineer.md`.
+15. `references/virtual-team/role-cards/VT-R15-data-engineer.md`.
+16. `references/virtual-team/role-cards/VT-R16-analytics-engineer.md`.
+17. `references/virtual-team/role-cards/VT-R17-cloud-architect.md`.
+18. `references/virtual-team/role-cards/VT-R18-platform-engineer.md`.
+19. `references/virtual-team/role-cards/VT-R19-devops-engineer.md`.
+20. `references/virtual-team/role-cards/VT-R20-site-reliability-engineer.md`.
+21. `references/virtual-team/role-cards/VT-R21-observability-engineer.md`.
+22. `references/virtual-team/role-cards/VT-R22-performance-engineer.md`.
+23. `references/virtual-team/role-cards/VT-R23-finops-specialist.md`.
+24. `references/virtual-team/role-cards/VT-R24-application-security-engineer.md`.
+25. `references/virtual-team/role-cards/VT-R25-identity-and-access-engineer.md`.
+26. `references/virtual-team/role-cards/VT-R26-privacy-engineer.md`.
+27. `references/virtual-team/role-cards/VT-R27-trust-and-safety-engineer.md`.
+28. `references/virtual-team/role-cards/VT-R28-verification-engineer.md`.
+29. `references/virtual-team/role-cards/VT-R29-compliance-specialist.md`.
+30. `references/virtual-team/role-cards/VT-R30-payments-engineer.md`.
+31. `references/virtual-team/role-cards/VT-R31-ledger-engineer.md`.
+32. `references/virtual-team/role-cards/VT-R32-trade-assurance-engineer.md`.
+33. `references/virtual-team/role-cards/VT-R33-qa-engineer.md`.
+34. `references/virtual-team/role-cards/VT-R34-test-automation-engineer.md`.
+35. `references/virtual-team/role-cards/VT-R35-reliability-test-engineer.md`.
+36. `references/virtual-team/role-cards/VT-R36-release-engineer.md`.
+37. `references/virtual-team/role-cards/VT-R37-technical-writer.md`.
+38. `references/virtual-team/role-cards/VT-R38-support-engineer.md`.
+39. `references/virtual-team/role-cards/VT-R39-incident-commander.md`.
+40. `references/virtual-team/role-cards/VT-R40-internal-tools-engineer.md`.
 
 ## Templates
 

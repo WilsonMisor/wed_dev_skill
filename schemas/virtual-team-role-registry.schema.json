@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Virtual Team Role Registry",
+  "type": "object",
+  "required": [
+    "registry_id",
+    "version",
+    "role_count",
+    "teams",
+    "roles"
+  ],
+  "properties": {
+    "registry_id": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string"
+    },
+    "role_count": {
+      "type": "integer",
+      "const": 40
+    },
+    "team_count": {
+      "type": "integer",
+      "const": 9
+    },
+    "teams": {
+      "type": "array"
+    },
+    "roles": {
+      "type": "array",
+      "minItems": 40,
+      "maxItems": 40
+    }
+  }
+}

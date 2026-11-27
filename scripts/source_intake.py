@@ -22,6 +22,10 @@ from datetime import datetime, timezone
 from typing import Any
 import zipfile
 
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
 from source_semantic_extract import merge_fact_objects, semantic_extract
 
 CODE_EXTENSIONS = {

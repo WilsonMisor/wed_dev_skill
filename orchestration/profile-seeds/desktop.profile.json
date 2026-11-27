@@ -1,0 +1,28 @@
+{
+  "profile_id": "desktop",
+  "name": "Desktop Application",
+  "status": "SEED_REQUIRES_REPOSITORY_INTEGRATION",
+  "description": "Native or cross-platform desktop executable; local filesystem, OS permissions, installer/update lifecycle, offline state and platform signing may apply.",
+  "activation_rule": "Activate only when project classification explicitly matches this delivery surface.",
+  "required_cross_cutting_domains": [
+    "security",
+    "privacy",
+    "compatibility",
+    "release",
+    "support",
+    "supply-chain",
+    "legal-compliance"
+  ],
+  "required_evidence": [
+    "platform constraints identified",
+    "distribution/update path documented",
+    "permissions reviewed",
+    "rollback/removal path documented",
+    "applicable marketplace or platform policy reviewed"
+  ],
+  "stop_conditions": [
+    "unknown distribution authority",
+    "unreviewed privileged permissions",
+    "no upgrade/rollback strategy for material changes"
+  ]
+}

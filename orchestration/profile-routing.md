@@ -11,6 +11,7 @@ Use the Project Classification Record to load only the guidance needed for the c
 5. SaaS with mobile normally loads core, web if a browser client exists, SaaS, mobile, API, data, and infrastructure.
 6. Mobile applications with remote services load core, mobile, API, and the data or infrastructure modules relevant to the remote service.
 7. API only products load core, API, data when persistent state exists, and infrastructure for production operation.
+8. Browser extensions, desktop applications, platform extensions, and marketplace-distributed software load the matching profile seed from orchestration/profile-seeds/ plus any triggered core, web, API, data, infrastructure, security, privacy, compatibility, release, support, supply-chain, and legal-compliance references.
 
 ## Bounded loading rule
 

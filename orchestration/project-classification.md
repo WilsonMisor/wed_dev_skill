@@ -2,6 +2,20 @@
 
 Create a Project Classification Record before architecture or implementation.
 
+For declared SaaS/web/API/data/infrastructure facts, run
+`python scripts/classify_pasv2_project.py project-facts.json --output PROJECT-CLASSIFICATION.json`.
+This helper computes profile triggers and preserves unknowns; it does not approve
+scope or replace the full classification record. Other delivery surfaces still
+use the profile rules below. A documentation-only change must explicitly exclude
+runtime, security, dependency and production-configuration changes.
+
+The Section 94/95 acceptance fixtures run with
+`python scripts/pasv2_acceptance.py --preos ../PREOS --gstack ../gstack`.
+They execute Blueprint classification and managed routing, PREOS selection and
+candidate intake, and gstack specialist dispatch. Dispatch records identify
+actual skill entry points and required findings; an AI specialist review is a
+separate execution and is never claimed by this deterministic fixture.
+
 When a project arrives as a mixed documentation package, ZIP, existing repository, brownfield codebase, or ambiguous set of historical/current sources, complete `orchestration/source-intake.md` first. Classification must not guess which conflicting source is authoritative.
 
 ## Required fields
@@ -41,6 +55,14 @@ Activate `api` when a programmatic service contract exists between components or
 Activate `data` when application state, business records, analytics data, or durable event data is persisted.
 
 Activate `infrastructure` for production environments, hosting, networking, CI and CD, secrets, monitoring, backups, or disaster recovery.
+
+Activate `browser-extension` only when the project explicitly includes a browser extension or add-on surface with permission scopes, content scripts, background workers, browser API compatibility, or store review.
+
+Activate `desktop` only when the project ships a native or cross-platform desktop executable with local filesystem, OS permission, installer, updater, signing, or offline-state concerns.
+
+Activate `platform-extension` only when the project extends a host platform through plugin or extension APIs with host compatibility, privilege boundary, upgrade-safety, or marketplace-rule concerns.
+
+Activate `marketplace-distribution` when software is distributed through an app store, extension marketplace, plugin directory, enterprise catalog, or other governed distribution channel.
 
 ## PREOS production-assurance trigger
 
